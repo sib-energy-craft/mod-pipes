@@ -1,7 +1,7 @@
-package com.github.sib_energy_craft.pipes.block.entity;
+package com.github.sib_energy_craft.item_extractor.block.entity;
 
-import com.github.sib_energy_craft.pipes.block.StoneItemExtractorBlock;
-import com.github.sib_energy_craft.pipes.load.Entities;
+import com.github.sib_energy_craft.item_extractor.block.StoneItemExtractorBlock;
+import com.github.sib_energy_craft.item_extractor.load.Entities;
 import net.minecraft.block.BlockState;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;

@@ -1,4 +1,4 @@
-package com.github.sib_energy_craft.pipes.tags;
+package com.github.sib_energy_craft.tags;
 
 import com.github.sib_energy_craft.energy_api.utils.Identifiers;
 import lombok.AccessLevel;

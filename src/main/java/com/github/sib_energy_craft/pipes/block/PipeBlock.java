@@ -1,7 +1,7 @@
 package com.github.sib_energy_craft.pipes.block;
 
 import com.github.sib_energy_craft.pipes.block.entity.PipeBlockEntity;
-import com.github.sib_energy_craft.pipes.tags.PipeTags;
+import com.github.sib_energy_craft.tags.PipeTags;
 import lombok.Getter;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;

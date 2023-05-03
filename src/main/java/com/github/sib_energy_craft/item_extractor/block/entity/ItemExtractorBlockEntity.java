@@ -1,7 +1,7 @@
-package com.github.sib_energy_craft.pipes.block.entity;
+package com.github.sib_energy_craft.item_extractor.block.entity;
 
-import com.github.sib_energy_craft.pipes.block.ItemExtractorBlock;
-import com.github.sib_energy_craft.pipes.load.Screens;
+import com.github.sib_energy_craft.item_extractor.block.ItemExtractorBlock;
+import com.github.sib_energy_craft.item_extractor.load.Screens;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;

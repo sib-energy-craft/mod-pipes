@@ -1,7 +1,7 @@
-package com.github.sib_energy_craft.pipes.load;
+package com.github.sib_energy_craft.item_extractor.load;
 
-import com.github.sib_energy_craft.pipes.screen.Container9x1Screen;
 import com.github.sib_energy_craft.energy_api.utils.Identifiers;
+import com.github.sib_energy_craft.screen.Container9x1Screen;
 import com.github.sib_energy_craft.sec_utils.load.ModRegistrar;
 import com.github.sib_energy_craft.sec_utils.utils.ScreenUtils;
 import net.minecraft.entity.player.PlayerInventory;

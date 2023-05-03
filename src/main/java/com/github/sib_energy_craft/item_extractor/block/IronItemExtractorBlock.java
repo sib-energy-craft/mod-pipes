@@ -1,8 +1,8 @@
-package com.github.sib_energy_craft.pipes.block;
+package com.github.sib_energy_craft.item_extractor.block;
 
-import com.github.sib_energy_craft.pipes.block.entity.IronItemExtractorBlockEntity;
-import com.github.sib_energy_craft.pipes.block.entity.ItemExtractorBlockEntity;
-import com.github.sib_energy_craft.pipes.load.Entities;
+import com.github.sib_energy_craft.item_extractor.block.entity.IronItemExtractorBlockEntity;
+import com.github.sib_energy_craft.item_extractor.block.entity.ItemExtractorBlockEntity;
+import com.github.sib_energy_craft.item_extractor.load.Entities;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;

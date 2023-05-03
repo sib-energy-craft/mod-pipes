@@ -1,8 +1,8 @@
-package com.github.sib_energy_craft.pipes.block;
+package com.github.sib_energy_craft.item_extractor.block;
 
-import com.github.sib_energy_craft.pipes.block.entity.ItemExtractorBlockEntity;
-import com.github.sib_energy_craft.pipes.load.Stats;
-import com.github.sib_energy_craft.pipes.tags.PipeTags;
+import com.github.sib_energy_craft.item_extractor.block.entity.ItemExtractorBlockEntity;
+import com.github.sib_energy_craft.item_extractor.load.Stats;
+import com.github.sib_energy_craft.tags.PipeTags;
 import lombok.Getter;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
