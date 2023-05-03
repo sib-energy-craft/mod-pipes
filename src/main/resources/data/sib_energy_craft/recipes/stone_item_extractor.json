@@ -6,16 +6,16 @@
   ],
   "key": {
     "R": {
-      "tag": "minecraft:redstone"
+      "item": "minecraft:redstone"
     },
     "S": {
-      "tag": "minecraft:stone"
+      "item": "minecraft:stone"
     },
     "H": {
-      "tag": "minecraft:hopper"
+      "item": "minecraft:hopper"
     },
     "P": {
-      "tag": "sib_energy_craft:stone_pipe"
+      "item": "sib_energy_craft:stone_pipe"
     }
   },
   "result": {

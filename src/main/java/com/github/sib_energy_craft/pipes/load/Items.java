@@ -13,8 +13,10 @@ import static com.github.sib_energy_craft.sec_utils.utils.ItemUtils.registerBloc
  */
 public final class Items implements ModRegistrar {
     public static final Item STONE_ITEM_EXTRACTOR;
+    public static final Item STONE_PIPE;
 
     static {
         STONE_ITEM_EXTRACTOR = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.STONE_ITEM_EXTRACTOR);
+        STONE_PIPE = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.STONE_PIPE);
     }
 }
