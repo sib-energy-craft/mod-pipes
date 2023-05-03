@@ -1,14 +1,24 @@
 {
-  "type": "sib_energy_craft:iron_crafting_table_tool",
-  "group": "copper_cable",
-  "tool": {
-    "item": "sib_energy_craft:metal_shears"
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RPR",
+    "SHS"
+  ],
+  "key": {
+    "R": {
+      "tag": "minecraft:redstone"
+    },
+    "S": {
+      "tag": "minecraft:stone"
+    },
+    "H": {
+      "tag": "minecraft:hopper"
+    },
+    "P": {
+      "tag": "sib_energy_craft:stone_pipe"
+    }
   },
-  "source": {
-    "item": "sib_energy_craft:copper_plate"
-  },
-  "output": {
-    "item": "sib_energy_craft:copper_cable",
-    "count": 4
+  "result": {
+    "item": "sib_energy_craft:stone_item_extractor"
   }
 }
