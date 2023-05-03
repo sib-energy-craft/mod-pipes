@@ -1,7 +1,13 @@
 {
   "block.sib_energy_craft.stone_item_extractor": "Каменный извелкатель предметов",
-  "container.stone_item_extractor": "Касенный извелкатель предметов",
+  "container.stone_item_extractor": "Каменный извелкатель предметов",
+
+  "block.sib_energy_craft.iron_item_extractor": "Железный извелкатель предметов",
+  "container.iron_item_extractor": "Железный извелкатель предметов",
+
   "stat.sib_energy_craft.interact_with_item_extractor": "Использований извелкателя предметов",
 
-  "block.sib_energy_craft.stone_pipe": "Каменная труба"
+  "block.sib_energy_craft.stone_pipe": "Каменная труба",
+
+  "block.sib_energy_craft.iron_pipe": "Железная труба"
 }

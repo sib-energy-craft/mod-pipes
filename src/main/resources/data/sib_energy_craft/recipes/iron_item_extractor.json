@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BPB",
+    "#E#"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "#": {
+      "item": "sib_energy_craft:iron_plate"
+    },
+    "E": {
+      "item": "sib_energy_craft:stone_item_extractor"
+    },
+    "P": {
+      "item": "sib_energy_craft:iron_pipe"
+    }
+  },
+  "result": {
+    "item": "sib_energy_craft:iron_item_extractor"
+  }
+}

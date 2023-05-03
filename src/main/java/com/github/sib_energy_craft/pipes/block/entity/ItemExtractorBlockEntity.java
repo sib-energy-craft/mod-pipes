@@ -45,7 +45,7 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
     private int lastTicksToInsert;
     private int lastTicksToExtract;
 
-    public ItemExtractorBlockEntity(@NotNull BlockEntityType<ItemExtractorBlockEntity<T>> entityType,
+    public ItemExtractorBlockEntity(@NotNull BlockEntityType<? extends ItemExtractorBlockEntity<T>> entityType,
                                     @NotNull T block,
                                     @NotNull BlockPos pos,
                                     @NotNull BlockState state) {

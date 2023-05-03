@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "sib_energy_craft:item/stone_pipe"
+    "layer0": "sib_energy_craft:item/iron_pipe"
   }
 }
