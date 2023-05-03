@@ -14,9 +14,11 @@ import static com.github.sib_energy_craft.sec_utils.utils.ItemUtils.registerBloc
 public final class Items implements ModRegistrar {
     public static final Item STONE_ITEM_EXTRACTOR;
     public static final Item IRON_ITEM_EXTRACTOR;
+    public static final Item DIAMOND_ITEM_EXTRACTOR;
 
     static {
         STONE_ITEM_EXTRACTOR = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.STONE_ITEM_EXTRACTOR);
         IRON_ITEM_EXTRACTOR = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.IRON_ITEM_EXTRACTOR);
+        DIAMOND_ITEM_EXTRACTOR = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.DIAMOND_ITEM_EXTRACTOR);
     }
 }

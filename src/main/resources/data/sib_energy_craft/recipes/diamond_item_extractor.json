@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DPD",
+    " E "
+  ],
+  "key": {
+    "D": {
+      "item": "sib_energy_craft:diamond_dust"
+    },
+    "E": {
+      "item": "sib_energy_craft:iron_item_extractor"
+    },
+    "P": {
+      "item": "sib_energy_craft:diamond_pipe"
+    }
+  },
+  "result": {
+    "item": "sib_energy_craft:diamond_item_extractor"
+  }
+}

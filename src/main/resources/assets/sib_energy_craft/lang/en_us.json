@@ -5,6 +5,9 @@
   "block.sib_energy_craft.iron_item_extractor": "Iron Item Extractor",
   "container.iron_item_extractor": "Iron Item Extractor",
 
+  "block.sib_energy_craft.diamond_item_extractor": "Diamond Item Extractor",
+  "container.diamond_item_extractor": "Diamond Item Extractor",
+
   "stat.sib_energy_craft.interact_with_item_extractor": "Interactions with Item Extractor",
 
   "block.sib_energy_craft.stone_pipe": "Stone Pipe",

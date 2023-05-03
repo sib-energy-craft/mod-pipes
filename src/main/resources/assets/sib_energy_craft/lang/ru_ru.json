@@ -5,6 +5,9 @@
   "block.sib_energy_craft.iron_item_extractor": "Железный извелкатель предметов",
   "container.iron_item_extractor": "Железный извелкатель предметов",
 
+  "block.sib_energy_craft.diamond_item_extractor": "Алмазный извелкатель предметов",
+  "container.diamond_item_extractor": "Алмазный извелкатель предметов",
+
   "stat.sib_energy_craft.interact_with_item_extractor": "Использований извелкателя предметов",
 
   "block.sib_energy_craft.stone_pipe": "Каменная труба",
