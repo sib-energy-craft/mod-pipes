@@ -41,9 +41,15 @@ import java.util.stream.IntStream;
 public class ItemExtractorBlockEntity extends LootableContainerBlockEntity implements ExtendedScreenHandlerFactory {
     private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(9, ItemStack.EMPTY);
 
-    public ItemExtractorBlockEntity(@NotNull BlockPos pos,
+    private final ItemExtractorBlock block;
+    private int lastTicksToInsert;
+    private int lastTicksToExtract;
+
+    public ItemExtractorBlockEntity(@NotNull ItemExtractorBlock block,
+                                    @NotNull BlockPos pos,
                                     @NotNull BlockState state) {
         super(Entities.ITEM_EXTRACTOR, pos, state);
+        this.block = block;
     }
 
     @Override
@@ -106,11 +112,19 @@ public class ItemExtractorBlockEntity extends LootableContainerBlockEntity imple
             return;
         }
         boolean modified = false;
-        if (!blockEntity.isEmpty()) {
-            modified = insert(world, pos, state, blockEntity);
+        if(!blockEntity.isEmpty() && blockEntity.lastTicksToInsert > 0) {
+            blockEntity.lastTicksToInsert--;
         }
-        if (!blockEntity.isFull()) {
+        if (!blockEntity.isEmpty() && blockEntity.lastTicksToInsert <= 0) {
+            modified = insert(world, pos, state, blockEntity);
+            blockEntity.lastTicksToInsert = blockEntity.block.getTicksToInsert();
+        }
+        if(!blockEntity.isFull() && blockEntity.lastTicksToExtract > 0) {
+            blockEntity.lastTicksToExtract--;
+        }
+        if (!blockEntity.isFull() && blockEntity.lastTicksToExtract <= 0) {
             modified |= booleanSupplier.getAsBoolean();
+            blockEntity.lastTicksToExtract = blockEntity.block.getTicksToExtract();
         }
         if (modified) {
             markDirty(world, pos, state);

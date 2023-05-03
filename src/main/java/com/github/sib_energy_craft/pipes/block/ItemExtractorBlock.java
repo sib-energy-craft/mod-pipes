@@ -4,6 +4,7 @@ import com.github.sib_energy_craft.pipes.block.entity.ItemExtractorBlockEntity;
 import com.github.sib_energy_craft.pipes.load.Entities;
 import com.github.sib_energy_craft.pipes.load.Stats;
 import com.github.sib_energy_craft.pipes.tags.PipeTags;
+import lombok.Getter;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -58,8 +59,17 @@ public class ItemExtractorBlock extends ConnectingBlock implements BlockEntityPr
     );
     private static final Map<Direction, VoxelShape> VOXEL_SHAPE_MAP = new ConcurrentHashMap<>();
 
-    public ItemExtractorBlock(@NotNull AbstractBlock.Settings settings) {
+    @Getter
+    private final int ticksToExtract;
+    @Getter
+    private final int ticksToInsert;
+
+    public ItemExtractorBlock(@NotNull AbstractBlock.Settings settings,
+                              int ticksToExtract,
+                              int ticksToInsert) {
         super(0.25f, settings);
+        this.ticksToExtract = ticksToExtract;
+        this.ticksToInsert = ticksToInsert;
         this.setDefaultState(this.stateManager.getDefaultState()
                 .with(FACING, Direction.UP)
                 .with(NORTH, false)
@@ -182,7 +192,7 @@ public class ItemExtractorBlock extends ConnectingBlock implements BlockEntityPr
     @Override
     public BlockEntity createBlockEntity(@NotNull BlockPos pos,
                                          @NotNull BlockState state) {
-        return new ItemExtractorBlockEntity(pos, state);
+        return new ItemExtractorBlockEntity(this, pos, state);
     }
 
     @Override

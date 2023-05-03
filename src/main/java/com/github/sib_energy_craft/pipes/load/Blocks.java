@@ -24,7 +24,7 @@ public final class Blocks implements ModRegistrar {
                 .requiresTool()
                 .sounds(BlockSoundGroup.METAL);
 
-        var itemExtractor = new ItemExtractorBlock(chestSettings);
+        var itemExtractor = new ItemExtractorBlock(chestSettings, 28, 28);
         ITEM_EXTRACTOR = BlockUtils.register(Identifiers.of("item_extractor"), itemExtractor);
     }
 }

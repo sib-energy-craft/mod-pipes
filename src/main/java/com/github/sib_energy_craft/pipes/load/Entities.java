@@ -14,6 +14,7 @@ public final class Entities implements ModRegistrar {
     public static final BlockEntityType<ItemExtractorBlockEntity> ITEM_EXTRACTOR;
 
     static {
-        ITEM_EXTRACTOR = EntityUtils.register(Blocks.ITEM_EXTRACTOR, ItemExtractorBlockEntity::new);
+        ITEM_EXTRACTOR = EntityUtils.register(Blocks.ITEM_EXTRACTOR,
+                (pos, state) -> new ItemExtractorBlockEntity(Blocks.ITEM_EXTRACTOR.entity(), pos, state));
     }
 }
