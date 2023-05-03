@@ -1,0 +1,47 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "sib_energy_craft:diamond_pipe"
+    ]
+  },
+  "criteria": {
+    "has_diamond_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sib_energy_craft:diamond_dust"
+            ]
+          }
+        ]
+      }
+    },
+    "has_iron_pipe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sib_energy_craft:iron_pipe"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "sib_energy_craft:diamond_pipe"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_diamond_dust",
+      "has_iron_pipe",
+      "has_the_recipe"
+    ]
+  ]
+}

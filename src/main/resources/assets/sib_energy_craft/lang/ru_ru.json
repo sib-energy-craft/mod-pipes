@@ -9,5 +9,7 @@
 
   "block.sib_energy_craft.stone_pipe": "Каменная труба",
 
-  "block.sib_energy_craft.iron_pipe": "Железная труба"
+  "block.sib_energy_craft.iron_pipe": "Железная труба",
+
+  "block.sib_energy_craft.diamond_pipe": "Алмазная труба"
 }

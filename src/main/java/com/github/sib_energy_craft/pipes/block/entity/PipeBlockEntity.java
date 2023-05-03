@@ -36,7 +36,7 @@ public abstract class PipeBlockEntity<T extends PipeBlock>
     private final T block;
     private int lastTicksToInsert;
 
-    public PipeBlockEntity(@NotNull BlockEntityType<PipeBlockEntity<T>> entityType,
+    public PipeBlockEntity(@NotNull BlockEntityType<? extends PipeBlockEntity<T>> entityType,
                            @NotNull T block,
                            @NotNull BlockPos pos,
                            @NotNull BlockState state) {
