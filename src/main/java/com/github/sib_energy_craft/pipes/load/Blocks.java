@@ -1,7 +1,7 @@
 package com.github.sib_energy_craft.pipes.load;
 
-import com.github.sib_energy_craft.pipes.block.ItemExtractorBlock;
 import com.github.sib_energy_craft.energy_api.utils.Identifiers;
+import com.github.sib_energy_craft.pipes.block.StoneItemExtractorBlock;
 import com.github.sib_energy_craft.sec_utils.common.Identified;
 import com.github.sib_energy_craft.sec_utils.load.ModRegistrar;
 import com.github.sib_energy_craft.sec_utils.utils.BlockUtils;
@@ -15,16 +15,15 @@ import net.minecraft.sound.BlockSoundGroup;
  * @author sibmaks
  */
 public final class Blocks implements ModRegistrar {
-    public static final Identified<ItemExtractorBlock> ITEM_EXTRACTOR;
+    public static final Identified<StoneItemExtractorBlock> STONE_ITEM_EXTRACTOR;
 
     static {
         var chestSettings = AbstractBlock.Settings
-                .of(Material.METAL)
+                .of(Material.STONE)
                 .strength(2.5F)
-                .requiresTool()
-                .sounds(BlockSoundGroup.METAL);
+                .sounds(BlockSoundGroup.STONE);
 
-        var itemExtractor = new ItemExtractorBlock(chestSettings, 28, 28);
-        ITEM_EXTRACTOR = BlockUtils.register(Identifiers.of("item_extractor"), itemExtractor);
+        var stoneItemExtractor = new StoneItemExtractorBlock(chestSettings, 28, 28);
+        STONE_ITEM_EXTRACTOR = BlockUtils.register(Identifiers.of("stone_item_extractor"), stoneItemExtractor);
     }
 }

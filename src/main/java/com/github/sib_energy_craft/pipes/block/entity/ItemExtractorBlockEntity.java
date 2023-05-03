@@ -1,12 +1,12 @@
 package com.github.sib_energy_craft.pipes.block.entity;
 
 import com.github.sib_energy_craft.pipes.block.ItemExtractorBlock;
-import com.github.sib_energy_craft.pipes.load.Entities;
 import com.github.sib_energy_craft.pipes.load.Screens;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.InventoryProvider;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -20,7 +20,6 @@ import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -38,17 +37,19 @@ import java.util.stream.IntStream;
  * @since 0.0.1
  * @author sibmaks
  */
-public class ItemExtractorBlockEntity extends LootableContainerBlockEntity implements ExtendedScreenHandlerFactory {
+public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
+        extends LootableContainerBlockEntity implements ExtendedScreenHandlerFactory {
     private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(9, ItemStack.EMPTY);
 
-    private final ItemExtractorBlock block;
+    private final T block;
     private int lastTicksToInsert;
     private int lastTicksToExtract;
 
-    public ItemExtractorBlockEntity(@NotNull ItemExtractorBlock block,
+    public ItemExtractorBlockEntity(@NotNull BlockEntityType<ItemExtractorBlockEntity<T>> entityType,
+                                    @NotNull T block,
                                     @NotNull BlockPos pos,
                                     @NotNull BlockState state) {
-        super(Entities.ITEM_EXTRACTOR, pos, state);
+        super(entityType, pos, state);
         this.block = block;
     }
 
@@ -90,23 +91,17 @@ public class ItemExtractorBlockEntity extends LootableContainerBlockEntity imple
         }
     }
 
-    @NotNull
-    @Override
-    protected Text getContainerName() {
-        return Text.translatable("container.item_extractor");
-    }
-
     public static void serverTick(@NotNull World world,
                                   @NotNull BlockPos pos,
                                   @NotNull BlockState state,
-                                  @NotNull ItemExtractorBlockEntity blockEntity) {
+                                  @NotNull ItemExtractorBlockEntity<?> blockEntity) {
         insertAndExtract(world, pos, state, blockEntity, () -> extract(world, blockEntity, state));
     }
 
     private static void insertAndExtract(@NotNull World world,
                                          @NotNull BlockPos pos,
                                          @NotNull BlockState state,
-                                         @NotNull ItemExtractorBlockEntity blockEntity,
+                                         @NotNull ItemExtractorBlockEntity<?> blockEntity,
                                          @NotNull BooleanSupplier booleanSupplier) {
         if (world.isClient) {
             return;
@@ -191,7 +186,7 @@ public class ItemExtractorBlockEntity extends LootableContainerBlockEntity imple
     }
 
     public static boolean extract(@NotNull World world,
-                                  @NotNull ItemExtractorBlockEntity extractor,
+                                  @NotNull ItemExtractorBlockEntity<?> extractor,
                                   @NotNull BlockState blockState) {
         var direction = blockState.get(ItemExtractorBlock.FACING).getOpposite();
         var inventory = getInputInventory(world, extractor, direction);
@@ -205,7 +200,7 @@ public class ItemExtractorBlockEntity extends LootableContainerBlockEntity imple
         return false;
     }
 
-    private static boolean extract(@NotNull ItemExtractorBlockEntity extractor,
+    private static boolean extract(@NotNull ItemExtractorBlockEntity<?> extractor,
                                    @NotNull Inventory inventory,
                                    int slot,
                                    @NotNull Direction side) {
@@ -319,7 +314,7 @@ public class ItemExtractorBlockEntity extends LootableContainerBlockEntity imple
 
     @Nullable
     private static Inventory getInputInventory(@NotNull World world,
-                                               @NotNull ItemExtractorBlockEntity extractor,
+                                               @NotNull ItemExtractorBlockEntity<?> extractor,
                                                @NotNull Direction direction) {
         var pos = extractor.getPos();
         return getInventoryAt(world, pos.offset(direction));

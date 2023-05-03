@@ -1,7 +1,6 @@
 package com.github.sib_energy_craft.pipes.block;
 
 import com.github.sib_energy_craft.pipes.block.entity.ItemExtractorBlockEntity;
-import com.github.sib_energy_craft.pipes.load.Entities;
 import com.github.sib_energy_craft.pipes.load.Stats;
 import com.github.sib_energy_craft.pipes.tags.PipeTags;
 import lombok.Getter;
@@ -39,7 +38,7 @@ import java.util.function.Function;
  * @since 0.0.1
  * @author sibmaks
  */
-public class ItemExtractorBlock extends ConnectingBlock implements BlockEntityProvider {
+public abstract class ItemExtractorBlock extends ConnectingBlock implements BlockEntityProvider {
     public static final DirectionProperty FACING = Properties.FACING;
 
     private static final Map<BooleanProperty, Function<BlockPos, BlockPos>> PLACEMENT_MODIFIERS = Map.of(
@@ -188,22 +187,6 @@ public class ItemExtractorBlock extends ConnectingBlock implements BlockEntityPr
         return state.with(FACING_PROPERTIES.get(direction), this.connectsTo(direction, state, neighborState));
     }
 
-    @NotNull
-    @Override
-    public BlockEntity createBlockEntity(@NotNull BlockPos pos,
-                                         @NotNull BlockState state) {
-        return new ItemExtractorBlockEntity(this, pos, state);
-    }
-
-    @Override
-    @Nullable
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull World world,
-                                                                  @NotNull BlockState state,
-                                                                  @NotNull BlockEntityType<T> type) {
-        return world.isClient ? null : ItemExtractorBlock.checkType(type, Entities.ITEM_EXTRACTOR,
-                ItemExtractorBlockEntity::serverTick);
-    }
-
     @Override
     public void onPlaced(@NotNull World world,
                          @NotNull BlockPos pos,
@@ -212,7 +195,7 @@ public class ItemExtractorBlock extends ConnectingBlock implements BlockEntityPr
                          @NotNull ItemStack itemStack) {
         if (itemStack.hasCustomName()) {
             var blockEntity = world.getBlockEntity(pos);
-            if(blockEntity instanceof ItemExtractorBlockEntity itemExtractorBlockEntity) {
+            if(blockEntity instanceof ItemExtractorBlockEntity<?> itemExtractorBlockEntity) {
                 itemExtractorBlockEntity.setCustomName(itemStack.getName());
             }
         }
@@ -230,7 +213,7 @@ public class ItemExtractorBlock extends ConnectingBlock implements BlockEntityPr
             return ActionResult.SUCCESS;
         }
         var blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof ItemExtractorBlockEntity itemExtractorBlockEntity) {
+        if (blockEntity instanceof ItemExtractorBlockEntity<?> itemExtractorBlockEntity) {
             player.openHandledScreen(itemExtractorBlockEntity);
             player.incrementStat(Stats.INTERACT_ITEM_EXTRACTOR);
         }
@@ -247,7 +230,7 @@ public class ItemExtractorBlock extends ConnectingBlock implements BlockEntityPr
             return;
         }
         var blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof ItemExtractorBlockEntity itemExtractorBlockEntity) {
+        if (blockEntity instanceof ItemExtractorBlockEntity<?> itemExtractorBlockEntity) {
             ItemScatterer.spawn(world, pos, itemExtractorBlockEntity);
             world.updateComparators(pos, this);
         }

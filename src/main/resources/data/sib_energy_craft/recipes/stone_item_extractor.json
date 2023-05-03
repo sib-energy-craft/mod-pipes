@@ -1,0 +1,14 @@
+{
+  "type": "sib_energy_craft:iron_crafting_table_tool",
+  "group": "copper_cable",
+  "tool": {
+    "item": "sib_energy_craft:metal_shears"
+  },
+  "source": {
+    "item": "sib_energy_craft:copper_plate"
+  },
+  "output": {
+    "item": "sib_energy_craft:copper_cable",
+    "count": 4
+  }
+}
