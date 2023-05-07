@@ -71,22 +71,20 @@ public class ItemFilterItem extends Item {
 
     @NotNull
     public ItemFilterMode getMode(@NotNull ItemStack itemStack) {
-        var nbt = itemStack.getOrCreateNbt();
-        var mode = nbt.getString(MODE);
-        if(mode == null || mode.isBlank()) {
-            nbt.putString(MODE, ItemFilterMode.WHITELIST.name());
-            return ItemFilterMode.WHITELIST;
+        var nbt = itemStack.getNbt();
+        if(nbt == null) {
+            nbt = createDefaultNbt(itemStack);
         }
+        var mode = nbt.getString(MODE);
         return ItemFilterMode.valueOf(mode);
     }
 
     public void nextMode(@NotNull ItemStack itemStack) {
-        var nbt = itemStack.getOrCreateNbt();
-        var modeCode = nbt.getString(MODE);
-        if(modeCode == null || modeCode.isBlank()) {
-            nbt.putString(MODE, ItemFilterMode.WHITELIST.name());
-            return;
+        var nbt = itemStack.getNbt();
+        if(nbt == null) {
+            nbt = createDefaultNbt(itemStack);
         }
+        var modeCode = nbt.getString(MODE);
         var mode = ItemFilterMode.valueOf(modeCode);
         var nextMode = MODES[(mode.ordinal() + 1) % MODES.length];
         nbt.putString(MODE, nextMode.name());
