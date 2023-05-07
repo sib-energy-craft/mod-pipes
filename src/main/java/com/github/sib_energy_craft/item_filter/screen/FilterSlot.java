@@ -45,13 +45,13 @@ public class FilterSlot extends Slot {
 
     @Override
     public boolean canInsert(@NotNull ItemStack stack) {
-        return true;
+        itemFilterItem.setItem(itemStack, inventoryIndex, stack.getItem());
+        return false;
     }
 
     @Override
     @NotNull
     public ItemStack insertStack(@NotNull ItemStack stack) {
-        itemFilterItem.setItem(itemStack, inventoryIndex, stack.getItem());
         return stack;
     }
 
@@ -64,7 +64,8 @@ public class FilterSlot extends Slot {
 
     @Override
     public boolean canTakeItems(@NotNull PlayerEntity playerEntity) {
-        return true;
+        itemFilterItem.setItem(itemStack, inventoryIndex, Items.AIR);
+        return false;
     }
 
     @Override
