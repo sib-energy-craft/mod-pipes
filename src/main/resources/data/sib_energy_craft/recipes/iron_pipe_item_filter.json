@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "R#R",
+    "IPI"
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "#": {
+      "item": "sib_energy_craft:item_filter"
+    },
+    "I": {
+      "item": "sib_energy_craft:iron_plate"
+    },
+    "P": {
+      "item": "sib_energy_craft:iron_pipe"
+    }
+  },
+  "result": {
+    "item": "sib_energy_craft:iron_pipe_item_filter"
+  }
+}

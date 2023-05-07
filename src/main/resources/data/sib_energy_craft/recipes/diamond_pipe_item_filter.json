@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "R#R",
+    "DPD"
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "#": {
+      "item": "sib_energy_craft:item_filter"
+    },
+    "D": {
+      "item": "sib_energy_craft:diamond_dust"
+    },
+    "P": {
+      "item": "sib_energy_craft:diamond_pipe"
+    }
+  },
+  "result": {
+    "item": "sib_energy_craft:diamond_pipe_item_filter"
+  }
+}

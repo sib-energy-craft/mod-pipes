@@ -15,11 +15,15 @@ import static com.github.sib_energy_craft.sec_utils.utils.ItemUtils.registerBloc
  * @author sibmaks
  */
 public final class Items implements ModRegistrar {
-    public static final Item STONE_PIPE;
+    public static final Item STONE_PIPE_ITEM_FILTER;
+    public static final Item IRON_PIPE_ITEM_FILTER;
+    public static final Item DIAMOND_PIPE_ITEM_FILTER;
     public static final Item ITEM_FILTER;
 
     static {
-        STONE_PIPE = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.STONE_PIPE_ITEM_FILTER);
+        STONE_PIPE_ITEM_FILTER = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.STONE_PIPE_ITEM_FILTER);
+        IRON_PIPE_ITEM_FILTER = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.IRON_PIPE_ITEM_FILTER);
+        DIAMOND_PIPE_ITEM_FILTER = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.DIAMOND_PIPE_ITEM_FILTER);
 
         var commonSettings = new Item.Settings()
                 .rarity(Rarity.COMMON);

@@ -1,0 +1,73 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "sib_energy_craft:diamond_pipe_item_filter"
+    ]
+  },
+  "criteria": {
+    "has_redstone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:redstone"
+            ]
+          }
+        ]
+      }
+    },
+    "has_diamond_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sib_energy_craft:diamond_dust"
+            ]
+          }
+        ]
+      }
+    },
+    "has_item_filter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sib_energy_craft:item_filter"
+            ]
+          }
+        ]
+      }
+    },
+    "has_diamond_pipe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sib_energy_craft:diamond_pipe"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "sib_energy_craft:diamond_pipe_item_filter"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_redstone",
+      "has_diamond_dust",
+      "has_item_filter",
+      "has_diamond_pipe",
+      "has_the_recipe"
+    ]
+  ]
+}

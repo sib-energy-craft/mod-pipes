@@ -22,5 +22,11 @@
   "screen.sib_energy_craft.item_filter.button.mode.whitelist": "Whitelist",
 
   "block.sib_energy_craft.stone_pipe_item_filter": "Stone Pipe Item Filter",
-  "container.stone_pipe_item_filter": "Stone Pipe Item Filter"
+  "container.stone_pipe_item_filter": "Stone Pipe Item Filter",
+
+  "block.sib_energy_craft.iron_pipe_item_filter": "Iron Pipe Item Filter",
+  "container.iron_pipe_item_filter": "Iron Pipe Item Filter",
+
+  "block.sib_energy_craft.diamond_pipe_item_filter": "Diamond Pipe Item Filter",
+  "container.diamond_pipe_item_filter": "Diamond Pipe Item Filter"
 }
