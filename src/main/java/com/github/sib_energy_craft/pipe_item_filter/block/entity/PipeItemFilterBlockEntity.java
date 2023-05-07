@@ -1,15 +1,17 @@
 package com.github.sib_energy_craft.pipe_item_filter.block.entity;
 
 import com.github.sib_energy_craft.IPipeBlock;
-import com.github.sib_energy_craft.item_filter.item.ItemFilterItem;
+import com.github.sib_energy_craft.pipe_item_filter.PipeItemFilterMode;
 import com.github.sib_energy_craft.pipe_item_filter.block.PipeItemFilterBlock;
-import com.github.sib_energy_craft.pipe_item_filter.screen.PipeItemFilterItemScreenHandler;
+import com.github.sib_energy_craft.pipe_item_filter.screen.PipeItemFilterScreenHandler;
+import com.github.sib_energy_craft.sec_utils.screen.PropertyMap;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
@@ -33,9 +35,11 @@ import static com.github.sib_energy_craft.utils.PipeUtils.insert;
 public abstract class PipeItemFilterBlockEntity<T extends PipeItemFilterBlock> extends BlockEntity
         implements Inventory, IPipeBlock, NamedScreenHandlerFactory, ExtendedScreenHandlerFactory {
 
-    private SimpleInventory filterInventory;
+    private final SimpleInventory filterInventory;
     private ItemStack storage;
     private Direction consumedDirection;
+    private PipeItemFilterMode filterMode;
+    private final PropertyMap<PipeItemFilterBlockProperties> propertiesMap;
 
     private final T block;
     private int lastTicksToInsert;
@@ -46,17 +50,20 @@ public abstract class PipeItemFilterBlockEntity<T extends PipeItemFilterBlock> e
                                      @NotNull BlockState state) {
         super(entityType, pos, state);
         this.block = block;
+        this.filterMode = PipeItemFilterMode.WHITELIST;
         this.storage = ItemStack.EMPTY;
         this.consumedDirection = Direction.UP;
-        this.filterInventory = new SimpleInventory(ItemStack.EMPTY);
+        this.filterInventory = new SimpleInventory(25);
         this.filterInventory.addListener(it -> markDirty());
+        this.propertiesMap = new PropertyMap<>(PipeItemFilterBlockProperties.class);
+        this.propertiesMap.add(PipeItemFilterBlockProperties.MODE, () -> filterMode.ordinal());
     }
 
     @Override
     public void readNbt(@NotNull NbtCompound nbt) {
         super.readNbt(nbt);
-        var filterStack = ItemStack.fromNbt(nbt.getCompound("filter"));
-        filterInventory.setStack(0, filterStack);
+        var filterCompound = nbt.getCompound("filter");
+        Inventories.readNbt(filterCompound, filterInventory.stacks);
         storage = ItemStack.fromNbt(nbt.getCompound("storage"));
         consumedDirection = Direction.byName(nbt.getString("direction"));
     }
@@ -66,8 +73,7 @@ public abstract class PipeItemFilterBlockEntity<T extends PipeItemFilterBlock> e
         super.writeNbt(nbt);
 
         var filterCompound = new NbtCompound();
-        var filterStack = filterInventory.getStack(0);
-        filterStack.writeNbt(filterCompound);
+        Inventories.writeNbt(filterCompound, filterInventory.stacks);
         nbt.put("filter", filterCompound);
 
         var storageCompound = new NbtCompound();
@@ -168,26 +174,17 @@ public abstract class PipeItemFilterBlockEntity<T extends PipeItemFilterBlock> e
 
     @Override
     public boolean isValid(int slot, ItemStack stack) {
-        if (filterInventory.isEmpty()) {
-            return true;
-        }
-        var filterStack = filterInventory.getStack(0);
-        if (filterStack.getItem() instanceof ItemFilterItem filterItem) {
-            var mode = filterItem.getMode(filterStack);
-            switch (mode) {
-                case OFF -> {
-                    return true;
-                }
-                case WHITELIST -> {
-                    var stackItem = stack.getItem();
-                    var inventory = filterItem.getInventory(filterStack);
-                    return inventory.stream().anyMatch(stackItem::equals);
-                }
-                case BLACKLIST -> {
-                    var stackItem = stack.getItem();
-                    var inventory = filterItem.getInventory(filterStack);
-                    return inventory.stream().noneMatch(stackItem::equals);
-                }
+        switch (filterMode) {
+            case OFF -> {
+                return true;
+            }
+            case WHITELIST -> {
+                var stackItem = stack.getItem();
+                return filterInventory.stacks.stream().map(ItemStack::getItem).anyMatch(stackItem::equals);
+            }
+            case BLACKLIST -> {
+                var stackItem = stack.getItem();
+                return filterInventory.stacks.stream().map(ItemStack::getItem).noneMatch(stackItem::equals);
             }
         }
         return true;
@@ -198,7 +195,7 @@ public abstract class PipeItemFilterBlockEntity<T extends PipeItemFilterBlock> e
     public ScreenHandler createMenu(int syncId,
                                     @NotNull PlayerInventory playerInventory,
                                     @NotNull PlayerEntity player) {
-        return new PipeItemFilterItemScreenHandler(syncId, playerInventory, filterInventory);
+        return new PipeItemFilterScreenHandler(syncId, playerInventory, filterInventory, propertiesMap, world, pos);
     }
 
     @Override
@@ -210,5 +207,9 @@ public abstract class PipeItemFilterBlockEntity<T extends PipeItemFilterBlock> e
     public void writeScreenOpeningData(@NotNull ServerPlayerEntity player,
                                        @NotNull PacketByteBuf buf) {
         buf.writeBlockPos(pos);
+    }
+
+    public void setMode(PipeItemFilterMode mode) {
+        this.filterMode = mode;
     }
 }

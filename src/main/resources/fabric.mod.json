@@ -19,7 +19,6 @@
     "main": [
       "com.github.sib_energy_craft.pipes.load.Loader",
       "com.github.sib_energy_craft.item_extractor.load.Loader",
-      "com.github.sib_energy_craft.item_filter.load.Loader",
       "com.github.sib_energy_craft.pipe_item_filter.load.Loader"
     ]
   }

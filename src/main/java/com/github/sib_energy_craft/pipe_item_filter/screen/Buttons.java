@@ -1,4 +1,4 @@
-package com.github.sib_energy_craft.item_filter.screen;
+package com.github.sib_energy_craft.pipe_item_filter.screen;
 
 /**
  * @since 0.0.1

@@ -1,9 +1,12 @@
 package com.github.sib_energy_craft.pipe_item_filter.load;
 
+import com.github.sib_energy_craft.energy_api.utils.Identifiers;
 import com.github.sib_energy_craft.sec_utils.load.ModRegistrar;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
+import net.minecraft.util.Rarity;
 
+import static com.github.sib_energy_craft.sec_utils.utils.ItemUtils.register;
 import static com.github.sib_energy_craft.sec_utils.utils.ItemUtils.registerBlockItem;
 
 
@@ -13,8 +16,15 @@ import static com.github.sib_energy_craft.sec_utils.utils.ItemUtils.registerBloc
  */
 public final class Items implements ModRegistrar {
     public static final Item STONE_PIPE;
+    public static final Item ITEM_FILTER;
 
     static {
         STONE_PIPE = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.STONE_PIPE_ITEM_FILTER);
+
+        var commonSettings = new Item.Settings()
+                .rarity(Rarity.COMMON);
+
+        var itemFilter = new Item(commonSettings);
+        ITEM_FILTER = register(ItemGroups.FUNCTIONAL, Identifiers.of("item_filter"), itemFilter);
     }
 }

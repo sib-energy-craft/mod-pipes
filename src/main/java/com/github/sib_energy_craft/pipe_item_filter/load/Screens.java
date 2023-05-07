@@ -1,8 +1,8 @@
 package com.github.sib_energy_craft.pipe_item_filter.load;
 
 import com.github.sib_energy_craft.energy_api.utils.Identifiers;
-import com.github.sib_energy_craft.pipe_item_filter.screen.PipeItemFilterItemScreen;
-import com.github.sib_energy_craft.pipe_item_filter.screen.PipeItemFilterItemScreenHandler;
+import com.github.sib_energy_craft.pipe_item_filter.screen.PipeItemFilterScreen;
+import com.github.sib_energy_craft.pipe_item_filter.screen.PipeItemFilterScreenHandler;
 import com.github.sib_energy_craft.sec_utils.load.ModRegistrar;
 import net.minecraft.screen.ScreenHandlerType;
 
@@ -13,10 +13,10 @@ import static com.github.sib_energy_craft.sec_utils.utils.ScreenUtils.register;
  * @author sibmaks
  */
 public final class Screens implements ModRegistrar {
-    public static ScreenHandlerType<PipeItemFilterItemScreenHandler> PIPE_ITEM_FILTER;
+    public static ScreenHandlerType<PipeItemFilterScreenHandler> PIPE_ITEM_FILTER;
 
     static {
         PIPE_ITEM_FILTER = register(Identifiers.of("pipe_item_filter"),
-                PipeItemFilterItemScreenHandler::new, PipeItemFilterItemScreen::new);
+                PipeItemFilterScreenHandler::new, PipeItemFilterScreen::new);
     }
 }

@@ -1,4 +1,4 @@
-package com.github.sib_energy_craft.item_filter.screen;
+package com.github.sib_energy_craft.pipe_item_filter.screen;
 
 import com.github.sib_energy_craft.energy_api.utils.Identifiers;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -16,10 +16,10 @@ import java.awt.*;
  * @since 0.0.1
  * @author sibmaks
  */
-public class ItemFilterItemScreen extends HandledScreen<ItemFilterItemScreenHandler> {
-    private static final Identifier TEXTURE = Identifiers.of("textures/gui/container/item_filter.png");
+public class PipeItemFilterScreen extends HandledScreen<PipeItemFilterScreenHandler> {
+    private static final Identifier TEXTURE = Identifiers.of("textures/gui/container/pipe_item_filter.png");
 
-    public ItemFilterItemScreen(@NotNull ItemFilterItemScreenHandler handler,
+    public PipeItemFilterScreen(@NotNull PipeItemFilterScreenHandler handler,
                                 @NotNull PlayerInventory inventory,
                                 @NotNull Text title) {
         super(handler, inventory, title);

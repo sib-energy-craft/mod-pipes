@@ -1,11 +1,9 @@
-package com.github.sib_energy_craft.item_filter.screen;
+package com.github.sib_energy_craft.pipe_item_filter.screen;
 
-import com.github.sib_energy_craft.item_filter.item.ItemFilterItem;
 import lombok.Getter;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.screen.slot.Slot;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,82 +14,82 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 public class FilterSlot extends Slot {
     private final int inventoryIndex;
-    public final ItemFilterItem itemFilterItem;
-    public final ItemStack itemStack;
 
     public FilterSlot(@NotNull Inventory inventory,
-                      @NotNull ItemFilterItem itemFilterItem,
-                      @NotNull ItemStack itemStack,
                       int inventoryIndex,
                       int index,
                       int x,
                       int y) {
         super(inventory, index, x, y);
         this.inventoryIndex = inventoryIndex;
-        this.itemFilterItem = itemFilterItem;
-        this.itemStack = itemStack;
     }
 
     @NotNull
     public ItemStack getStack() {
-        var inventory = itemFilterItem.getInventory(itemStack);
-        var item = inventory.get(inventoryIndex);
-        return new ItemStack(item, 1);
+        return this.inventory.getStack(inventoryIndex);
     }
 
+    @Override
     public void setStack(@NotNull ItemStack cursorStack) {
-        itemFilterItem.setItem(itemStack, inventoryIndex, cursorStack.getItem());
+        var stackToInsert = new ItemStack(cursorStack.getItem(), 1);
+        this.inventory.setStack(inventoryIndex, stackToInsert);
     }
 
     @Override
     public boolean canInsert(@NotNull ItemStack stack) {
-        itemFilterItem.setItem(itemStack, inventoryIndex, stack.getItem());
+        var stackToInsert = new ItemStack(stack.getItem(), 1);
+        this.inventory.setStack(inventoryIndex, stackToInsert);
         return false;
     }
 
     @Override
     @NotNull
     public ItemStack insertStack(@NotNull ItemStack stack) {
+        var stackToInsert = new ItemStack(stack.getItem(), 1);
+        this.inventory.setStack(inventoryIndex, stackToInsert);
         return stack;
     }
 
     @Override
     @NotNull
     public ItemStack insertStack(@NotNull ItemStack stack, int count) {
-        itemFilterItem.setItem(itemStack, inventoryIndex, stack.getItem());
+        var stackToInsert = new ItemStack(stack.getItem(), 1);
+        this.inventory.setStack(inventoryIndex, stackToInsert);
         return stack;
     }
 
     @Override
     public boolean canTakeItems(@NotNull PlayerEntity playerEntity) {
-        itemFilterItem.setItem(itemStack, inventoryIndex, Items.AIR);
+        this.inventory.setStack(inventoryIndex, ItemStack.EMPTY);
         return false;
     }
 
     @Override
     protected void onTake(int amount) {
-        itemFilterItem.setItem(itemStack, inventoryIndex, Items.AIR);
+        this.inventory.setStack(inventoryIndex, ItemStack.EMPTY);
     }
 
     @Override
     public void onTakeItem(@NotNull PlayerEntity player, @NotNull ItemStack stack) {
-        itemFilterItem.setItem(itemStack, inventoryIndex, Items.AIR);
+        this.inventory.setStack(inventoryIndex, ItemStack.EMPTY);
     }
 
     @Override
     @NotNull
     public ItemStack takeStack(int amount) {
-        itemFilterItem.setItem(itemStack, inventoryIndex, Items.AIR);
+        this.inventory.setStack(inventoryIndex, ItemStack.EMPTY);
         return ItemStack.EMPTY;
     }
 
     @Override
     public boolean canTakePartial(@NotNull PlayerEntity player) {
+        this.inventory.setStack(inventoryIndex, ItemStack.EMPTY);
         return false;
     }
 
     @Override
     public void setStackNoCallbacks(@NotNull ItemStack stack) {
-        itemFilterItem.setItem(itemStack, inventoryIndex, stack.getItem());
+        var stackToInsert = new ItemStack(stack.getItem(), 1);
+        this.inventory.setStack(inventoryIndex, stackToInsert);
     }
 }

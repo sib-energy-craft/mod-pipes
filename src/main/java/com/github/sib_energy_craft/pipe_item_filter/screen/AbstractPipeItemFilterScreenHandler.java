@@ -1,15 +1,14 @@
-package com.github.sib_energy_craft.item_filter.screen;
+package com.github.sib_energy_craft.pipe_item_filter.screen;
 
-import com.github.sib_energy_craft.item_filter.ItemFilterMode;
-import com.github.sib_energy_craft.item_filter.item.ItemFilterItem;
-import lombok.Getter;
+import com.github.sib_energy_craft.pipe_item_filter.PipeItemFilterMode;
+import com.github.sib_energy_craft.pipe_item_filter.block.entity.PipeItemFilterBlockEntity;
+import com.github.sib_energy_craft.pipe_item_filter.block.entity.PipeItemFilterBlockProperties;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.screen.*;
 import net.minecraft.screen.slot.Slot;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,28 +16,29 @@ import org.jetbrains.annotations.NotNull;
  * @since 0.0.1
  * @author sibmaks
  */
-public abstract class AbstractItemFilterItemScreenHandler extends ScreenHandler {
-    private static final Inventory EMPTY_INVENTORY = new SimpleInventory(0);
+public abstract class AbstractPipeItemFilterScreenHandler extends ScreenHandler {
+    private static final PipeItemFilterMode[] MODES = PipeItemFilterMode.values();
 
-    @Getter
-    private final ItemStack itemStack;
-    private final ItemFilterItem filterItem;
-    @Getter
-    private final Inventory playerInventory;
+    private final PropertyDelegate propertyDelegate;
+    private final ScreenHandlerContext context;
 
-    protected AbstractItemFilterItemScreenHandler(@NotNull ScreenHandlerType<?> type,
+    protected AbstractPipeItemFilterScreenHandler(@NotNull ScreenHandlerType<?> type,
+                                              int syncId,
+                                              @NotNull PlayerInventory playerInventory) {
+        this(type, syncId, playerInventory, new SimpleInventory(25),
+                new ArrayPropertyDelegate(1),
+                ScreenHandlerContext.EMPTY);
+    }
+
+    protected AbstractPipeItemFilterScreenHandler(@NotNull ScreenHandlerType<?> type,
                                                   int syncId,
                                                   @NotNull PlayerInventory playerInventory,
-                                                  @NotNull ItemStack itemStack) {
+                                                  @NotNull Inventory filterInventory,
+                                                  @NotNull PropertyDelegate propertyDelegate,
+                                                  @NotNull ScreenHandlerContext context) {
         super(type, syncId);
-        this.itemStack = itemStack;
-        this.playerInventory = playerInventory;
-        var item = itemStack.getItem();
-        if(!(item instanceof ItemFilterItem itemFilterItem)) {
-            throw new IllegalArgumentException("Item stack not for item filter");
-        }
-        this.filterItem = itemFilterItem;
-
+        this.propertyDelegate = propertyDelegate;
+        this.context = context;
         int slots = 0;
         for (int i = 0; i < 9; ++i) {
             this.addSlot(new Slot(playerInventory, slots++, 8 + i * 18, 215));
@@ -49,12 +49,11 @@ public abstract class AbstractItemFilterItemScreenHandler extends ScreenHandler 
             }
         }
 
-        var filterInventory = itemFilterItem.getInventory(itemStack);
         for (int i = 0; i < filterInventory.size(); i++) {
-            var filterSlot = new FilterSlot(EMPTY_INVENTORY, itemFilterItem, itemStack, i,
-                    slots++, 44 + (i % 5) * 18, 26 + (i / 5) * 18);
+            var filterSlot = new FilterSlot(filterInventory, i, slots++, 44 + (i % 5) * 18, 26 + (i / 5) * 18);
             this.addSlot(filterSlot);
         }
+        addProperties(propertyDelegate);
     }
 
     @NotNull
@@ -97,16 +96,24 @@ public abstract class AbstractItemFilterItemScreenHandler extends ScreenHandler 
 
     public boolean onButtonClick(@NotNull Buttons button) {
         if(button == Buttons.CHANGE_MODE) {
-            this.updateToClient();
-            filterItem.nextMode(itemStack);
+            var mode = getMode();
+            var nextMode = MODES[(mode.ordinal() + 1) % MODES.length];
+            super.setProperty(PipeItemFilterBlockProperties.MODE.ordinal(), nextMode.ordinal());
+            this.context.run((world, pos) -> {
+                var blockEntity = world.getBlockEntity(pos);
+                if(blockEntity instanceof PipeItemFilterBlockEntity<?> filterBlockEntity) {
+                    filterBlockEntity.setMode(nextMode);
+                }
+            });
             return true;
         }
         return false;
     }
 
     @NotNull
-    public ItemFilterMode getMode() {
-        return filterItem.getMode(itemStack);
+    public PipeItemFilterMode getMode() {
+        int modeOrdinal = this.propertyDelegate.get(PipeItemFilterBlockProperties.MODE.ordinal());
+        return MODES[modeOrdinal];
     }
 
 }
