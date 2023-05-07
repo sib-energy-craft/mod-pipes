@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "R#R",
+    "SPS"
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "#": {
+      "item": "sib_energy_craft:item_filter"
+    },
+    "S": {
+      "item": "minecraft:stone"
+    },
+    "P": {
+      "item": "sib_energy_craft:stone_pipe"
+    }
+  },
+  "result": {
+    "item": "sib_energy_craft:stone_pipe_item_filter"
+  }
+}
