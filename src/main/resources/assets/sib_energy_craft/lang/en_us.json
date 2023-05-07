@@ -19,5 +19,8 @@
   "item.sib_energy_craft.item_filter": "Item Filter",
   "screen.sib_energy_craft.item_filter.button.mode.off": "Off",
   "screen.sib_energy_craft.item_filter.button.mode.blacklist": "Blacklist",
-  "screen.sib_energy_craft.item_filter.button.mode.whitelist": "Whitelist"
+  "screen.sib_energy_craft.item_filter.button.mode.whitelist": "Whitelist",
+
+  "block.sib_energy_craft.stone_pipe_item_filter": "Stone Pipe Item Filter",
+  "container.stone_pipe_item_filter": "Stone Pipe Item Filter"
 }

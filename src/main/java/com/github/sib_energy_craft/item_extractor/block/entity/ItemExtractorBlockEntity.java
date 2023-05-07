@@ -4,10 +4,7 @@ import com.github.sib_energy_craft.item_extractor.block.ItemExtractorBlock;
 import com.github.sib_energy_craft.item_extractor.load.Screens;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ChestBlock;
-import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
@@ -16,13 +13,11 @@ import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +27,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.stream.IntStream;
+
+import static com.github.sib_energy_craft.utils.PipeUtils.getInventoryAt;
+import static com.github.sib_energy_craft.utils.PipeUtils.transfer;
 
 /**
  * @since 0.0.1
@@ -207,7 +205,7 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
         var itemStack = inventory.getStack(slot);
         if (!itemStack.isEmpty() && canExtract(extractor, inventory, itemStack, slot, side)) {
             var copyStack = itemStack.copy();
-            var notTransferred = transfer(extractor, inventory.removeStack(slot, 1), null);
+            var notTransferred = transfer(extractor, inventory.removeStack(slot, 1), side);
             if (notTransferred.isEmpty()) {
                 inventory.markDirty();
                 return true;
@@ -215,47 +213,6 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
             inventory.setStack(slot, copyStack);
         }
         return false;
-    }
-
-    /*
-     * Enabled aggressive block sorting
-     * Lifted jumps to return sites
-     */
-    public static ItemStack transfer(@NotNull Inventory to,
-                                     @NotNull ItemStack stack,
-                                     @Nullable Direction side) {
-        if (to instanceof SidedInventory sidedInventory) {
-            if (side != null) {
-                int[] is = sidedInventory.getAvailableSlots(side);
-                int i = 0;
-                while (i < is.length) {
-                    if (stack.isEmpty()) return stack;
-                    stack = transfer(to, stack, is[i], side);
-                    ++i;
-                }
-                return stack;
-            }
-        }
-        int j = to.size();
-        int i = 0;
-        while (i < j) {
-            if (stack.isEmpty()) {
-                return stack;
-            }
-            stack = transfer(to, stack, i, side);
-            ++i;
-        }
-        return stack;
-    }
-
-    private static boolean canInsert(@NotNull Inventory inventory,
-                                     @NotNull ItemStack stack,
-                                     int slot,
-                                     @Nullable Direction side) {
-        if (!inventory.isValid(slot, stack)) {
-            return false;
-        }
-        return !(inventory instanceof SidedInventory sidedInventory) || sidedInventory.canInsert(slot, stack, side);
     }
 
     private static boolean canExtract(@NotNull Inventory extractorInventory, 
@@ -267,31 +224,6 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
             return false;
         }
         return !(fromInventory instanceof SidedInventory sidedInventory) || sidedInventory.canExtract(slot, stack, facing);
-    }
-
-    @NotNull
-    private static ItemStack transfer(@NotNull Inventory to,
-                                      @NotNull ItemStack stack,
-                                      int slot,
-                                      @Nullable Direction side) {
-        var itemStack = to.getStack(slot);
-        if (canInsert(to, stack, slot, side)) {
-            boolean transferred = false;
-            if (itemStack.isEmpty()) {
-                to.setStack(slot, stack);
-                stack = ItemStack.EMPTY;
-                transferred = true;
-            } else if (canMergeItems(itemStack, stack)) {
-                int i = stack.getMaxCount() - itemStack.getCount();
-                int j = Math.min(stack.getCount(), i);
-                stack.decrement(j);
-                itemStack.increment(j);
-            }
-            if (transferred) {
-                to.markDirty();
-            }
-        }
-        return stack;
     }
 
     @NotNull
@@ -318,56 +250,6 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
                                                @NotNull Direction direction) {
         var pos = extractor.getPos();
         return getInventoryAt(world, pos.offset(direction));
-    }
-
-    @Nullable
-    public static Inventory getInventoryAt(@NotNull World world,
-                                           @NotNull BlockPos pos) {
-        return getInventoryAt(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-    }
-
-    @Nullable
-    private static Inventory getInventoryAt(@NotNull World world,
-                                            double x,
-                                            double y,
-                                            double z) {
-        Inventory inventory = null;
-        var blockPos = BlockPos.ofFloored(x, y, z);
-        var blockState = world.getBlockState(blockPos);
-        var block = blockState.getBlock();
-        if (block instanceof InventoryProvider inventoryProvider) {
-            inventory = inventoryProvider.getInventory(blockState, world, blockPos);
-        } else if (blockState.hasBlockEntity()) {
-            var blockEntity = world.getBlockEntity(blockPos);
-            if(blockEntity instanceof Inventory blockInventory) {
-                inventory = blockInventory;
-                if(inventory instanceof ChestBlockEntity && block instanceof ChestBlock chestBlock) {
-                    inventory = ChestBlock.getInventory(chestBlock, blockState, world, blockPos, true);
-                }
-            }
-        }
-        if(inventory == null) {
-            var box = new Box(x - 0.5, y - 0.5, z - 0.5, x + 0.5, y + 0.5, z + 0.5);
-            var list = world.getOtherEntities(null, box, EntityPredicates.VALID_INVENTORIES);
-            if(!list.isEmpty()) {
-                inventory = (Inventory) list.get(world.random.nextInt(list.size()));
-            }
-        }
-        return inventory;
-    }
-
-    private static boolean canMergeItems(@NotNull ItemStack first,
-                                         @NotNull ItemStack second) {
-        if (!first.isOf(second.getItem())) {
-            return false;
-        }
-        if (first.getDamage() != second.getDamage()) {
-            return false;
-        }
-        if (first.getCount() > first.getMaxCount()) {
-            return false;
-        }
-        return ItemStack.areNbtEqual(first, second);
     }
 
     @NotNull

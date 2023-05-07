@@ -7,7 +7,7 @@ import net.minecraft.network.PacketByteBuf;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @since 0.0.4
+ * @since 0.0.1
  * @author sibmaks
  */
 public class ItemFilterItemScreenHandler extends AbstractItemFilterItemScreenHandler {

@@ -1,18 +1,28 @@
-package com.github.sib_energy_craft.pipes.block.entity;
+package com.github.sib_energy_craft.pipe_item_filter.block.entity;
 
 import com.github.sib_energy_craft.IPipeBlock;
-import com.github.sib_energy_craft.pipes.block.PipeBlock;
+import com.github.sib_energy_craft.item_filter.item.ItemFilterItem;
+import com.github.sib_energy_craft.pipe_item_filter.block.PipeItemFilterBlock;
+import com.github.sib_energy_craft.pipe_item_filter.screen.PipeItemFilterItemScreenHandler;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static com.github.sib_energy_craft.utils.PipeUtils.insert;
 
@@ -20,26 +30,33 @@ import static com.github.sib_energy_craft.utils.PipeUtils.insert;
  * @since 0.0.1
  * @author sibmaks
  */
-public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity implements Inventory, IPipeBlock {
+public abstract class PipeItemFilterBlockEntity<T extends PipeItemFilterBlock> extends BlockEntity
+        implements Inventory, IPipeBlock, NamedScreenHandlerFactory, ExtendedScreenHandlerFactory {
+
+    private SimpleInventory filterInventory;
     private ItemStack storage;
     private Direction consumedDirection;
 
     private final T block;
     private int lastTicksToInsert;
 
-    public PipeBlockEntity(@NotNull BlockEntityType<? extends PipeBlockEntity<T>> entityType,
-                           @NotNull T block,
-                           @NotNull BlockPos pos,
-                           @NotNull BlockState state) {
+    public PipeItemFilterBlockEntity(@NotNull BlockEntityType<? extends PipeItemFilterBlockEntity<T>> entityType,
+                                     @NotNull T block,
+                                     @NotNull BlockPos pos,
+                                     @NotNull BlockState state) {
         super(entityType, pos, state);
         this.block = block;
         this.storage = ItemStack.EMPTY;
         this.consumedDirection = Direction.UP;
+        this.filterInventory = new SimpleInventory(ItemStack.EMPTY);
+        this.filterInventory.addListener(it -> markDirty());
     }
 
     @Override
     public void readNbt(@NotNull NbtCompound nbt) {
         super.readNbt(nbt);
+        var filterStack = ItemStack.fromNbt(nbt.getCompound("filter"));
+        filterInventory.setStack(0, filterStack);
         storage = ItemStack.fromNbt(nbt.getCompound("storage"));
         consumedDirection = Direction.byName(nbt.getString("direction"));
     }
@@ -47,6 +64,11 @@ public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity i
     @Override
     protected void writeNbt(@NotNull NbtCompound nbt) {
         super.writeNbt(nbt);
+
+        var filterCompound = new NbtCompound();
+        var filterStack = filterInventory.getStack(0);
+        filterStack.writeNbt(filterCompound);
+        nbt.put("filter", filterCompound);
 
         var storageCompound = new NbtCompound();
         storage.writeNbt(storageCompound);
@@ -82,14 +104,14 @@ public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity i
     public static void serverTick(@NotNull World world,
                                   @NotNull BlockPos pos,
                                   @NotNull BlockState state,
-                                  @NotNull PipeBlockEntity<?> blockEntity) {
+                                  @NotNull PipeItemFilterBlockEntity<?> blockEntity) {
         insertAndExtract(world, pos, state, blockEntity);
     }
 
     private static void insertAndExtract(@NotNull World world,
                                          @NotNull BlockPos pos,
                                          @NotNull BlockState state,
-                                         @NotNull PipeBlockEntity<?> blockEntity) {
+                                         @NotNull PipeItemFilterBlockEntity<?> blockEntity) {
         if (world.isClient) {
             return;
         }
@@ -113,7 +135,7 @@ public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity i
 
     @Override
     public ItemStack getStack(int slot) {
-        if (slot != 0) {
+        if(slot != 0) {
             return ItemStack.EMPTY;
         }
         return storage;
@@ -140,12 +162,53 @@ public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity i
     }
 
     @Override
-    public boolean canPlayerUse(@NotNull PlayerEntity player) {
-        return false;
+    public void clear() {
+        this.storage = ItemStack.EMPTY;
     }
 
     @Override
-    public void clear() {
-        this.storage = ItemStack.EMPTY;
+    public boolean isValid(int slot, ItemStack stack) {
+        if (filterInventory.isEmpty()) {
+            return true;
+        }
+        var filterStack = filterInventory.getStack(0);
+        if (filterStack.getItem() instanceof ItemFilterItem filterItem) {
+            var mode = filterItem.getMode(filterStack);
+            switch (mode) {
+                case OFF -> {
+                    return true;
+                }
+                case WHITELIST -> {
+                    var stackItem = stack.getItem();
+                    var inventory = filterItem.getInventory(filterStack);
+                    return inventory.stream().anyMatch(stackItem::equals);
+                }
+                case BLACKLIST -> {
+                    var stackItem = stack.getItem();
+                    var inventory = filterItem.getInventory(filterStack);
+                    return inventory.stream().noneMatch(stackItem::equals);
+                }
+            }
+        }
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public ScreenHandler createMenu(int syncId,
+                                    @NotNull PlayerInventory playerInventory,
+                                    @NotNull PlayerEntity player) {
+        return new PipeItemFilterItemScreenHandler(syncId, playerInventory, filterInventory);
+    }
+
+    @Override
+    public boolean canPlayerUse(@NotNull PlayerEntity player) {
+        return true;
+    }
+
+    @Override
+    public void writeScreenOpeningData(@NotNull ServerPlayerEntity player,
+                                       @NotNull PacketByteBuf buf) {
+        buf.writeBlockPos(pos);
     }
 }

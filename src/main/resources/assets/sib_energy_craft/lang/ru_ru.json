@@ -19,5 +19,8 @@
   "item.sib_energy_craft.item_filter": "Фильтр предметов",
   "screen.sib_energy_craft.item_filter.button.mode.off": "Выключен",
   "screen.sib_energy_craft.item_filter.button.mode.blacklist": "Кроме",
-  "screen.sib_energy_craft.item_filter.button.mode.whitelist": "Только"
+  "screen.sib_energy_craft.item_filter.button.mode.whitelist": "Только",
+
+  "block.sib_energy_craft.stone_pipe_item_filter": "Фильтрующая каменная труба",
+  "container.stone_pipe_item_filter": "Фильтрующая каменная труба"
 }

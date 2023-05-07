@@ -1,0 +1,61 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "sib_energy_craft:block/stone_pipe_item_filter"
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/stone_pipe"
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/stone_pipe",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/stone_pipe_alt"
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/stone_pipe_alt",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/stone_pipe_alt",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/stone_pipe",
+        "x": 90
+      }
+    }
+  ]
+}

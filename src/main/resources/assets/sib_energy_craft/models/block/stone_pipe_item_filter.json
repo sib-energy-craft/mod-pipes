@@ -1,0 +1,6 @@
+{
+  "parent": "sib_energy_craft:block/template_pipe_item_filter",
+  "textures": {
+    "side": "sib_energy_craft:block/stone_pipe"
+  }
+}

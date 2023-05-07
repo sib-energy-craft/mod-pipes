@@ -5,6 +5,7 @@
     "minecraft:barrel",
     "sib_energy_craft:stone_pipe",
     "sib_energy_craft:iron_pipe",
-    "sib_energy_craft:diamond_pipe"
+    "sib_energy_craft:diamond_pipe",
+    "sib_energy_craft:stone_pipe_item_filter"
   ]
 }
