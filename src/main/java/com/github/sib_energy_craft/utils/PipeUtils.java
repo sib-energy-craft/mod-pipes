@@ -1,17 +1,14 @@
 package com.github.sib_energy_craft.utils;
 
-import com.github.sib_energy_craft.IPipeBlock;
+import com.github.sib_energy_craft.pipes.api.ItemConsumer;
+import com.github.sib_energy_craft.pipes.api.ItemSupplier;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import net.minecraft.block.ChestBlock;
-import net.minecraft.block.InventoryProvider;
-import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +16,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.IntStream;
 
 /**
  * @since 0.0.1
@@ -29,48 +25,28 @@ import java.util.stream.IntStream;
 public final class PipeUtils {
 
     public static boolean insert(@NotNull World world,
-                                  @NotNull BlockPos pos,
-                                  @NotNull Inventory inventory,
-                                  @NotNull Direction consumedDirection) {
-        var outputInventories = getOutputInventory(world, pos, consumedDirection);
-        for (var entry : outputInventories.entrySet()) {
+                                 @NotNull BlockPos pos,
+                                 @NotNull ItemSupplier itemSupplier,
+                                 @NotNull Direction consumedDirection) {
+        var itemConsumers = getItemConsumers(world, pos, consumedDirection);
+        for (var entry : itemConsumers.entrySet()) {
             var direction = entry.getKey();
-            var outputInventory = entry.getValue();
-            if (isInventoryFull(outputInventory, direction)) {
-                continue;
-            }
-            for (int i = 0; i < inventory.size(); ++i) {
-                var inventoryStack = inventory.getStack(i);
-                if (inventoryStack.isEmpty()) {
-                    continue;
+            var itemConsumer = entry.getValue();
+            var stacksToConsume = itemSupplier.canSupply(direction);
+            for (var stackToConsume : stacksToConsume) {
+                if(itemConsumer.canConsume(stackToConsume, direction)) {
+                    var stackToTransfer = new ItemStack(stackToConsume.getItem(), 1);
+                    if(itemSupplier.supply(stackToTransfer, direction)) {
+                        var notTransferred = itemConsumer.consume(stackToTransfer, direction);
+                        if (notTransferred.isEmpty()) {
+                            return true;
+                        }
+                        itemSupplier.returnStack(stackToConsume, direction);
+                    }
                 }
-                var itemStack = inventoryStack.copy();
-                var notTransferred = transfer(outputInventory, inventory.removeStack(i, 1), direction);
-                if (notTransferred.isEmpty()) {
-                    outputInventory.markDirty();
-                    return true;
-                }
-                inventory.setStack(i, itemStack);
             }
         }
         return false;
-    }
-
-    @NotNull
-    private static IntStream getAvailableSlots(@NotNull Inventory inventory,
-                                               @NotNull Direction side) {
-        if (inventory instanceof SidedInventory sidedInventory) {
-            return IntStream.of(sidedInventory.getAvailableSlots(side));
-        }
-        return IntStream.range(0, inventory.size());
-    }
-
-    private static boolean isInventoryFull(@NotNull Inventory inventory,
-                                           @NotNull Direction direction) {
-        return getAvailableSlots(inventory, direction).allMatch(slot -> {
-            var itemStack = inventory.getStack(slot);
-            return itemStack.getCount() >= itemStack.getMaxCount();
-        });
     }
 
     /*
@@ -122,8 +98,8 @@ public final class PipeUtils {
         if (canInsert(to, stack, slot, side)) {
             boolean transferred = false;
             if (itemStack.isEmpty()) {
-                if(to instanceof IPipeBlock iPipeBlock) {
-                    iPipeBlock.setStack(side, stack);
+                if(to instanceof ItemConsumer itemConsumer) {
+                    itemConsumer.consume(stack, side);
                 } else {
                     to.setStack(slot, stack);
                 }
@@ -143,56 +119,64 @@ public final class PipeUtils {
     }
 
     @NotNull
-    private static Map<Direction, Inventory> getOutputInventory(@NotNull World world,
-                                                                @NotNull BlockPos pos,
-                                                                @NotNull Direction consumedDirection) {
-        var inventories = new HashMap<Direction, Inventory>();
+    private static Map<Direction, ItemConsumer> getItemConsumers(@NotNull World world,
+                                                                 @NotNull BlockPos pos,
+                                                                 @NotNull Direction consumedDirection) {
+        var inventories = new HashMap<Direction, ItemConsumer>();
         for (var outputDirection : Direction.values()) {
             if(outputDirection == consumedDirection) {
                 continue;
             }
-            var inventory = getInventoryAt(world, pos.offset(outputDirection));
-            if(inventory != null) {
-                inventories.put(outputDirection, inventory);
+            var itemConsumer = getItemConsumer(world, pos.offset(outputDirection));
+            if(itemConsumer != null) {
+                inventories.put(outputDirection, itemConsumer);
             }
         }
         return inventories;
     }
 
     @Nullable
-    public static Inventory getInventoryAt(@NotNull World world,
-                                           @NotNull BlockPos pos) {
-        return getInventoryAt(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+    public static ItemConsumer getItemConsumer(@NotNull World world,
+                                               @NotNull BlockPos pos) {
+        return getItemConsumer(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
     }
 
     @Nullable
-    private static Inventory getInventoryAt(@NotNull World world,
+    private static ItemConsumer getItemConsumer(@NotNull World world,
                                             double x,
                                             double y,
                                             double z) {
-        Inventory inventory = null;
         var blockPos = BlockPos.ofFloored(x, y, z);
         var blockState = world.getBlockState(blockPos);
-        var block = blockState.getBlock();
-        if (block instanceof InventoryProvider inventoryProvider) {
-            inventory = inventoryProvider.getInventory(blockState, world, blockPos);
-        } else if (blockState.hasBlockEntity()) {
+        if (blockState.hasBlockEntity()) {
             var blockEntity = world.getBlockEntity(blockPos);
-            if(blockEntity instanceof Inventory blockInventory) {
-                inventory = blockInventory;
-                if(inventory instanceof ChestBlockEntity && block instanceof ChestBlock chestBlock) {
-                    inventory = ChestBlock.getInventory(chestBlock, blockState, world, blockPos, true);
-                }
+            if(blockEntity instanceof ItemConsumer itemConsumer) {
+                return itemConsumer;
             }
         }
-        if(inventory == null) {
-            var box = new Box(x - 0.5, y - 0.5, z - 0.5, x + 0.5, y + 0.5, z + 0.5);
-            var list = world.getOtherEntities(null, box, EntityPredicates.VALID_INVENTORIES);
-            if(!list.isEmpty()) {
-                inventory = (Inventory) list.get(world.random.nextInt(list.size()));
+        return null;
+    }
+
+    @Nullable
+    public static ItemSupplier getItemSupplier(@NotNull World world,
+                                               @NotNull BlockPos pos) {
+        return getItemSupplier(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+    }
+
+    @Nullable
+    private static ItemSupplier getItemSupplier(@NotNull World world,
+                                            double x,
+                                            double y,
+                                            double z) {
+        var blockPos = BlockPos.ofFloored(x, y, z);
+        var blockState = world.getBlockState(blockPos);
+        if (blockState.hasBlockEntity()) {
+            var blockEntity = world.getBlockEntity(blockPos);
+            if(blockEntity instanceof ItemSupplier itemSupplier) {
+                return itemSupplier;
             }
         }
-        return inventory;
+        return null;
     }
 
     public static boolean canMergeItems(@NotNull ItemStack first,
@@ -207,5 +191,76 @@ public final class PipeUtils {
             return false;
         }
         return ItemStack.areNbtEqual(first, second);
+    }
+
+    public static boolean hasSpaceFor(@NotNull Inventory inventory, @NotNull ItemStack itemStack) {
+        for(int i = 0; i < inventory.size(); i++) {
+            var inventoryStack = inventory.getStack(i);
+            if(inventoryStack.isEmpty() || inventoryStack.isItemEqual(itemStack) &&
+                    inventoryStack.getCount() < inventoryStack.getMaxCount()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public static @NotNull ItemStack consume(@NotNull Inventory inventory, @NotNull ItemStack itemStack) {
+        ItemStack stackToInsert = null;
+        Integer slotToInsert = null;
+        for(int i = 0; i < inventory.size(); i++) {
+            var inventoryStack = inventory.getStack(i);
+            if(inventoryStack.isItemEqual(itemStack) && inventoryStack.getCount() < inventoryStack.getMaxCount()) {
+                stackToInsert = inventoryStack;
+                break;
+            }
+            if(slotToInsert == null && inventoryStack.isEmpty()) {
+                slotToInsert = i;
+            }
+        }
+        if(stackToInsert == null && slotToInsert == null) {
+            return itemStack;
+        }
+        if(stackToInsert != null) {
+            int maxCount = stackToInsert.getMaxCount();
+            int sumCount = stackToInsert.getCount() + itemStack.getCount();
+            stackToInsert.setCount(Math.min(maxCount, sumCount));
+            if (sumCount > maxCount) {
+                var lost = new ItemStack(itemStack.getItem(), sumCount - maxCount);
+                return consume(inventory, lost);
+            }
+        } else {
+            inventory.setStack(slotToInsert, itemStack);
+        }
+        inventory.markDirty();
+        return ItemStack.EMPTY;
+    }
+
+    public static boolean supply(@NotNull Inventory inventory, @NotNull ItemStack requested) {
+        var items = new HashMap<Item, Integer>();
+        for(int i = 0; i < inventory.size(); i++) {
+            var inventoryStack = inventory.getStack(i);
+            var inventoryItem = inventoryStack.getItem();
+            var count = items.computeIfAbsent(inventoryItem, it -> 0);
+            items.put(inventoryItem, count + inventoryStack.getCount());
+        }
+        var contains = items.get(requested.getItem());
+        int requestedCount = requested.getCount();
+        if(contains == null || contains == 0 || contains < requestedCount) {
+            return false;
+        }
+        for(int i = 0; i < inventory.size(); i++) {
+            var inventoryStack = inventory.getStack(i);
+            if(inventoryStack.isItemEqual(requested)) {
+                int toRemove = Math.min(inventoryStack.getCount(), requestedCount);
+                inventoryStack.decrement(toRemove);
+                requestedCount -= toRemove;
+                if(requestedCount <= 0) {
+                    break;
+                }
+            }
+        }
+        inventory.markDirty();
+        return true;
     }
 }

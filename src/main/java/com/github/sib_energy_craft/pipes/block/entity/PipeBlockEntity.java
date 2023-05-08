@@ -1,12 +1,11 @@
 package com.github.sib_energy_craft.pipes.block.entity;
 
-import com.github.sib_energy_craft.IPipeBlock;
+import com.github.sib_energy_craft.pipes.api.ItemConsumer;
+import com.github.sib_energy_craft.pipes.api.ItemSupplier;
 import com.github.sib_energy_craft.pipes.block.PipeBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
@@ -14,13 +13,16 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+import java.util.List;
+
 import static com.github.sib_energy_craft.utils.PipeUtils.insert;
 
 /**
  * @since 0.0.1
  * @author sibmaks
  */
-public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity implements Inventory, IPipeBlock {
+public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity implements ItemConsumer, ItemSupplier {
     private ItemStack storage;
     private Direction consumedDirection;
 
@@ -55,30 +57,6 @@ public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity i
         nbt.putString("direction", consumedDirection.getName());
     }
 
-    @Override
-    public int size() {
-        return 1;
-    }
-
-    @NotNull
-    @Override
-    public ItemStack removeStack(int slot, int amount) {
-        if (slot != 0 || amount <= 0) {
-            return ItemStack.EMPTY;
-        }
-        return storage.split(amount);
-    }
-
-    @Override
-    public void setStack(@NotNull Direction direction,
-                         @NotNull ItemStack stack) {
-        this.consumedDirection = direction.getOpposite();
-        this.storage = stack;
-        if (stack.getCount() > this.getMaxCountPerStack()) {
-            stack.setCount(this.getMaxCountPerStack());
-        }
-    }
-
     public static void serverTick(@NotNull World world,
                                   @NotNull BlockPos pos,
                                   @NotNull BlockState state,
@@ -94,10 +72,10 @@ public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity i
             return;
         }
         boolean modified = false;
-        if(!blockEntity.isEmpty() && blockEntity.lastTicksToInsert > 0) {
+        if(!blockEntity.storage.isEmpty() && blockEntity.lastTicksToInsert > 0) {
             blockEntity.lastTicksToInsert--;
         }
-        if (!blockEntity.isEmpty() && blockEntity.lastTicksToInsert <= 0) {
+        if (!blockEntity.storage.isEmpty() && blockEntity.lastTicksToInsert <= 0) {
             modified = insert(world, pos, blockEntity, blockEntity.consumedDirection);
             blockEntity.lastTicksToInsert = blockEntity.block.getTicksToInsert();
         }
@@ -107,45 +85,65 @@ public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity i
     }
 
     @Override
-    public boolean isEmpty() {
-        return storage.isEmpty();
+    public boolean canConsume(@NotNull ItemStack itemStack, @NotNull Direction direction) {
+        if(world == null) {
+            return false;
+        }
+        return storage.isEmpty() || storage.isItemEqual(itemStack) && storage.getCount() < storage.getMaxCount();
     }
 
     @Override
-    public ItemStack getStack(int slot) {
-        if (slot != 0) {
+    public @NotNull ItemStack consume(@NotNull ItemStack itemStack, @NotNull Direction direction) {
+        if(!canConsume(itemStack, direction)) {
+            return itemStack;
+        }
+        this.consumedDirection = direction.getOpposite();
+        return consume(itemStack);
+    }
+
+    private @NotNull ItemStack consume(@NotNull ItemStack itemStack) {
+        markDirty();
+        if(storage.isEmpty()) {
+            storage = itemStack;
             return ItemStack.EMPTY;
         }
-        return storage;
-    }
-
-    @NotNull
-    @Override
-    public ItemStack removeStack(int slot) {
-        if (slot != 0) {
-            return ItemStack.EMPTY;
+        int maxCount = storage.getMaxCount();
+        int sumCount = storage.getCount() + itemStack.getCount();
+        storage.setCount(Math.min(maxCount, sumCount));
+        if(sumCount > maxCount) {
+            return new ItemStack(itemStack.getItem(), sumCount - maxCount);
         }
-        var was = storage;
-        this.storage = ItemStack.EMPTY;
-        return was;
+        return ItemStack.EMPTY;
     }
 
     @Override
-    public void setStack(int slot,
-                         @NotNull ItemStack stack) {
-        if (slot != 0) {
-            return;
+    public @NotNull List<ItemStack> canSupply(@NotNull Direction direction) {
+        if(direction == consumedDirection) {
+            return Collections.emptyList();
         }
-        this.storage = stack;
+        return Collections.singletonList(storage.copy());
     }
 
     @Override
-    public boolean canPlayerUse(@NotNull PlayerEntity player) {
-        return false;
+    public boolean supply(@NotNull ItemStack requested, @NotNull Direction direction) {
+        if(direction == consumedDirection || !storage.isItemEqual(requested)) {
+            return false;
+        }
+        return supply(requested);
+    }
+
+    private boolean supply(@NotNull ItemStack requested) {
+        int requestedCount = requested.getCount();
+        int contains = storage.getCount();
+        if (contains == 0 || contains < requestedCount) {
+            return false;
+        }
+        storage.decrement(requestedCount);
+        return true;
     }
 
     @Override
-    public void clear() {
-        this.storage = ItemStack.EMPTY;
+    public void returnStack(@NotNull ItemStack requested, @NotNull Direction direction) {
+        consume(requested);
     }
 }

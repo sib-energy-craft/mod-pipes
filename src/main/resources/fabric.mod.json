@@ -21,5 +21,8 @@
       "com.github.sib_energy_craft.item_extractor.load.Loader",
       "com.github.sib_energy_craft.pipe_item_filter.load.Loader"
     ]
-  }
+  },
+  "mixins": [
+    "mod.pipes.mixin.json"
+  ]
 }

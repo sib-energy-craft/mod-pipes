@@ -14,7 +14,6 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
-import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
@@ -113,7 +112,7 @@ public abstract class PipeBlock extends ConnectingBlock implements BlockEntityPr
         }
         var blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof PipeBlockEntity<?> pipeBlockEntity) {
-            ItemScatterer.spawn(world, pos, pipeBlockEntity);
+//            ItemScatterer.spawn(world, pos, pipeBlockEntity);
             world.updateComparators(pos, this);
         }
         super.onStateReplaced(state, world, pos, newState, moved);

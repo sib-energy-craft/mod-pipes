@@ -1,9 +1,10 @@
 package com.github.sib_energy_craft.pipe_item_filter.block.entity;
 
-import com.github.sib_energy_craft.IPipeBlock;
 import com.github.sib_energy_craft.pipe_item_filter.PipeItemFilterMode;
 import com.github.sib_energy_craft.pipe_item_filter.block.PipeItemFilterBlock;
 import com.github.sib_energy_craft.pipe_item_filter.screen.PipeItemFilterScreenHandler;
+import com.github.sib_energy_craft.pipes.api.ItemConsumer;
+import com.github.sib_energy_craft.pipes.api.ItemSupplier;
 import com.github.sib_energy_craft.sec_utils.screen.PropertyMap;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
@@ -26,6 +27,9 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
+import java.util.List;
+
 import static com.github.sib_energy_craft.utils.PipeUtils.insert;
 
 /**
@@ -33,7 +37,7 @@ import static com.github.sib_energy_craft.utils.PipeUtils.insert;
  * @author sibmaks
  */
 public abstract class PipeItemFilterBlockEntity<T extends PipeItemFilterBlock> extends BlockEntity
-        implements Inventory, IPipeBlock, NamedScreenHandlerFactory, ExtendedScreenHandlerFactory {
+        implements Inventory, ItemConsumer, ItemSupplier, NamedScreenHandlerFactory, ExtendedScreenHandlerFactory {
 
     private final SimpleInventory filterInventory;
     private ItemStack storage;
@@ -62,6 +66,8 @@ public abstract class PipeItemFilterBlockEntity<T extends PipeItemFilterBlock> e
     @Override
     public void readNbt(@NotNull NbtCompound nbt) {
         super.readNbt(nbt);
+        var filterModeCode = nbt.getString("filterMode");
+        this.filterMode = PipeItemFilterMode.valueOf(filterModeCode);
         var filterCompound = nbt.getCompound("filter");
         Inventories.readNbt(filterCompound, filterInventory.stacks);
         storage = ItemStack.fromNbt(nbt.getCompound("storage"));
@@ -71,6 +77,8 @@ public abstract class PipeItemFilterBlockEntity<T extends PipeItemFilterBlock> e
     @Override
     protected void writeNbt(@NotNull NbtCompound nbt) {
         super.writeNbt(nbt);
+
+        nbt.putString("filterMode", filterMode.name());
 
         var filterCompound = new NbtCompound();
         Inventories.writeNbt(filterCompound, filterInventory.stacks);
@@ -95,16 +103,6 @@ public abstract class PipeItemFilterBlockEntity<T extends PipeItemFilterBlock> e
             return ItemStack.EMPTY;
         }
         return storage.split(amount);
-    }
-
-    @Override
-    public void setStack(@NotNull Direction direction,
-                         @NotNull ItemStack stack) {
-        this.consumedDirection = direction.getOpposite();
-        this.storage = stack;
-        if (stack.getCount() > this.getMaxCountPerStack()) {
-            stack.setCount(this.getMaxCountPerStack());
-        }
     }
 
     public static void serverTick(@NotNull World world,
@@ -174,6 +172,10 @@ public abstract class PipeItemFilterBlockEntity<T extends PipeItemFilterBlock> e
 
     @Override
     public boolean isValid(int slot, ItemStack stack) {
+        return isValid(stack);
+    }
+
+    private boolean isValid(ItemStack stack) {
         switch (filterMode) {
             case OFF -> {
                 return true;
@@ -211,5 +213,71 @@ public abstract class PipeItemFilterBlockEntity<T extends PipeItemFilterBlock> e
 
     public void setMode(PipeItemFilterMode mode) {
         this.filterMode = mode;
+    }
+
+    @Override
+    public boolean canConsume(@NotNull ItemStack itemStack, @NotNull Direction direction) {
+        if(world == null) {
+            return false;
+        }
+        if(!isValid(itemStack)) {
+            return false;
+        }
+        return storage.isEmpty() || storage.isItemEqual(itemStack) && storage.getCount() < storage.getMaxCount();
+    }
+
+    @Override
+    public @NotNull ItemStack consume(@NotNull ItemStack itemStack, @NotNull Direction direction) {
+        if(!canConsume(itemStack, direction)) {
+            return itemStack;
+        }
+        this.consumedDirection = direction.getOpposite();
+        return consume(itemStack);
+    }
+
+    private @NotNull ItemStack consume(@NotNull ItemStack itemStack) {
+        markDirty();
+        if(storage.isEmpty()) {
+            storage = itemStack;
+            return ItemStack.EMPTY;
+        }
+        int maxCount = storage.getMaxCount();
+        int sumCount = storage.getCount() + itemStack.getCount();
+        storage.setCount(Math.min(maxCount, sumCount));
+        if(sumCount > maxCount) {
+            return new ItemStack(itemStack.getItem(), sumCount - maxCount);
+        }
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public @NotNull List<ItemStack> canSupply(@NotNull Direction direction) {
+        if(direction == consumedDirection) {
+            return Collections.emptyList();
+        }
+        return Collections.singletonList(storage.copy());
+    }
+
+    @Override
+    public boolean supply(@NotNull ItemStack requested, @NotNull Direction direction) {
+        if(direction == consumedDirection || !storage.isItemEqual(requested)) {
+            return false;
+        }
+        return supply(requested);
+    }
+
+    private boolean supply(@NotNull ItemStack requested) {
+        int requestedCount = requested.getCount();
+        int contains = storage.getCount();
+        if (contains == 0 || contains < requestedCount) {
+            return false;
+        }
+        storage.decrement(requestedCount);
+        return true;
+    }
+
+    @Override
+    public void returnStack(@NotNull ItemStack requested, @NotNull Direction direction) {
+        consume(requested);
     }
 }

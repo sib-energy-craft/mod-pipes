@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.github.sib_energy_craft.pipes.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "ChestBlockEntityMixin"
+  ],
+  "client": [
+  ],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -2,6 +2,9 @@ package com.github.sib_energy_craft.item_extractor.block.entity;
 
 import com.github.sib_energy_craft.item_extractor.block.ItemExtractorBlock;
 import com.github.sib_energy_craft.item_extractor.load.Screens;
+import com.github.sib_energy_craft.pipes.api.ItemConsumer;
+import com.github.sib_energy_craft.pipes.api.ItemSupplier;
+import com.github.sib_energy_craft.utils.PipeUtils;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -9,7 +12,6 @@ import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
@@ -23,12 +25,14 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
-import static com.github.sib_energy_craft.utils.PipeUtils.getInventoryAt;
+import static com.github.sib_energy_craft.utils.PipeUtils.getItemConsumer;
 import static com.github.sib_energy_craft.utils.PipeUtils.transfer;
 
 /**
@@ -36,7 +40,7 @@ import static com.github.sib_energy_craft.utils.PipeUtils.transfer;
  * @author sibmaks
  */
 public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
-        extends LootableContainerBlockEntity implements ExtendedScreenHandlerFactory {
+        extends LootableContainerBlockEntity implements ExtendedScreenHandlerFactory, ItemSupplier {
     private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(9, ItemStack.EMPTY);
 
     private final T block;
@@ -112,10 +116,10 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
             modified = insert(world, pos, state, blockEntity);
             blockEntity.lastTicksToInsert = blockEntity.block.getTicksToInsert();
         }
-        if(!blockEntity.isFull() && blockEntity.lastTicksToExtract > 0) {
+        if(blockEntity.hasSpace() && blockEntity.lastTicksToExtract > 0) {
             blockEntity.lastTicksToExtract--;
         }
-        if (!blockEntity.isFull() && blockEntity.lastTicksToExtract <= 0) {
+        if (blockEntity.hasSpace() && blockEntity.lastTicksToExtract <= 0) {
             modified |= booleanSupplier.getAsBoolean();
             blockEntity.lastTicksToExtract = blockEntity.block.getTicksToExtract();
         }
@@ -124,132 +128,92 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
         }
     }
 
-    private boolean isFull() {
-        for (var itemStack : this.inventory) {
-            if (itemStack.isEmpty() || itemStack.getCount() != itemStack.getMaxCount()) {
-                return false;
-            }
-        }
-        return true;
+    private boolean hasSpace() {
+        return this.inventory.stream()
+                .anyMatch(it -> it.isEmpty() || it.getCount() != it.getMaxCount());
     }
 
     private static boolean insert(@NotNull World world,
                                   @NotNull BlockPos pos,
                                   @NotNull BlockState state,
                                   @NotNull Inventory inventory) {
-        var outputInventories = getOutputInventory(world, pos, state);
-        for (var entry : outputInventories.entrySet()) {
+        var itemConsumers = getItemConsumers(world, pos, state);
+        for (var entry : itemConsumers.entrySet()) {
             var direction = entry.getKey();
-            var outputInventory = entry.getValue();
-            if (isInventoryFull(outputInventory, direction)) {
-                continue;
-            }
+            var itemConsumer = entry.getValue();
             for (int i = 0; i < inventory.size(); ++i) {
                 var inventoryStack = inventory.getStack(i);
                 if (inventoryStack.isEmpty()) {
                     continue;
                 }
-                var itemStack = inventoryStack.copy();
-                var notTransferred = transfer(outputInventory, inventory.removeStack(i, 1), direction);
-                if (notTransferred.isEmpty()) {
-                    outputInventory.markDirty();
-                    return true;
+                if(itemConsumer.canConsume(inventoryStack, direction)) {
+                    var itemStack = inventoryStack.copy();
+                    var notTransferred = itemConsumer.consume(inventory.removeStack(i, 1), direction);
+                    if (notTransferred.isEmpty()) {
+                        return true;
+                    }
+                    inventory.setStack(i, itemStack);
                 }
-                inventory.setStack(i, itemStack);
             }
         }
         return false;
-    }
-
-    @NotNull
-    private static IntStream getAvailableSlots(@NotNull Inventory inventory,
-                                               @NotNull Direction side) {
-        if (inventory instanceof SidedInventory sidedInventory) {
-            return IntStream.of(sidedInventory.getAvailableSlots(side));
-        }
-        return IntStream.range(0, inventory.size());
-    }
-
-    private static boolean isInventoryFull(@NotNull Inventory inventory,
-                                           @NotNull Direction direction) {
-        return getAvailableSlots(inventory, direction).allMatch(slot -> {
-            var itemStack = inventory.getStack(slot);
-            return itemStack.getCount() >= itemStack.getMaxCount();
-        });
-    }
-
-    private static boolean isInventoryEmpty(@NotNull Inventory inv,
-                                            @NotNull Direction facing) {
-        return getAvailableSlots(inv, facing).allMatch(slot -> inv.getStack(slot).isEmpty());
     }
 
     public static boolean extract(@NotNull World world,
                                   @NotNull ItemExtractorBlockEntity<?> extractor,
                                   @NotNull BlockState blockState) {
         var direction = blockState.get(ItemExtractorBlock.FACING).getOpposite();
-        var inventory = getInputInventory(world, extractor, direction);
-        if (inventory != null) {
-            if (isInventoryEmpty(inventory, direction)) {
-                return false;
-            }
-            return getAvailableSlots(inventory, direction)
-                    .anyMatch(slot -> extract(extractor, inventory, slot, direction));
+        var itemSupplier = getItemSupplier(world, extractor, direction);
+        if (itemSupplier == null) {
+            return false;
         }
-        return false;
+        var itemStacks = itemSupplier.canSupply(direction);
+        if (itemStacks.isEmpty()) {
+            return false;
+        }
+        return itemStacks.stream()
+                .anyMatch(itemStack -> extract(extractor, itemSupplier, itemStack, direction));
     }
 
     private static boolean extract(@NotNull ItemExtractorBlockEntity<?> extractor,
-                                   @NotNull Inventory inventory,
-                                   int slot,
+                                   @NotNull ItemSupplier itemSupplier,
+                                   @NotNull ItemStack itemStack,
                                    @NotNull Direction side) {
-        var itemStack = inventory.getStack(slot);
-        if (!itemStack.isEmpty() && canExtract(extractor, inventory, itemStack, slot, side)) {
-            var copyStack = itemStack.copy();
-            var notTransferred = transfer(extractor, inventory.removeStack(slot, 1), side);
+        var consumingStack = new ItemStack(itemStack.getItem(), 1);
+        if (!consumingStack.isEmpty() && itemSupplier.supply(consumingStack, side)) {
+            var notTransferred = transfer(extractor, consumingStack, side);
             if (notTransferred.isEmpty()) {
-                inventory.markDirty();
                 return true;
             }
-            inventory.setStack(slot, copyStack);
+            itemSupplier.returnStack(consumingStack, side);
         }
         return false;
     }
 
-    private static boolean canExtract(@NotNull Inventory extractorInventory, 
-                                      @NotNull Inventory fromInventory, 
-                                      @NotNull ItemStack stack, 
-                                      int slot, 
-                                      @NotNull Direction facing) {
-        if (!fromInventory.canTransferTo(extractorInventory, slot, stack)) {
-            return false;
-        }
-        return !(fromInventory instanceof SidedInventory sidedInventory) || sidedInventory.canExtract(slot, stack, facing);
-    }
-
     @NotNull
-    private static Map<Direction, Inventory> getOutputInventory(@NotNull World world,
-                                                                @NotNull BlockPos pos,
-                                                                @NotNull BlockState state) {
+    private static Map<Direction, ItemConsumer> getItemConsumers(@NotNull World world,
+                                                                 @NotNull BlockPos pos,
+                                                                 @NotNull BlockState state) {
         var inputDirection = state.get(ItemExtractorBlock.FACING).getOpposite();
-        var inventories = new HashMap<Direction, Inventory>();
+        var inventories = new HashMap<Direction, ItemConsumer>();
         for (var outputDirection : Direction.values()) {
             if(outputDirection == inputDirection) {
                 continue;
             }
-            var inventory = getInventoryAt(world, pos.offset(outputDirection));
-            if(inventory != null && !(inventory instanceof ItemExtractorBlockEntity)) {
-                inventories.put(outputDirection, inventory);
+            var itemConsumer = getItemConsumer(world, pos.offset(outputDirection));
+            if(itemConsumer != null) {
+                inventories.put(outputDirection, itemConsumer);
             }
         }
         return inventories;
     }
 
     @Nullable
-    private static Inventory getInputInventory(@NotNull World world,
-                                               @NotNull ItemExtractorBlockEntity<?> extractor,
-                                               @NotNull Direction direction) {
+    private static ItemSupplier getItemSupplier(@NotNull World world,
+                                                @NotNull ItemExtractorBlockEntity<?> extractor,
+                                                @NotNull Direction direction) {
         var pos = extractor.getPos();
-        return getInventoryAt(world, pos.offset(direction));
+        return PipeUtils.getItemSupplier(world, pos.offset(direction));
     }
 
     @NotNull
@@ -274,5 +238,60 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
     public void writeScreenOpeningData(@NotNull ServerPlayerEntity player,
                                        @NotNull PacketByteBuf buf) {
         buf.writeBlockPos(pos);
+    }
+
+//    @Override
+//    public boolean canConsume(@NotNull ItemStack itemStack, @NotNull Direction direction) {
+//        if(world == null) {
+//            return false;
+//        }
+//        var blockState = world.getBlockState(pos);
+//        var consumingDirection = blockState.get(ItemExtractorBlock.FACING);
+//        if(direction != consumingDirection) {
+//            return false;
+//        }
+//        return PipeUtils.hasSpaceFor(this, itemStack);
+//    }
+//
+//    @Override
+//    public @NotNull ItemStack consume(@NotNull ItemStack itemStack, @NotNull Direction direction) {
+//        if(!canConsume(itemStack, direction)) {
+//            return itemStack;
+//        }
+//        return PipeUtils.consume(this, itemStack);
+//    }
+
+    @Override
+    public @NotNull List<ItemStack> canSupply(@NotNull Direction direction) {
+        if(world == null) {
+            return Collections.emptyList();
+        }
+        var blockState = world.getBlockState(pos);
+        var consumingDirection = blockState.get(ItemExtractorBlock.FACING);
+        if(direction == consumingDirection) {
+            return Collections.emptyList();
+        }
+        return inventory.stream()
+                .filter(it -> !it.isEmpty())
+                .map(ItemStack::copy)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean supply(@NotNull ItemStack requested, @NotNull Direction direction) {
+        if(world == null) {
+            return false;
+        }
+        var blockState = world.getBlockState(pos);
+        var consumingDirection = blockState.get(ItemExtractorBlock.FACING);
+        if(direction == consumingDirection) {
+            return false;
+        }
+        return PipeUtils.supply(this, requested);
+    }
+
+    @Override
+    public void returnStack(@NotNull ItemStack requested, @NotNull Direction direction) {
+        PipeUtils.consume(this, requested);
     }
 }
