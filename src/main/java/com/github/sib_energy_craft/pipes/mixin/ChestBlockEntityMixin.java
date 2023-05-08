@@ -2,7 +2,7 @@ package com.github.sib_energy_craft.pipes.mixin;
 
 import com.github.sib_energy_craft.pipes.api.ItemConsumer;
 import com.github.sib_energy_craft.pipes.api.ItemSupplier;
-import com.github.sib_energy_craft.utils.PipeUtils;
+import com.github.sib_energy_craft.pipes.utils.PipeUtils;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;

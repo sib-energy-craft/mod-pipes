@@ -5,6 +5,7 @@ import com.github.sib_energy_craft.pipe_item_filter.block.PipeItemFilterBlock;
 import com.github.sib_energy_craft.pipe_item_filter.screen.PipeItemFilterScreenHandler;
 import com.github.sib_energy_craft.pipes.api.ItemConsumer;
 import com.github.sib_energy_craft.pipes.api.ItemSupplier;
+import com.github.sib_energy_craft.pipes.utils.PipeUtils;
 import com.github.sib_energy_craft.sec_utils.screen.PropertyMap;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
@@ -30,7 +31,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-import static com.github.sib_energy_craft.utils.PipeUtils.insert;
 
 /**
  * @since 0.0.1
@@ -124,7 +124,7 @@ public abstract class PipeItemFilterBlockEntity<T extends PipeItemFilterBlock> e
             blockEntity.lastTicksToInsert--;
         }
         if (!blockEntity.isEmpty() && blockEntity.lastTicksToInsert <= 0) {
-            modified = insert(world, pos, blockEntity, blockEntity.consumedDirection);
+            modified = PipeUtils.insert(world, pos, blockEntity, blockEntity.consumedDirection);
             blockEntity.lastTicksToInsert = blockEntity.block.getTicksToInsert();
         }
         if (modified) {

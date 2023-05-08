@@ -32,6 +32,7 @@ dependencies {
 
     modImplementation("com.github.sib-energy-craft:mod-metallurgy:${project.sec_mod_metallurgy_version}")
     modImplementation("com.github.sib-energy-craft:mod-energy-items:${project.sec_mod_energy_items_version}")
+    modImplementation("com.github.sib-energy-craft:mod-pipes-api:${project.sec_mod_pipes_api_version}")
 }
 
 processResources {

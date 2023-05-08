@@ -3,6 +3,7 @@ package com.github.sib_energy_craft.pipes.block.entity;
 import com.github.sib_energy_craft.pipes.api.ItemConsumer;
 import com.github.sib_energy_craft.pipes.api.ItemSupplier;
 import com.github.sib_energy_craft.pipes.block.PipeBlock;
+import com.github.sib_energy_craft.pipes.utils.PipeUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -15,8 +16,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
-
-import static com.github.sib_energy_craft.utils.PipeUtils.insert;
 
 /**
  * @since 0.0.1
@@ -76,7 +75,7 @@ public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity i
             blockEntity.lastTicksToInsert--;
         }
         if (!blockEntity.storage.isEmpty() && blockEntity.lastTicksToInsert <= 0) {
-            modified = insert(world, pos, blockEntity, blockEntity.consumedDirection);
+            modified = PipeUtils.insert(world, pos, blockEntity, blockEntity.consumedDirection);
             blockEntity.lastTicksToInsert = blockEntity.block.getTicksToInsert();
         }
         if (modified) {

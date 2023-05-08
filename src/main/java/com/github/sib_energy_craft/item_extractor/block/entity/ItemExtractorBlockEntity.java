@@ -4,7 +4,7 @@ import com.github.sib_energy_craft.item_extractor.block.ItemExtractorBlock;
 import com.github.sib_energy_craft.item_extractor.load.Screens;
 import com.github.sib_energy_craft.pipes.api.ItemConsumer;
 import com.github.sib_energy_craft.pipes.api.ItemSupplier;
-import com.github.sib_energy_craft.utils.PipeUtils;
+import com.github.sib_energy_craft.pipes.utils.PipeUtils;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -31,9 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
-
-import static com.github.sib_energy_craft.utils.PipeUtils.getItemConsumer;
-import static com.github.sib_energy_craft.utils.PipeUtils.transfer;
 
 /**
  * @since 0.0.1
@@ -181,7 +178,7 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
                                    @NotNull Direction side) {
         var consumingStack = new ItemStack(itemStack.getItem(), 1);
         if (!consumingStack.isEmpty() && itemSupplier.supply(consumingStack, side)) {
-            var notTransferred = transfer(extractor, consumingStack, side);
+            var notTransferred = PipeUtils.transfer(extractor, consumingStack, side);
             if (notTransferred.isEmpty()) {
                 return true;
             }
@@ -200,7 +197,7 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
             if(outputDirection == inputDirection) {
                 continue;
             }
-            var itemConsumer = getItemConsumer(world, pos.offset(outputDirection));
+            var itemConsumer = PipeUtils.getItemConsumer(world, pos.offset(outputDirection));
             if(itemConsumer != null) {
                 inventories.put(outputDirection, itemConsumer);
             }

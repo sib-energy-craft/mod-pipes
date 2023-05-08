@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "minecraft:chest",
+    "minecraft:furnace",
     "minecraft:barrel",
     "sib_energy_craft:stone_pipe",
     "sib_energy_craft:iron_pipe",
