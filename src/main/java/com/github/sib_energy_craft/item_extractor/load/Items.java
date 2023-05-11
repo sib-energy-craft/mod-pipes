@@ -1,6 +1,6 @@
 package com.github.sib_energy_craft.item_extractor.load;
 
-import com.github.sib_energy_craft.sec_utils.load.ModRegistrar;
+import com.github.sib_energy_craft.sec_utils.load.DefaultModInitializer;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemGroups;
 
@@ -11,7 +11,7 @@ import static com.github.sib_energy_craft.sec_utils.utils.ItemUtils.registerBloc
  * @since 0.0.1
  * @author sibmaks
  */
-public final class Items implements ModRegistrar {
+public final class Items implements DefaultModInitializer {
     public static final BlockItem STONE_ITEM_EXTRACTOR;
     public static final BlockItem IRON_ITEM_EXTRACTOR;
     public static final BlockItem DIAMOND_ITEM_EXTRACTOR;

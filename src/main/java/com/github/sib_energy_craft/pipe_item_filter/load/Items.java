@@ -1,7 +1,7 @@
 package com.github.sib_energy_craft.pipe_item_filter.load;
 
 import com.github.sib_energy_craft.energy_api.utils.Identifiers;
-import com.github.sib_energy_craft.sec_utils.load.ModRegistrar;
+import com.github.sib_energy_craft.sec_utils.load.DefaultModInitializer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.util.Rarity;
@@ -14,7 +14,7 @@ import static com.github.sib_energy_craft.sec_utils.utils.ItemUtils.registerBloc
  * @since 0.0.1
  * @author sibmaks
  */
-public final class Items implements ModRegistrar {
+public final class Items implements DefaultModInitializer {
     public static final Item STONE_PIPE_ITEM_FILTER;
     public static final Item IRON_PIPE_ITEM_FILTER;
     public static final Item DIAMOND_PIPE_ITEM_FILTER;

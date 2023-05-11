@@ -2,7 +2,7 @@ package com.github.sib_energy_craft.item_extractor.load;
 
 import com.github.sib_energy_craft.energy_api.utils.Identifiers;
 import com.github.sib_energy_craft.screen.Container9x1Screen;
-import com.github.sib_energy_craft.sec_utils.load.ModRegistrar;
+import com.github.sib_energy_craft.sec_utils.load.DefaultModInitializer;
 import com.github.sib_energy_craft.sec_utils.utils.ScreenUtils;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SimpleInventory;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
  * @since 0.0.1
  * @author sibmaks
  */
-public final class Screens implements ModRegistrar {
+public final class Screens implements DefaultModInitializer {
     public static final ScreenHandlerType<GenericContainerScreenHandler> GENERIC_9X1;
 
     static {

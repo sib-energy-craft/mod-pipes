@@ -5,7 +5,7 @@ import com.github.sib_energy_craft.item_extractor.block.DiamondItemExtractorBloc
 import com.github.sib_energy_craft.item_extractor.block.IronItemExtractorBlock;
 import com.github.sib_energy_craft.item_extractor.block.StoneItemExtractorBlock;
 import com.github.sib_energy_craft.sec_utils.common.Identified;
-import com.github.sib_energy_craft.sec_utils.load.ModRegistrar;
+import com.github.sib_energy_craft.sec_utils.load.DefaultModInitializer;
 import com.github.sib_energy_craft.sec_utils.utils.BlockUtils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.MapColor;
@@ -17,7 +17,7 @@ import net.minecraft.sound.BlockSoundGroup;
  * @since 0.0.1
  * @author sibmaks
  */
-public final class Blocks implements ModRegistrar {
+public final class Blocks implements DefaultModInitializer {
     public static final Identified<StoneItemExtractorBlock> STONE_ITEM_EXTRACTOR;
     public static final Identified<IronItemExtractorBlock> IRON_ITEM_EXTRACTOR;
     public static final Identified<DiamondItemExtractorBlock> DIAMOND_ITEM_EXTRACTOR;

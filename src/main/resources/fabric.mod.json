@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "sec-mod-pipes",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "name": "SibEnergyCraft - Pipes",
   "authors": [
     "sibmaks"
@@ -17,9 +17,20 @@
   },
   "entrypoints": {
     "main": [
-      "com.github.sib_energy_craft.pipes.load.Loader",
-      "com.github.sib_energy_craft.item_extractor.load.Loader",
-      "com.github.sib_energy_craft.pipe_item_filter.load.Loader"
+      "com.github.sib_energy_craft.item_extractor.load.Blocks",
+      "com.github.sib_energy_craft.item_extractor.load.Entities",
+      "com.github.sib_energy_craft.item_extractor.load.Items",
+      "com.github.sib_energy_craft.item_extractor.load.Screens",
+      "com.github.sib_energy_craft.item_extractor.load.Stats",
+
+      "com.github.sib_energy_craft.pipe_item_filter.load.Blocks",
+      "com.github.sib_energy_craft.pipe_item_filter.load.Entities",
+      "com.github.sib_energy_craft.pipe_item_filter.load.Items",
+      "com.github.sib_energy_craft.pipe_item_filter.load.Screens",
+
+      "com.github.sib_energy_craft.pipes.load.Blocks",
+      "com.github.sib_energy_craft.pipes.load.Entities",
+      "com.github.sib_energy_craft.pipes.load.Items"
     ]
   },
   "mixins": [

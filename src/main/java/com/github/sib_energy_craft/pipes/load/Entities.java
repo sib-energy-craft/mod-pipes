@@ -3,7 +3,7 @@ package com.github.sib_energy_craft.pipes.load;
 import com.github.sib_energy_craft.pipes.block.entity.DiamondPipeBlockEntity;
 import com.github.sib_energy_craft.pipes.block.entity.IronPipeBlockEntity;
 import com.github.sib_energy_craft.pipes.block.entity.StonePipeBlockEntity;
-import com.github.sib_energy_craft.sec_utils.load.ModRegistrar;
+import com.github.sib_energy_craft.sec_utils.load.DefaultModInitializer;
 import com.github.sib_energy_craft.sec_utils.utils.EntityUtils;
 import net.minecraft.block.entity.BlockEntityType;
 
@@ -12,7 +12,7 @@ import net.minecraft.block.entity.BlockEntityType;
  * @since 0.0.1
  * @author sibmaks
  */
-public final class Entities implements ModRegistrar {
+public final class Entities implements DefaultModInitializer {
     public static final BlockEntityType<StonePipeBlockEntity> STONE_PIPE;
     public static final BlockEntityType<IronPipeBlockEntity> IRON_PIPE;
     public static final BlockEntityType<DiamondPipeBlockEntity> DIAMOND_PIPE;
