@@ -59,7 +59,7 @@ public abstract class ItemFilterExtractorBlockEntity<T extends ItemFilterExtract
         super(entityType, pos, state);
         this.filterInventory = new SimpleInventory(25);
         this.filterInventory.addListener(it -> ItemFilterExtractorBlockEntity.this.markDirty());
-        this.inventory = new SimpleInventory(25);
+        this.inventory = new SimpleInventory(9);
         this.inventory.addListener(it -> ItemFilterExtractorBlockEntity.this.markDirty());
         this.block = block;
         this.propertiesMap = new PropertyMap<>(ItemFilterExtractorBlockProperties.class);
@@ -231,7 +231,7 @@ public abstract class ItemFilterExtractorBlockEntity<T extends ItemFilterExtract
     public ScreenHandler createMenu(int syncId,
                                     @NotNull PlayerInventory playerInventory,
                                     @NotNull PlayerEntity player) {
-        return new ItemFilterExtractorScreenHandler(syncId, playerInventory, filterInventory, propertiesMap, world, pos);
+        return new ItemFilterExtractorScreenHandler(syncId, playerInventory, filterInventory, inventory, propertiesMap, world, pos);
     }
 
     @Override

@@ -13,11 +13,16 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 
 /**
- * @since 0.0.1
+ * @since 0.0.6
  * @author sibmaks
  */
 public class ItemFilterExtractorScreen extends HandledScreen<ItemFilterExtractorScreenHandler> {
-    private static final Identifier TEXTURE = Identifiers.of("textures/gui/container/pipe_item_filter.png");
+    private static final int MODE_BUTTON_X = 105;
+    private static final int MODE_BUTTON_Y = 145;
+    private static final int MODE_BUTTON_WIDTH = 64;
+    private static final int MODE_BUTTON_HEIGHT = 16;
+
+    private static final Identifier TEXTURE = Identifiers.of("textures/gui/container/item_filter_extractor.png");
 
     public ItemFilterExtractorScreen(@NotNull ItemFilterExtractorScreenHandler handler,
                                      @NotNull PlayerInventory inventory,
@@ -25,7 +30,7 @@ public class ItemFilterExtractorScreen extends HandledScreen<ItemFilterExtractor
         super(handler, inventory, title);
         this.titleY = 6;
         this.backgroundWidth = 176;
-        this.backgroundHeight = 240;
+        this.backgroundHeight = 246;
     }
 
     @Override
@@ -37,20 +42,21 @@ public class ItemFilterExtractorScreen extends HandledScreen<ItemFilterExtractor
         int y = this.y;
         drawTexture(matrices, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
 
-        drawTexture(matrices, x + 7, y  + 128, 176, 16, 64, 16);
+        drawTexture(matrices, x + MODE_BUTTON_X, y  + MODE_BUTTON_Y, 176, 16, MODE_BUTTON_WIDTH, MODE_BUTTON_HEIGHT);
         if (isOnModeModeButton(mouseX, mouseY)) {
-            drawTexture(matrices, x + 7, y  + 128, 176, 32, 64, 16);
+            drawTexture(matrices, x + MODE_BUTTON_X, y  + MODE_BUTTON_Y, 176, 32, MODE_BUTTON_WIDTH, MODE_BUTTON_HEIGHT);
         }
 
         var mode = handler.getMode().name().toLowerCase();
         var key = "screen.sib_energy_craft.item_filter.button.mode.%s".formatted(mode);
         var modeText = Text.translatable(key);
-        int modeTextLeftOffset = (64 - textRenderer.getWidth(modeText)) / 2;
-        this.textRenderer.drawWithShadow(matrices, modeText, x + modeTextLeftOffset, y + 132, Color.WHITE.getRGB());
+        int modeTextLeftOffset = MODE_BUTTON_X + (MODE_BUTTON_WIDTH - textRenderer.getWidth(modeText)) / 2;
+        this.textRenderer.drawWithShadow(matrices, modeText, x + modeTextLeftOffset, y + 149, Color.WHITE.getRGB());
     }
 
     private boolean isOnModeModeButton(int mouseX, int mouseY) {
-        return mouseX >= x + 7 && mouseX <= x + 7 + 64 && mouseY >= y + 128 && mouseY <= y + 128 + 16;
+        return mouseX >= x + MODE_BUTTON_X && mouseX <= x + MODE_BUTTON_X + MODE_BUTTON_WIDTH &&
+                mouseY >= y + MODE_BUTTON_Y && mouseY <= y + MODE_BUTTON_Y + MODE_BUTTON_HEIGHT;
     }
 
     @Override
@@ -97,7 +103,7 @@ public class ItemFilterExtractorScreen extends HandledScreen<ItemFilterExtractor
     protected void init() {
         super.init();
         this.titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
-        this.playerInventoryTitleY = 146;
+        this.playerInventoryTitleY = 149;
     }
 
 }

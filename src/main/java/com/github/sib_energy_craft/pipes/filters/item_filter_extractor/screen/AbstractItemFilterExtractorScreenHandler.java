@@ -3,6 +3,10 @@ package com.github.sib_energy_craft.pipes.filters.item_filter_extractor.screen;
 import com.github.sib_energy_craft.pipes.filters.ItemFilterMode;
 import com.github.sib_energy_craft.pipes.filters.item_filter_extractor.block.entity.ItemFilterExtractorBlockEntity;
 import com.github.sib_energy_craft.pipes.filters.item_filter_extractor.block.entity.ItemFilterExtractorBlockProperties;
+import com.github.sib_energy_craft.sec_utils.screen.slot.SlotGroupMetaBuilder;
+import com.github.sib_energy_craft.sec_utils.screen.slot.SlotGroupsMeta;
+import com.github.sib_energy_craft.sec_utils.screen.slot.SlotGroupsMetaBuilder;
+import com.github.sib_energy_craft.sec_utils.screen.slot.SlotTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -20,12 +24,15 @@ public abstract class AbstractItemFilterExtractorScreenHandler extends ScreenHan
     private static final ItemFilterMode[] MODES = ItemFilterMode.values();
 
     private final PropertyDelegate propertyDelegate;
+    protected final SlotGroupsMeta slotGroupsMeta;
     private final ScreenHandlerContext context;
 
     protected AbstractItemFilterExtractorScreenHandler(@NotNull ScreenHandlerType<?> type,
                                                        int syncId,
                                                        @NotNull PlayerInventory playerInventory) {
-        this(type, syncId, playerInventory, new SimpleInventory(25),
+        this(type, syncId, playerInventory,
+                new SimpleInventory(25),
+                new SimpleInventory(9),
                 new ArrayPropertyDelegate(1),
                 ScreenHandlerContext.EMPTY);
     }
@@ -34,25 +41,66 @@ public abstract class AbstractItemFilterExtractorScreenHandler extends ScreenHan
                                                        int syncId,
                                                        @NotNull PlayerInventory playerInventory,
                                                        @NotNull Inventory filterInventory,
+                                                       @NotNull Inventory inventory,
                                                        @NotNull PropertyDelegate propertyDelegate,
                                                        @NotNull ScreenHandlerContext context) {
         super(type, syncId);
+        checkSize(filterInventory, 25);
+        checkSize(inventory, 9);
+        checkDataCount(propertyDelegate, 1);
+
         this.propertyDelegate = propertyDelegate;
         this.context = context;
-        int slots = 0;
-        for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, slots++, 8 + i * 18, 215));
-        }
-        for (int i = 0; i < 3; ++i) {
-            for (int j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(playerInventory, slots++, 8 + j * 18, 157 + i * 18));
+
+        int globalSlotIndex = 0;
+        var slotGroupsBuilder = SlotGroupsMetaBuilder.builder();
+
+        int quickAccessSlots = 9;
+        {
+            var slotQuickAccessGroupBuilder = SlotGroupMetaBuilder.builder(SlotTypes.QUICK_ACCESS);
+            for (int i = 0; i < quickAccessSlots; ++i) {
+                slotQuickAccessGroupBuilder.addSlot(globalSlotIndex++, i);
+                this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 222));
             }
+            var quickAccessSlotGroup = slotQuickAccessGroupBuilder.build();
+            slotGroupsBuilder.add(quickAccessSlotGroup);
         }
 
-        for (int i = 0; i < filterInventory.size(); i++) {
-            var filterSlot = new FilterSlot(filterInventory, i, slots++, 44 + (i % 5) * 18, 26 + (i / 5) * 18);
-            this.addSlot(filterSlot);
+        {
+            var slotPlayerGroupBuilder = SlotGroupMetaBuilder.builder(SlotTypes.PLAYER_INVENTORY);
+            for (int i = 0; i < 3; ++i) {
+                for (int j = 0; j < 9; ++j) {
+                    int index = j + i * 9 + quickAccessSlots;
+                    slotPlayerGroupBuilder.addSlot(globalSlotIndex++, index);
+                    this.addSlot(new Slot(playerInventory, index, 8 + j * 18, 164 + i * 18));
+                }
+            }
+            var playerSlotGroup = slotPlayerGroupBuilder.build();
+            slotGroupsBuilder.add(playerSlotGroup);
         }
+
+        {
+            var slotFilterGroupBuilder = SlotGroupMetaBuilder.builder(ItemFilterExtractorSlotTypes.FILTER);
+            for (int i = 0; i < filterInventory.size(); ++i) {
+                slotFilterGroupBuilder.addSlot(globalSlotIndex++, i);
+                this.addSlot(new FilterSlot(filterInventory, i, 44 + (i % 5) * 18, 26 + (i / 5) * 18));
+            }
+            var filterSlotGroup = slotFilterGroupBuilder.build();
+            slotGroupsBuilder.add(filterSlotGroup);
+        }
+
+        {
+            var slotInventoryGroupBuilder = SlotGroupMetaBuilder.builder(ItemFilterExtractorSlotTypes.INVENTORY);
+            for (int i = 0; i < inventory.size(); ++i) {
+                slotInventoryGroupBuilder.addSlot(globalSlotIndex++, i);
+                this.addSlot(new Slot(inventory, i, 8 + i * 18, 126));
+            }
+            var inventorySlotGroup = slotInventoryGroupBuilder.build();
+            slotGroupsBuilder.add(inventorySlotGroup);
+        }
+
+        slotGroupsMeta = slotGroupsBuilder.build();
+
         addProperties(propertyDelegate);
     }
 
