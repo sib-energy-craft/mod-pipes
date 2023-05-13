@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "open=false": {
+      "model": "sib_energy_craft:block/iron_trash_can"
+    },
+    "open=true": {
+      "model": "sib_energy_craft:block/iron_trash_can_open"
+    }
+  }
+}

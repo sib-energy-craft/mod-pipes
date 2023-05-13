@@ -1,0 +1,60 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "sib_energy_craft:iron_trash_can"
+    ]
+  },
+  "criteria": {
+    "has_stone_trash_can": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sib_energy_craft:stone_trash_can"
+            ]
+          }
+        ]
+      }
+    },
+    "has_iron_plate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sib_energy_craft:iron_plate"
+            ]
+          }
+        ]
+      }
+    },
+    "has_iron_pipe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sib_energy_craft:iron_pipe"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "sib_energy_craft:iron_trash_can"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_stone_trash_can",
+      "has_iron_plate",
+      "has_iron_pipe",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SPS",
+    "C#C",
+    "CPC"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stone"
+    },
+    "P": {
+      "item": "sib_energy_craft:stone_pipe"
+    },
+    "C": {
+      "item": "minecraft:cobblestone"
+    },
+    "#": {
+      "item": "minecraft:chest"
+    }
+  },
+  "result": {
+    "item": "sib_energy_craft:stone_trash_can"
+  }
+}

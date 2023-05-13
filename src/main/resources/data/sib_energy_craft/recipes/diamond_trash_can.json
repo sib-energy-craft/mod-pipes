@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "D#D",
+    " P "
+  ],
+  "key": {
+    "D": {
+      "item": "sib_energy_craft:diamond_dust"
+    },
+    "P": {
+      "item": "sib_energy_craft:diamond_pipe"
+    },
+    "#": {
+      "item": "sib_energy_craft:iron_trash_can"
+    }
+  },
+  "result": {
+    "item": "sib_energy_craft:diamond_trash_can"
+  }
+}

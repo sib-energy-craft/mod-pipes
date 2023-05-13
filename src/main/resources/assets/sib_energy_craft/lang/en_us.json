@@ -28,5 +28,14 @@
   "container.iron_pipe_item_filter": "Iron Pipe Item Filter",
 
   "block.sib_energy_craft.diamond_pipe_item_filter": "Diamond Pipe Item Filter",
-  "container.diamond_pipe_item_filter": "Diamond Pipe Item Filter"
+  "container.diamond_pipe_item_filter": "Diamond Pipe Item Filter",
+
+  "block.sib_energy_craft.stone_trash_can": "Stone Trash Can",
+  "container.stone_trash_can": "Stone Trash Can",
+
+  "block.sib_energy_craft.iron_trash_can": "Iron Trash Can",
+  "container.iron_trash_can": "Iron Trash Can",
+
+  "block.sib_energy_craft.diamond_trash_can": "Diamond Trash Can",
+  "container.diamond_trash_can": "Diamond Trash Can"
 }

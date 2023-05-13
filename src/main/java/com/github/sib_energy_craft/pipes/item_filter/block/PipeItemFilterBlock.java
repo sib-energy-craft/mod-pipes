@@ -1,6 +1,6 @@
-package com.github.sib_energy_craft.pipes.block;
+package com.github.sib_energy_craft.pipes.item_filter.block;
 
-import com.github.sib_energy_craft.pipes.block.entity.PipeBlockEntity;
+import com.github.sib_energy_craft.pipes.item_filter.block.entity.PipeItemFilterBlockEntity;
 import com.github.sib_energy_craft.pipes.tags.PipeTags;
 import lombok.Getter;
 import net.minecraft.block.*;
@@ -8,12 +8,13 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.ai.pathing.NavigationType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
+import net.minecraft.util.*;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
@@ -29,7 +30,7 @@ import java.util.function.Function;
  * @since 0.0.1
  * @author sibmaks
  */
-public abstract class PipeBlock extends ConnectingBlock implements BlockEntityProvider {
+public abstract class PipeItemFilterBlock extends ConnectingBlock implements BlockEntityProvider {
     private static final Map<BooleanProperty, Function<BlockPos, BlockPos>> PLACEMENT_MODIFIERS = Map.of(
             NORTH, BlockPos::north,
             SOUTH, BlockPos::south,
@@ -42,9 +43,9 @@ public abstract class PipeBlock extends ConnectingBlock implements BlockEntityPr
     @Getter
     private final int ticksToInsert;
 
-    public PipeBlock(@NotNull AbstractBlock.Settings settings,
-                     int ticksToInsert) {
-        super(0.125f, settings);
+    public PipeItemFilterBlock(@NotNull AbstractBlock.Settings settings,
+                               int ticksToInsert) {
+        super(0.1875f, settings);
         this.ticksToInsert = ticksToInsert;
         this.setDefaultState(this.stateManager.getDefaultState()
                 .with(NORTH, false)
@@ -111,7 +112,8 @@ public abstract class PipeBlock extends ConnectingBlock implements BlockEntityPr
             return;
         }
         var blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof PipeBlockEntity<?>) {
+        if (blockEntity instanceof PipeItemFilterBlockEntity<?> pipeItemFilterBlockEntity) {
+            ItemScatterer.spawn(world, pos, pipeItemFilterBlockEntity);
             world.updateComparators(pos, this);
         }
         super.onStateReplaced(state, world, pos, newState, moved);
@@ -188,6 +190,24 @@ public abstract class PipeBlock extends ConnectingBlock implements BlockEntityPr
                                       @NotNull BlockPos pos,
                                       @NotNull NavigationType type) {
         return false;
+    }
+
+    @NotNull
+    @Override
+    public ActionResult onUse(@NotNull BlockState state,
+                              @NotNull World world,
+                              @NotNull BlockPos pos,
+                              @NotNull PlayerEntity player,
+                              @NotNull Hand hand,
+                              @NotNull BlockHitResult hit) {
+        if (world.isClient) {
+            return ActionResult.SUCCESS;
+        }
+        var blockEntity = world.getBlockEntity(pos);
+        if (blockEntity instanceof PipeItemFilterBlockEntity<?> filterBlockEntity) {
+            player.openHandledScreen(filterBlockEntity);
+        }
+        return ActionResult.CONSUME;
     }
 
     /**

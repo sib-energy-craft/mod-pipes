@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#.#",
+    " P "
+  ],
+  "key": {
+    "#": {
+      "item": "sib_energy_craft:iron_plate"
+    },
+    "P": {
+      "item": "sib_energy_craft:iron_pipe"
+    },
+    ".": {
+      "item": "sib_energy_craft:stone_trash_can"
+    }
+  },
+  "result": {
+    "item": "sib_energy_craft:iron_trash_can"
+  }
+}
