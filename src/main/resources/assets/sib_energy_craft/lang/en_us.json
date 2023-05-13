@@ -9,6 +9,8 @@
   "container.diamond_item_extractor": "Diamond Item Extractor",
 
   "stat.sib_energy_craft.interact_with_item_extractor": "Interactions with Item Extractor",
+  "stat.sib_energy_craft.interact_with_item_filter_extractor": "Interactions with Item Filter Extractor",
+  "stat.sib_energy_craft.interact_with_trash_can": "Interactions with Trash Can",
 
   "block.sib_energy_craft.stone_pipe": "Stone Pipe",
 
@@ -37,5 +39,14 @@
   "container.iron_trash_can": "Iron Trash Can",
 
   "block.sib_energy_craft.diamond_trash_can": "Diamond Trash Can",
-  "container.diamond_trash_can": "Diamond Trash Can"
+  "container.diamond_trash_can": "Diamond Trash Can",
+
+  "block.sib_energy_craft.stone_item_filter_extractor": "Stone Item Filter Extractor",
+  "container.stone_item_filter_extractor": "Stone Item Filter Extractor",
+
+  "block.sib_energy_craft.iron_item_filter_extractor": "Iron Item Filter Extractor",
+  "container.iron_item_filter_extractor": "Iron Item Filter Extractor",
+
+  "block.sib_energy_craft.diamond_item_filter_extractor": "Diamond Item Filter Extractor",
+  "container.diamond_item_filter_extractor": "Diamond Item Filter Extractor"
 }

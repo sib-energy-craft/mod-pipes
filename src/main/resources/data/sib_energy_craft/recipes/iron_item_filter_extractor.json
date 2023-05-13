@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "E",
+    "F"
+  ],
+  "key": {
+    "E": {
+      "item": "sib_energy_craft:iron_item_extractor"
+    },
+    "F": {
+      "item": "sib_energy_craft:item_filter"
+    }
+  },
+  "result": {
+    "item": "sib_energy_craft:iron_item_filter_extractor"
+  }
+}

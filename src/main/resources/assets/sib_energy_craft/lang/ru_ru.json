@@ -9,6 +9,8 @@
   "container.diamond_item_extractor": "Алмазный извелкатель предметов",
 
   "stat.sib_energy_craft.interact_with_item_extractor": "Использований извелкателя предметов",
+  "stat.sib_energy_craft.interact_with_item_filter_extractor": "Использований фильтрующего извелкателя предметов",
+  "stat.sib_energy_craft.interact_with_trash_can": "Использований мусорки",
 
   "block.sib_energy_craft.stone_pipe": "Каменная труба",
 
@@ -37,5 +39,14 @@
   "container.iron_trash_can": "Железная мусорка",
 
   "block.sib_energy_craft.diamond_trash_can": "Алмазная мусорка",
-  "container.diamond_trash_can": "Алмазная мусорка"
+  "container.diamond_trash_can": "Алмазная мусорка",
+
+  "block.sib_energy_craft.stone_item_filter_extractor": "Каменный фильтрующий извлекатель предметов",
+  "container.stone_item_filter_extractor": "Каменный фильтрующий извлекатель предметов",
+
+  "block.sib_energy_craft.iron_item_filter_extractor": "Железный фильтрующий извлекатель предметов",
+  "container.iron_item_filter_extractor": "Железный фильтрующий извлекатель предметов",
+
+  "block.sib_energy_craft.diamond_item_filter_extractor": "Алмазный фильтрующий извлекатель предметов",
+  "container.diamond_item_filter_extractor": "Алмазный фильтрующий извлекатель предметов"
 }

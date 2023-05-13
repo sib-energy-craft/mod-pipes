@@ -22,10 +22,16 @@
       "com.github.sib_energy_craft.pipes.item_extractor.load.Items",
       "com.github.sib_energy_craft.pipes.item_extractor.load.Stats",
 
-      "com.github.sib_energy_craft.pipes.item_filter.load.Blocks",
-      "com.github.sib_energy_craft.pipes.item_filter.load.Entities",
-      "com.github.sib_energy_craft.pipes.item_filter.load.Items",
-      "com.github.sib_energy_craft.pipes.item_filter.load.Screens",
+      "com.github.sib_energy_craft.pipes.filters.item_filter_extractor.load.Blocks",
+      "com.github.sib_energy_craft.pipes.filters.item_filter_extractor.load.Entities",
+      "com.github.sib_energy_craft.pipes.filters.item_filter_extractor.load.Items",
+      "com.github.sib_energy_craft.pipes.filters.item_filter_extractor.load.Screens",
+      "com.github.sib_energy_craft.pipes.filters.item_filter_extractor.load.Stats",
+
+      "com.github.sib_energy_craft.pipes.filters.item_filter.load.Blocks",
+      "com.github.sib_energy_craft.pipes.filters.item_filter.load.Entities",
+      "com.github.sib_energy_craft.pipes.filters.item_filter.load.Items",
+      "com.github.sib_energy_craft.pipes.filters.item_filter.load.Screens",
 
       "com.github.sib_energy_craft.pipes.trash_can.load.Blocks",
       "com.github.sib_energy_craft.pipes.trash_can.load.Entities",

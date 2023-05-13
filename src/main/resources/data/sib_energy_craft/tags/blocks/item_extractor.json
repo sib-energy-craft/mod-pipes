@@ -3,6 +3,9 @@
   "values": [
     "sib_energy_craft:stone_item_extractor",
     "sib_energy_craft:iron_item_extractor",
-    "sib_energy_craft:diamond_item_extractor"
+    "sib_energy_craft:diamond_item_extractor",
+    "sib_energy_craft:stone_item_filter_extractor",
+    "sib_energy_craft:iron_item_filter_extractor",
+    "sib_energy_craft:diamond_item_filter_extractor"
   ]
 }
