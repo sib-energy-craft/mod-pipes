@@ -1,6 +1,6 @@
 package com.github.sib_energy_craft.pipes.filters.item_filter.screen;
 
-import com.github.sib_energy_craft.pipes.filters.item_filter.load.Screens;
+import com.github.sib_energy_craft.pipes.filters.item_filter.load.client.Screens;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.network.PacketByteBuf;

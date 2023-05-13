@@ -3,7 +3,7 @@ package com.github.sib_energy_craft.pipes.item_extractor.block.entity;
 import com.github.sib_energy_craft.pipes.api.ItemConsumer;
 import com.github.sib_energy_craft.pipes.api.ItemSupplier;
 import com.github.sib_energy_craft.pipes.item_extractor.block.ItemExtractorBlock;
-import com.github.sib_energy_craft.pipes.load.Screens;
+import com.github.sib_energy_craft.pipes.load.client.Screens;
 import com.github.sib_energy_craft.pipes.utils.PipeUtils;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;

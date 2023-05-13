@@ -2,7 +2,7 @@ package com.github.sib_energy_craft.pipes.trash_can.block.entity;
 
 import com.github.sib_energy_craft.pipes.api.ItemConsumer;
 import com.github.sib_energy_craft.pipes.trash_can.block.TrashCanBlock;
-import com.github.sib_energy_craft.pipes.load.Screens;
+import com.github.sib_energy_craft.pipes.load.client.Screens;
 import com.github.sib_energy_craft.pipes.utils.PipeUtils;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.Block;
