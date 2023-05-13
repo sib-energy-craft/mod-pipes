@@ -5,14 +5,13 @@ import com.github.sib_energy_craft.pipes.api.ItemSupplier;
 import com.github.sib_energy_craft.pipes.utils.PipeUtils;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @since 0.0.2
@@ -20,8 +19,6 @@ import java.util.stream.Collectors;
  */
 @Mixin(ChestBlockEntity.class)
 public class ChestBlockEntityMixin implements ItemConsumer, ItemSupplier {
-    @Shadow
-    private DefaultedList<ItemStack> inventory;
 
     @Override
     public boolean canConsume(@NotNull ItemStack itemStack, @NotNull Direction direction) {
@@ -35,7 +32,9 @@ public class ChestBlockEntityMixin implements ItemConsumer, ItemSupplier {
 
     @Override
     public @NotNull List<ItemStack> canSupply(@NotNull Direction direction) {
-        return inventory.stream()
+        var chestBlockEntity = getThis();
+        return IntStream.range(0, chestBlockEntity.size())
+                .mapToObj(chestBlockEntity::getStack)
                 .filter(it -> !it.isEmpty())
                 .map(ItemStack::copy)
                 .collect(Collectors.toList());
