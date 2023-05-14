@@ -3,6 +3,8 @@ package com.github.sib_energy_craft.pipes.filters.item_filter_extractor.screen;
 import com.github.sib_energy_craft.pipes.filters.ItemFilterMode;
 import com.github.sib_energy_craft.pipes.filters.item_filter_extractor.block.entity.ItemFilterExtractorBlockEntity;
 import com.github.sib_energy_craft.pipes.filters.item_filter_extractor.block.entity.ItemFilterExtractorBlockProperties;
+import com.github.sib_energy_craft.pipes.filters.screen.FilterSlot;
+import com.github.sib_energy_craft.sec_utils.screen.SlotsScreenHandler;
 import com.github.sib_energy_craft.sec_utils.screen.slot.SlotGroupMetaBuilder;
 import com.github.sib_energy_craft.sec_utils.screen.slot.SlotGroupsMeta;
 import com.github.sib_energy_craft.sec_utils.screen.slot.SlotGroupsMetaBuilder;
@@ -12,7 +14,10 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.*;
+import net.minecraft.screen.ArrayPropertyDelegate;
+import net.minecraft.screen.PropertyDelegate;
+import net.minecraft.screen.ScreenHandlerContext;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
  * @since 0.0.1
  * @author sibmaks
  */
-public abstract class AbstractItemFilterExtractorScreenHandler extends ScreenHandler {
+public abstract class AbstractItemFilterExtractorScreenHandler extends SlotsScreenHandler {
     private static final ItemFilterMode[] MODES = ItemFilterMode.values();
 
     private final PropertyDelegate propertyDelegate;
@@ -51,7 +56,13 @@ public abstract class AbstractItemFilterExtractorScreenHandler extends ScreenHan
 
         this.propertyDelegate = propertyDelegate;
         this.context = context;
+        this.slotGroupsMeta = buildSlots(playerInventory, filterInventory, inventory);
+        addProperties(propertyDelegate);
+    }
 
+    private @NotNull SlotGroupsMeta buildSlots(@NotNull PlayerInventory playerInventory,
+                                               @NotNull Inventory filterInventory,
+                                               @NotNull Inventory inventory) {
         int globalSlotIndex = 0;
         var slotGroupsBuilder = SlotGroupsMetaBuilder.builder();
 
@@ -99,9 +110,7 @@ public abstract class AbstractItemFilterExtractorScreenHandler extends ScreenHan
             slotGroupsBuilder.add(inventorySlotGroup);
         }
 
-        slotGroupsMeta = slotGroupsBuilder.build();
-
-        addProperties(propertyDelegate);
+        return slotGroupsBuilder.build();
     }
 
     @NotNull
@@ -112,11 +121,28 @@ public abstract class AbstractItemFilterExtractorScreenHandler extends ScreenHan
         if (slot.hasStack()) {
             var slotStack = slot.getStack();
             itemStack = slotStack.copy();
-            if (index >= 0 && index < 9 && !insertItem(slotStack, 9, 36, false)) {
-                return ItemStack.EMPTY;
-            } else if (index >= 9 && index < 36 && !insertItem(slotStack, 0, 9, false)) {
-                return ItemStack.EMPTY;
+            var slotMeta = this.slotGroupsMeta.getByGlobalSlotIndex(index);
+            if(slotMeta != null) {
+                var slotType = slotMeta.getSlotType();
+                if(slotType == ItemFilterExtractorSlotTypes.FILTER) {
+                    return ItemStack.EMPTY;
+                }
+                if (slotType == ItemFilterExtractorSlotTypes.INVENTORY) {
+                    if (!insertItem(slotGroupsMeta, slotStack, SlotTypes.QUICK_ACCESS, SlotTypes.PLAYER_INVENTORY)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+                if (slotType == SlotTypes.QUICK_ACCESS) {
+                    if (!insertItem(slotGroupsMeta, slotStack, SlotTypes.PLAYER_INVENTORY)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (slotType == SlotTypes.PLAYER_INVENTORY) {
+                    if (!insertItem(slotGroupsMeta, slotStack, SlotTypes.QUICK_ACCESS)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
             }
+            slot.onQuickTransfer(slotStack, itemStack);
             if (slotStack.isEmpty()) {
                 slot.setStack(ItemStack.EMPTY);
             } else {
