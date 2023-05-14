@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "diamond_item_filter_extractor",
   "pattern": [
     "E",
     "F"

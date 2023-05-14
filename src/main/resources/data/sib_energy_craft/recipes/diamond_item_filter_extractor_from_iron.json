@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "diamond_item_filter_extractor",
   "pattern": [
     "P",
     "E",
@@ -10,13 +11,13 @@
       "item": "sib_energy_craft:diamond_dust"
     },
     "E": {
-      "item": "sib_energy_craft:iron_item_extractor"
+      "item": "sib_energy_craft:iron_item_filter_extractor"
     },
     "P": {
       "item": "sib_energy_craft:diamond_pipe"
     }
   },
   "result": {
-    "item": "sib_energy_craft:diamond_item_extractor"
+    "item": "sib_energy_craft:diamond_item_filter_extractor"
   }
 }
