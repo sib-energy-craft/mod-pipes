@@ -1,6 +1,7 @@
 package com.github.sib_energy_craft.pipes.filters.item_filter.load;
 
 import com.github.sib_energy_craft.energy_api.utils.Identifiers;
+import com.github.sib_energy_craft.pipes.constants.PipeConstants;
 import com.github.sib_energy_craft.pipes.filters.item_filter.block.DiamondPipeItemFilterBlock;
 import com.github.sib_energy_craft.pipes.filters.item_filter.block.IronPipeItemFilterBlock;
 import com.github.sib_energy_craft.pipes.filters.item_filter.block.StonePipeItemFilterBlock;
@@ -29,7 +30,7 @@ public final class Blocks implements DefaultModInitializer {
                 .strength(1.5F)
                 .sounds(BlockSoundGroup.STONE);
 
-        var stonePipeItemFilter = new StonePipeItemFilterBlock(stoneSettings, 28);
+        var stonePipeItemFilter = new StonePipeItemFilterBlock(stoneSettings, PipeConstants.STONE);
         STONE_PIPE_ITEM_FILTER = BlockUtils.register(Identifiers.of("stone_pipe_item_filter"), stonePipeItemFilter);
 
         var ironSettings = AbstractBlock.Settings
@@ -37,7 +38,7 @@ public final class Blocks implements DefaultModInitializer {
                 .strength(2F)
                 .sounds(BlockSoundGroup.METAL);
 
-        var ironPipeItemFilterBlock = new IronPipeItemFilterBlock(ironSettings, 18);
+        var ironPipeItemFilterBlock = new IronPipeItemFilterBlock(ironSettings, PipeConstants.IRON);
         IRON_PIPE_ITEM_FILTER = BlockUtils.register(Identifiers.of("iron_pipe_item_filter"), ironPipeItemFilterBlock);
 
         var diamondMaterial = new Material.Builder(MapColor.DIAMOND_BLUE)
@@ -48,7 +49,7 @@ public final class Blocks implements DefaultModInitializer {
                 .strength(2.5F)
                 .sounds(BlockSoundGroup.METAL);
 
-        var diamondPipe = new DiamondPipeItemFilterBlock(diamondSettings, 8);
+        var diamondPipe = new DiamondPipeItemFilterBlock(diamondSettings, PipeConstants.DIAMOND);
         DIAMOND_PIPE_ITEM_FILTER = BlockUtils.register(Identifiers.of("diamond_pipe_item_filter"), diamondPipe);
     }
 }

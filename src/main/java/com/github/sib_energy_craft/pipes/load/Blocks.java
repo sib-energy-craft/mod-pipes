@@ -4,6 +4,7 @@ import com.github.sib_energy_craft.energy_api.utils.Identifiers;
 import com.github.sib_energy_craft.pipes.block.DiamondPipeBlock;
 import com.github.sib_energy_craft.pipes.block.IronPipeBlock;
 import com.github.sib_energy_craft.pipes.block.StonePipeBlock;
+import com.github.sib_energy_craft.pipes.constants.PipeConstants;
 import com.github.sib_energy_craft.sec_utils.common.Identified;
 import com.github.sib_energy_craft.sec_utils.load.DefaultModInitializer;
 import com.github.sib_energy_craft.sec_utils.utils.BlockUtils;
@@ -29,7 +30,7 @@ public final class Blocks implements DefaultModInitializer {
                 .strength(1.5F)
                 .sounds(BlockSoundGroup.STONE);
 
-        var stonePipe = new StonePipeBlock(stoneSettings, 28);
+        var stonePipe = new StonePipeBlock(stoneSettings, PipeConstants.STONE);
         STONE_PIPE = BlockUtils.register(Identifiers.of("stone_pipe"), stonePipe);
 
         var ironSettings = AbstractBlock.Settings
@@ -37,7 +38,7 @@ public final class Blocks implements DefaultModInitializer {
                 .strength(2F)
                 .sounds(BlockSoundGroup.METAL);
 
-        var ironPipe = new IronPipeBlock(ironSettings, 18);
+        var ironPipe = new IronPipeBlock(ironSettings, PipeConstants.IRON);
         IRON_PIPE = BlockUtils.register(Identifiers.of("iron_pipe"), ironPipe);
 
         var diamondMaterial = new Material.Builder(MapColor.DIAMOND_BLUE)
@@ -48,7 +49,7 @@ public final class Blocks implements DefaultModInitializer {
                 .strength(2.5F)
                 .sounds(BlockSoundGroup.METAL);
 
-        var diamondPipe = new DiamondPipeBlock(diamondSettings, 8);
+        var diamondPipe = new DiamondPipeBlock(diamondSettings, PipeConstants.DIAMOND);
         DIAMOND_PIPE = BlockUtils.register(Identifiers.of("diamond_pipe"), diamondPipe);
     }
 }

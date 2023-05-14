@@ -1,6 +1,7 @@
 package com.github.sib_energy_craft.pipes.filters.item_filter_extractor.load;
 
 import com.github.sib_energy_craft.energy_api.utils.Identifiers;
+import com.github.sib_energy_craft.pipes.constants.PipeConstants;
 import com.github.sib_energy_craft.pipes.filters.item_filter_extractor.block.DiamondItemFilterExtractorBlock;
 import com.github.sib_energy_craft.pipes.filters.item_filter_extractor.block.IronItemFilterExtractorBlock;
 import com.github.sib_energy_craft.pipes.filters.item_filter_extractor.block.StoneItemFilterExtractorBlock;
@@ -28,7 +29,7 @@ public final class Blocks implements DefaultModInitializer {
                 .strength(1.5F)
                 .sounds(BlockSoundGroup.STONE);
 
-        var stoneItemFilterExtractor = new StoneItemFilterExtractorBlock(stoneSettings, 28, 28);
+        var stoneItemFilterExtractor = new StoneItemFilterExtractorBlock(stoneSettings, PipeConstants.STONE, PipeConstants.STONE);
         STONE_ITEM_FILTER_EXTRACTOR = BlockUtils.register(Identifiers.of("stone_item_filter_extractor"), stoneItemFilterExtractor);
 
         var ironSettings = AbstractBlock.Settings
@@ -36,7 +37,7 @@ public final class Blocks implements DefaultModInitializer {
                 .strength(2F)
                 .sounds(BlockSoundGroup.METAL);
 
-        var ironItemFilterExtractor = new IronItemFilterExtractorBlock(ironSettings, 18, 18);
+        var ironItemFilterExtractor = new IronItemFilterExtractorBlock(ironSettings, PipeConstants.IRON, PipeConstants.IRON);
         IRON_ITEM_FILTER_EXTRACTOR = BlockUtils.register(Identifiers.of("iron_item_filter_extractor"), ironItemFilterExtractor);
 
         var diamondMaterial = new Material.Builder(MapColor.DIAMOND_BLUE)
@@ -47,7 +48,7 @@ public final class Blocks implements DefaultModInitializer {
                 .strength(2F)
                 .sounds(BlockSoundGroup.METAL);
 
-        var diamondItemFilterExtractor = new DiamondItemFilterExtractorBlock(diamondSettings, 8, 8);
+        var diamondItemFilterExtractor = new DiamondItemFilterExtractorBlock(diamondSettings, PipeConstants.DIAMOND, PipeConstants.DIAMOND);
         DIAMOND_ITEM_FILTER_EXTRACTOR = BlockUtils.register(Identifiers.of("diamond_item_filter_extractor"), diamondItemFilterExtractor);
 
     }

@@ -20,7 +20,7 @@ public class StoneItemExtractorBlockEntity extends ItemExtractorBlockEntity<Ston
 
     @NotNull
     @Override
-    protected Text getContainerName() {
+    public Text getDisplayName() {
         return Text.translatable("container.stone_item_extractor");
     }
 

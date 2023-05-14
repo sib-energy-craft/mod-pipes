@@ -7,18 +7,20 @@ import com.github.sib_energy_craft.pipes.load.client.Screens;
 import com.github.sib_energy_craft.pipes.utils.PipeUtils;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.LootableContainerBlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.GenericContainerScreenHandler;
+import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -36,11 +38,11 @@ import java.util.stream.Collectors;
  * @since 0.0.1
  * @author sibmaks
  */
-public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
-        extends LootableContainerBlockEntity implements ExtendedScreenHandlerFactory, ItemSupplier {
-    private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(9, ItemStack.EMPTY);
+public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock> extends BlockEntity
+        implements NamedScreenHandlerFactory, ExtendedScreenHandlerFactory, ItemSupplier {
 
     private final T block;
+    private final SimpleInventory inventory;
     private int lastTicksToInsert;
     private int lastTicksToExtract;
 
@@ -50,44 +52,23 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
                                     @NotNull BlockState state) {
         super(entityType, pos, state);
         this.block = block;
+        this.inventory = new SimpleInventory(9);
+        this.inventory.addListener(it -> ItemExtractorBlockEntity.this.markDirty());
     }
 
     @Override
     public void readNbt(@NotNull NbtCompound nbt) {
         super.readNbt(nbt);
-        this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
-        if (!this.deserializeLootTable(nbt)) {
-            Inventories.readNbt(nbt, this.inventory);
-        }
+        var inventoryCompound = nbt.getCompound("inventory");
+        Inventories.readNbt(inventoryCompound, inventory.stacks);
     }
 
     @Override
     protected void writeNbt(@NotNull NbtCompound nbt) {
         super.writeNbt(nbt);
-        if (!this.serializeLootTable(nbt)) {
-            Inventories.writeNbt(nbt, this.inventory);
-        }
-    }
-
-    @Override
-    public int size() {
-        return this.inventory.size();
-    }
-
-    @NotNull
-    @Override
-    public ItemStack removeStack(int slot, int amount) {
-        this.checkLootInteraction(null);
-        return Inventories.splitStack(this.getInvStackList(), slot, amount);
-    }
-
-    @Override
-    public void setStack(int slot, @NotNull ItemStack stack) {
-        this.checkLootInteraction(null);
-        this.getInvStackList().set(slot, stack);
-        if (stack.getCount() > this.getMaxCountPerStack()) {
-            stack.setCount(this.getMaxCountPerStack());
-        }
+        var filterCompound = new NbtCompound();
+        Inventories.writeNbt(filterCompound, inventory.stacks);
+        nbt.put("inventory", filterCompound);
     }
 
     public static void serverTick(@NotNull World world,
@@ -106,11 +87,11 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
             return;
         }
         boolean modified = false;
-        if(!blockEntity.isEmpty() && blockEntity.lastTicksToInsert > 0) {
+        if(!blockEntity.inventory.isEmpty() && blockEntity.lastTicksToInsert > 0) {
             blockEntity.lastTicksToInsert--;
         }
-        if (!blockEntity.isEmpty() && blockEntity.lastTicksToInsert <= 0) {
-            modified = insert(world, pos, state, blockEntity);
+        if (!blockEntity.inventory.isEmpty() && blockEntity.lastTicksToInsert <= 0) {
+            modified = insert(world, pos, state, blockEntity.inventory);
             blockEntity.lastTicksToInsert = blockEntity.block.getTicksToInsert();
         }
         if(blockEntity.hasSpace() && blockEntity.lastTicksToExtract > 0) {
@@ -126,7 +107,7 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
     }
 
     private boolean hasSpace() {
-        return this.inventory.stream()
+        return this.inventory.stacks.stream()
                 .anyMatch(it -> it.isEmpty() || it.getCount() != it.getMaxCount());
     }
 
@@ -177,12 +158,13 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
                                    @NotNull ItemStack itemStack,
                                    @NotNull Direction side) {
         var consumingStack = new ItemStack(itemStack.getItem(), 1);
-        if (!consumingStack.isEmpty() && itemSupplier.supply(consumingStack, side)) {
-            var notTransferred = PipeUtils.transfer(extractor, consumingStack, side);
+        if (!consumingStack.isEmpty() && extractor.inventory.canInsert(consumingStack) &&
+                itemSupplier.supply(consumingStack, side)) {
+            var notTransferred = extractor.inventory.addStack(consumingStack);
             if (notTransferred.isEmpty()) {
                 return true;
             }
-            itemSupplier.returnStack(consumingStack, side);
+            itemSupplier.returnStack(notTransferred, side);
         }
         return false;
     }
@@ -213,22 +195,12 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
         return PipeUtils.getItemSupplier(world, pos.offset(direction));
     }
 
-    @NotNull
+    @Nullable
     @Override
-    protected DefaultedList<ItemStack> getInvStackList() {
-        return this.inventory;
-    }
-
-    @Override
-    protected void setInvStackList(@NotNull DefaultedList<ItemStack> list) {
-        this.inventory = list;
-    }
-
-    @NotNull
-    @Override
-    protected ScreenHandler createScreenHandler(int syncId,
-                                                @NotNull PlayerInventory playerInventory) {
-        return new GenericContainerScreenHandler(Screens.GENERIC_9X1, syncId, playerInventory, this, 1);
+    public ScreenHandler createMenu(int syncId,
+                                    @NotNull PlayerInventory playerInventory,
+                                    @NotNull PlayerEntity player) {
+        return new GenericContainerScreenHandler(Screens.GENERIC_9X1, syncId, playerInventory, inventory, 1);
     }
 
     @Override
@@ -247,7 +219,7 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
         if(direction == consumingDirection) {
             return Collections.emptyList();
         }
-        return inventory.stream()
+        return inventory.stacks.stream()
                 .filter(it -> !it.isEmpty())
                 .map(ItemStack::copy)
                 .collect(Collectors.toList());
@@ -263,11 +235,11 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock>
         if(direction == consumingDirection) {
             return false;
         }
-        return PipeUtils.supply(this, requested);
+        return PipeUtils.supply(inventory, requested);
     }
 
     @Override
     public void returnStack(@NotNull ItemStack requested, @NotNull Direction direction) {
-        PipeUtils.consume(this, requested);
+        PipeUtils.consume(inventory, requested);
     }
 }

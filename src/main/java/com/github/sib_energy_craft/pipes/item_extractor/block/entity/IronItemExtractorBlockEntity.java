@@ -20,7 +20,7 @@ public class IronItemExtractorBlockEntity extends ItemExtractorBlockEntity<IronI
 
     @NotNull
     @Override
-    protected Text getContainerName() {
+    public Text getDisplayName() {
         return Text.translatable("container.iron_item_extractor");
     }
 

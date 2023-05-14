@@ -40,8 +40,8 @@ import java.util.stream.Collectors;
  * @since 0.0.6
  * @author sibmaks
  */
-public abstract class ItemFilterExtractorBlockEntity<T extends ItemFilterExtractorBlock>
-        extends BlockEntity implements ExtendedScreenHandlerFactory, NamedScreenHandlerFactory, ItemSupplier {
+public abstract class ItemFilterExtractorBlockEntity<T extends ItemFilterExtractorBlock> extends BlockEntity
+        implements ExtendedScreenHandlerFactory, NamedScreenHandlerFactory, ItemSupplier {
 
     private final SimpleInventory filterInventory;
     private final SimpleInventory inventory;
@@ -184,12 +184,13 @@ public abstract class ItemFilterExtractorBlockEntity<T extends ItemFilterExtract
             return false;
         }
         var consumingStack = new ItemStack(itemStack.getItem(), 1);
-        if (!consumingStack.isEmpty() && itemSupplier.supply(consumingStack, side)) {
-            var notTransferred = PipeUtils.transfer(extractor.inventory, consumingStack, side);
+        if (!consumingStack.isEmpty() && extractor.inventory.canInsert(consumingStack) &&
+                itemSupplier.supply(consumingStack, side)) {
+            var notTransferred = extractor.inventory.addStack(consumingStack);
             if (notTransferred.isEmpty()) {
                 return true;
             }
-            itemSupplier.returnStack(consumingStack, side);
+            itemSupplier.returnStack(notTransferred, side);
         }
         return false;
     }

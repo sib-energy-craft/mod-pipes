@@ -8,17 +8,18 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.BlockMirror;
+import net.minecraft.util.BlockRotation;
+import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -187,20 +188,6 @@ public abstract class ItemExtractorBlock extends ConnectingBlock implements Bloc
         return state.with(FACING_PROPERTIES.get(direction), this.connectsTo(direction, state, neighborState));
     }
 
-    @Override
-    public void onPlaced(@NotNull World world,
-                         @NotNull BlockPos pos,
-                         @NotNull BlockState state,
-                         @Nullable LivingEntity placer,
-                         @NotNull ItemStack itemStack) {
-        if (itemStack.hasCustomName()) {
-            var blockEntity = world.getBlockEntity(pos);
-            if(blockEntity instanceof ItemExtractorBlockEntity<?> itemExtractorBlockEntity) {
-                itemExtractorBlockEntity.setCustomName(itemStack.getName());
-            }
-        }
-    }
-
     @NotNull
     @Override
     public ActionResult onUse(@NotNull BlockState state,
@@ -230,8 +217,8 @@ public abstract class ItemExtractorBlock extends ConnectingBlock implements Bloc
             return;
         }
         var blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof ItemExtractorBlockEntity<?> itemExtractorBlockEntity) {
-            ItemScatterer.spawn(world, pos, itemExtractorBlockEntity);
+        if (blockEntity instanceof ItemExtractorBlockEntity<?>) {
+//            ItemScatterer.spawn(world, pos, itemExtractorBlockEntity);
             world.updateComparators(pos, this);
         }
         super.onStateReplaced(state, world, pos, newState, moved);

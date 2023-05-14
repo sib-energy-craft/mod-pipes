@@ -1,6 +1,7 @@
 package com.github.sib_energy_craft.pipes.item_extractor.load;
 
 import com.github.sib_energy_craft.energy_api.utils.Identifiers;
+import com.github.sib_energy_craft.pipes.constants.PipeConstants;
 import com.github.sib_energy_craft.pipes.item_extractor.block.DiamondItemExtractorBlock;
 import com.github.sib_energy_craft.pipes.item_extractor.block.IronItemExtractorBlock;
 import com.github.sib_energy_craft.pipes.item_extractor.block.StoneItemExtractorBlock;
@@ -28,7 +29,7 @@ public final class Blocks implements DefaultModInitializer {
                 .strength(1.5F)
                 .sounds(BlockSoundGroup.STONE);
 
-        var stoneItemExtractor = new StoneItemExtractorBlock(stoneSettings, 28, 28);
+        var stoneItemExtractor = new StoneItemExtractorBlock(stoneSettings, PipeConstants.STONE, PipeConstants.STONE);
         STONE_ITEM_EXTRACTOR = BlockUtils.register(Identifiers.of("stone_item_extractor"), stoneItemExtractor);
 
         var ironSettings = AbstractBlock.Settings
@@ -36,7 +37,7 @@ public final class Blocks implements DefaultModInitializer {
                 .strength(2F)
                 .sounds(BlockSoundGroup.METAL);
 
-        var ironItemExtractor = new IronItemExtractorBlock(ironSettings, 18, 18);
+        var ironItemExtractor = new IronItemExtractorBlock(ironSettings, PipeConstants.IRON, PipeConstants.IRON);
         IRON_ITEM_EXTRACTOR = BlockUtils.register(Identifiers.of("iron_item_extractor"), ironItemExtractor);
 
         var diamondMaterial = new Material.Builder(MapColor.DIAMOND_BLUE)
@@ -47,7 +48,7 @@ public final class Blocks implements DefaultModInitializer {
                 .strength(2F)
                 .sounds(BlockSoundGroup.METAL);
 
-        var diamondItemExtractor = new DiamondItemExtractorBlock(diamondSettings, 8, 8);
+        var diamondItemExtractor = new DiamondItemExtractorBlock(diamondSettings, PipeConstants.DIAMOND, PipeConstants.DIAMOND);
         DIAMOND_ITEM_EXTRACTOR = BlockUtils.register(Identifiers.of("diamond_item_extractor"), diamondItemExtractor);
 
     }

@@ -20,7 +20,7 @@ public class DiamondItemExtractorBlockEntity extends ItemExtractorBlockEntity<Di
 
     @NotNull
     @Override
-    protected Text getContainerName() {
+    public Text getDisplayName() {
         return Text.translatable("container.diamond_item_extractor");
     }
 

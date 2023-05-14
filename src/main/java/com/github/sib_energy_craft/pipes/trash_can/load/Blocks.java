@@ -1,6 +1,7 @@
 package com.github.sib_energy_craft.pipes.trash_can.load;
 
 import com.github.sib_energy_craft.energy_api.utils.Identifiers;
+import com.github.sib_energy_craft.pipes.constants.PipeConstants;
 import com.github.sib_energy_craft.pipes.trash_can.block.DiamondTrashCanBlock;
 import com.github.sib_energy_craft.pipes.trash_can.block.IronTrashCanBlock;
 import com.github.sib_energy_craft.pipes.trash_can.block.StoneTrashCanBlock;
@@ -28,7 +29,7 @@ public final class Blocks implements DefaultModInitializer {
                 .strength(1.5F)
                 .sounds(BlockSoundGroup.STONE);
 
-        var stoneTrashCan = new StoneTrashCanBlock(stoneSettings, 28);
+        var stoneTrashCan = new StoneTrashCanBlock(stoneSettings, PipeConstants.STONE);
         STONE_TRASH_CAN = BlockUtils.register(Identifiers.of("stone_trash_can"), stoneTrashCan);
 
         var ironSettings = AbstractBlock.Settings
@@ -36,7 +37,7 @@ public final class Blocks implements DefaultModInitializer {
                 .strength(2F)
                 .sounds(BlockSoundGroup.METAL);
 
-        var ironTrashCan = new IronTrashCanBlock(ironSettings, 18);
+        var ironTrashCan = new IronTrashCanBlock(ironSettings, PipeConstants.IRON);
         IRON_TRASH_CAN = BlockUtils.register(Identifiers.of("iron_trash_can"), ironTrashCan);
 
         var diamondMaterial = new Material.Builder(MapColor.DIAMOND_BLUE)
@@ -47,7 +48,7 @@ public final class Blocks implements DefaultModInitializer {
                 .strength(2F)
                 .sounds(BlockSoundGroup.METAL);
 
-        var diamondTrashCan = new DiamondTrashCanBlock(diamondSettings, 8);
+        var diamondTrashCan = new DiamondTrashCanBlock(diamondSettings, PipeConstants.DIAMOND);
         DIAMOND_TRASH_CAN = BlockUtils.register(Identifiers.of("diamond_trash_can"), diamondTrashCan);
 
     }
