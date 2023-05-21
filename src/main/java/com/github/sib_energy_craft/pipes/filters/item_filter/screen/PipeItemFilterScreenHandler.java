@@ -1,6 +1,6 @@
 package com.github.sib_energy_craft.pipes.filters.item_filter.screen;
 
-import com.github.sib_energy_craft.pipes.filters.item_filter.load.client.Screens;
+import com.github.sib_energy_craft.pipes.filters.item_filter.load.ScreenHandlers;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.network.PacketByteBuf;
@@ -23,13 +23,13 @@ public class PipeItemFilterScreenHandler extends AbstractPipeItemFilterScreenHan
                                        @NotNull PropertyDelegate propertyDelegate,
                                        @Nullable World world,
                                        @NotNull BlockPos pos) {
-        super(Screens.PIPE_ITEM_FILTER, syncId, playerInventory, inventory, propertyDelegate,
+        super(ScreenHandlers.PIPE_ITEM_FILTER, syncId, playerInventory, inventory, propertyDelegate,
                 ScreenHandlerContext.create(world, pos));
     }
 
     public PipeItemFilterScreenHandler(int syncId,
                                        @NotNull PlayerInventory playerInventory,
                                        @NotNull PacketByteBuf packetByteBuf) {
-        super(Screens.PIPE_ITEM_FILTER, syncId, playerInventory);
+        super(ScreenHandlers.PIPE_ITEM_FILTER, syncId, playerInventory);
     }
 }
