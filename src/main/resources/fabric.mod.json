@@ -25,11 +25,13 @@
       "com.github.sib_energy_craft.pipes.filters.item_filter_extractor.load.Blocks",
       "com.github.sib_energy_craft.pipes.filters.item_filter_extractor.load.Entities",
       "com.github.sib_energy_craft.pipes.filters.item_filter_extractor.load.Items",
+      "com.github.sib_energy_craft.pipes.filters.item_filter_extractor.load.ScreenHandlers",
       "com.github.sib_energy_craft.pipes.filters.item_filter_extractor.load.Stats",
 
       "com.github.sib_energy_craft.pipes.filters.item_filter.load.Blocks",
       "com.github.sib_energy_craft.pipes.filters.item_filter.load.Entities",
       "com.github.sib_energy_craft.pipes.filters.item_filter.load.Items",
+      "com.github.sib_energy_craft.pipes.filters.item_filter.load.ScreenHandlers",
 
       "com.github.sib_energy_craft.pipes.trash_can.load.Blocks",
       "com.github.sib_energy_craft.pipes.trash_can.load.Entities",
@@ -38,7 +40,8 @@
 
       "com.github.sib_energy_craft.pipes.load.Blocks",
       "com.github.sib_energy_craft.pipes.load.Entities",
-      "com.github.sib_energy_craft.pipes.load.Items"
+      "com.github.sib_energy_craft.pipes.load.Items",
+      "com.github.sib_energy_craft.pipes.load.ScreenHandlers"
     ],
     "client": [
       "com.github.sib_energy_craft.pipes.filters.item_filter_extractor.load.client.Screens",

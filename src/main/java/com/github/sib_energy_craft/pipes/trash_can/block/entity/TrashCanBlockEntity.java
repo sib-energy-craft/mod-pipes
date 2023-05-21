@@ -1,8 +1,8 @@
 package com.github.sib_energy_craft.pipes.trash_can.block.entity;
 
 import com.github.sib_energy_craft.pipes.api.ItemConsumer;
+import com.github.sib_energy_craft.pipes.load.ScreenHandlers;
 import com.github.sib_energy_craft.pipes.trash_can.block.TrashCanBlock;
-import com.github.sib_energy_craft.pipes.load.client.Screens;
 import com.github.sib_energy_craft.pipes.utils.PipeUtils;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.Block;
@@ -213,7 +213,7 @@ public abstract class TrashCanBlockEntity<T extends TrashCanBlock>
     @Override
     protected ScreenHandler createScreenHandler(int syncId,
                                                 @NotNull PlayerInventory playerInventory) {
-        return new GenericContainerScreenHandler(Screens.GENERIC_9X1, syncId, playerInventory, this, 1);
+        return new GenericContainerScreenHandler(ScreenHandlers.GENERIC_9X1, syncId, playerInventory, this, 1);
     }
 
     @Override

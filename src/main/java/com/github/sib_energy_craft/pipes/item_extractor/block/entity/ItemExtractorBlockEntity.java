@@ -3,7 +3,7 @@ package com.github.sib_energy_craft.pipes.item_extractor.block.entity;
 import com.github.sib_energy_craft.pipes.api.ItemConsumer;
 import com.github.sib_energy_craft.pipes.api.ItemSupplier;
 import com.github.sib_energy_craft.pipes.item_extractor.block.ItemExtractorBlock;
-import com.github.sib_energy_craft.pipes.load.client.Screens;
+import com.github.sib_energy_craft.pipes.load.ScreenHandlers;
 import com.github.sib_energy_craft.pipes.utils.PipeUtils;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
@@ -200,7 +200,7 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock> ext
     public ScreenHandler createMenu(int syncId,
                                     @NotNull PlayerInventory playerInventory,
                                     @NotNull PlayerEntity player) {
-        return new GenericContainerScreenHandler(Screens.GENERIC_9X1, syncId, playerInventory, inventory, 1);
+        return new GenericContainerScreenHandler(ScreenHandlers.GENERIC_9X1, syncId, playerInventory, inventory, 1);
     }
 
     @Override
