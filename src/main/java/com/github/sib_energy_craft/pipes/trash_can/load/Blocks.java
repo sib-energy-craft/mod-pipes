@@ -29,7 +29,7 @@ public final class Blocks implements DefaultModInitializer {
                 .strength(1.5F)
                 .sounds(BlockSoundGroup.STONE);
 
-        var stoneTrashCan = new StoneTrashCanBlock(stoneSettings, PipeConstants.STONE / 2);
+        var stoneTrashCan = new StoneTrashCanBlock(stoneSettings, PipeConstants.STONE);
         STONE_TRASH_CAN = BlockUtils.register(Identifiers.of("stone_trash_can"), stoneTrashCan);
 
         var ironSettings = AbstractBlock.Settings
@@ -37,7 +37,7 @@ public final class Blocks implements DefaultModInitializer {
                 .strength(2F)
                 .sounds(BlockSoundGroup.METAL);
 
-        var ironTrashCan = new IronTrashCanBlock(ironSettings, PipeConstants.IRON / 2);
+        var ironTrashCan = new IronTrashCanBlock(ironSettings, PipeConstants.IRON);
         IRON_TRASH_CAN = BlockUtils.register(Identifiers.of("iron_trash_can"), ironTrashCan);
 
         var diamondMaterial = new Material.Builder(MapColor.DIAMOND_BLUE)
@@ -48,7 +48,7 @@ public final class Blocks implements DefaultModInitializer {
                 .strength(2F)
                 .sounds(BlockSoundGroup.METAL);
 
-        var diamondTrashCan = new DiamondTrashCanBlock(diamondSettings, PipeConstants.DIAMOND / 2);
+        var diamondTrashCan = new DiamondTrashCanBlock(diamondSettings, PipeConstants.DIAMOND);
         DIAMOND_TRASH_CAN = BlockUtils.register(Identifiers.of("diamond_trash_can"), diamondTrashCan);
 
     }

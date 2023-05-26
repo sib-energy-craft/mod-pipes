@@ -150,6 +150,7 @@ public abstract class TrashCanBlockEntity<T extends TrashCanBlock>
 
     private static boolean removeItem(@NotNull Inventory inventory) {
         int size = inventory.size();
+        boolean removed = false;
         for(int slot = 0; slot < size; slot++){
             var stack = inventory.getStack(slot);
             if(!stack.isEmpty()) {
@@ -157,10 +158,10 @@ public abstract class TrashCanBlockEntity<T extends TrashCanBlock>
                 if(stack.isEmpty()) {
                     inventory.setStack(slot, ItemStack.EMPTY);
                 }
-                return true;
+                removed = true;
             }
         }
-        return false;
+        return removed;
     }
 
     @Override
