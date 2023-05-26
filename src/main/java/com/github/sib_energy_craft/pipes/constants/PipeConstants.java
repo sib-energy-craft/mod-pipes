@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class PipeConstants {
-    public static final int STONE = 24;
-    public static final int IRON = 16;
+    public static final int STONE = 20;
+    public static final int IRON = 14;
     public static final int DIAMOND = 8;
 }
