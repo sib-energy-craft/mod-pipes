@@ -5,11 +5,11 @@
     "#P"
   ],
   "key": {
-    "#": {
-      "item": "sib_energy_craft:item_filter"
-    },
     "P": {
-      "item": "sib_energy_craft:bronze_pipe"
+      "item": "sib_energy_craft:stone_pipe_item_filter"
+    },
+    "#": {
+      "item": "sib_energy_craft:bronze_plate"
     }
   },
   "result": {

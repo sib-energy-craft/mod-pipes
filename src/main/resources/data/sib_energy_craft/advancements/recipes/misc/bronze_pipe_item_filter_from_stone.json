@@ -1,0 +1,47 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "sib_energy_craft:bronze_pipe_item_filter_from_stone"
+    ]
+  },
+  "criteria": {
+    "has_bronze_plate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sib_energy_craft:bronze_plate"
+            ]
+          }
+        ]
+      }
+    },
+    "has_stone_pipe_item_filter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sib_energy_craft:stone_pipe_item_filter"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "sib_energy_craft:bronze_pipe_item_filter_from_stone"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_bronze_plate",
+      "has_stone_pipe_item_filter",
+      "has_the_recipe"
+    ]
+  ]
+}
