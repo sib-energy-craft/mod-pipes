@@ -1,11 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "P",
-    "E",
-    "D"
+    "GPG",
+    "DED"
   ],
   "key": {
+    "G": {
+      "item": "sib_energy_craft:gold_dust"
+    },
     "D": {
       "item": "sib_energy_craft:diamond_dust"
     },

@@ -45,7 +45,7 @@ public abstract class PipeItemFilterBlock extends ConnectingBlock implements Blo
 
     public PipeItemFilterBlock(@NotNull AbstractBlock.Settings settings,
                                int ticksToInsert) {
-        super(0.1875f, settings);
+        super(0.125f, settings);
         this.ticksToInsert = ticksToInsert;
         this.setDefaultState(this.stateManager.getDefaultState()
                 .with(NORTH, false)

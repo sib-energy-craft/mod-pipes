@@ -2,6 +2,9 @@
   "block.sib_energy_craft.stone_item_extractor": "Каменный извелкатель предметов",
   "container.stone_item_extractor": "Каменный извелкатель предметов",
 
+  "block.sib_energy_craft.bronze_item_extractor": "Бронзовый извелкатель предметов",
+  "container.bronze_item_extractor": "Бронзовый извелкатель предметов",
+
   "block.sib_energy_craft.iron_item_extractor": "Железный извелкатель предметов",
   "container.iron_item_extractor": "Железный извелкатель предметов",
 
@@ -13,6 +16,8 @@
   "stat.sib_energy_craft.interact_with_trash_can": "Использований мусорки",
 
   "block.sib_energy_craft.stone_pipe": "Каменная труба",
+
+  "block.sib_energy_craft.bronze_pipe": "Бронзовая труба",
 
   "block.sib_energy_craft.iron_pipe": "Железная труба",
 
@@ -26,6 +31,9 @@
   "block.sib_energy_craft.stone_pipe_item_filter": "Фильтрующая каменная труба",
   "container.stone_pipe_item_filter": "Фильтрующая каменная труба",
 
+  "block.sib_energy_craft.bronze_pipe_item_filter": "Фильтрующая бронзовая труба",
+  "container.bronze_pipe_item_filter": "Фильтрующая бронзовая труба",
+
   "block.sib_energy_craft.iron_pipe_item_filter": "Фильтрующая железная труба",
   "container.iron_pipe_item_filter": "Фильтрующая железная труба",
 
@@ -35,6 +43,9 @@
   "block.sib_energy_craft.stone_trash_can": "Каменная мусорка",
   "container.stone_trash_can": "Каменная мусорка",
 
+  "block.sib_energy_craft.bronze_trash_can": "Бронзовая мусорка",
+  "container.bronze_trash_can": "Бронзовая мусорка",
+
   "block.sib_energy_craft.iron_trash_can": "Железная мусорка",
   "container.iron_trash_can": "Железная мусорка",
 
@@ -43,6 +54,9 @@
 
   "block.sib_energy_craft.stone_item_filter_extractor": "Каменный фильтрующий извлекатель предметов",
   "container.stone_item_filter_extractor": "Каменный фильтрующий извлекатель предметов",
+
+  "block.sib_energy_craft.bronze_item_filter_extractor": "Бронзовый фильтрующий извлекатель предметов",
+  "container.bronze_item_filter_extractor": "Бронзовый фильтрующий извлекатель предметов",
 
   "block.sib_energy_craft.iron_item_filter_extractor": "Железный фильтрующий извлекатель предметов",
   "container.iron_item_filter_extractor": "Железный фильтрующий извлекатель предметов",

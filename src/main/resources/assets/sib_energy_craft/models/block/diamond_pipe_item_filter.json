@@ -1,6 +1,6 @@
 {
-  "parent": "sib_energy_craft:block/template_pipe_item_filter",
+  "parent": "sib_energy_craft:block/template_pipe",
   "textures": {
-    "side": "sib_energy_craft:block/diamond_pipe"
+    "side": "sib_energy_craft:block/diamond_pipe_item_filter"
   }
 }

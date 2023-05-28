@@ -2,16 +2,18 @@ package com.github.sib_energy_craft.pipes.filters.item_filter_extractor.load;
 
 import com.github.sib_energy_craft.energy_api.utils.Identifiers;
 import com.github.sib_energy_craft.pipes.constants.PipeConstants;
+import com.github.sib_energy_craft.pipes.filters.item_filter_extractor.block.BronzeItemFilterExtractorBlock;
 import com.github.sib_energy_craft.pipes.filters.item_filter_extractor.block.DiamondItemFilterExtractorBlock;
 import com.github.sib_energy_craft.pipes.filters.item_filter_extractor.block.IronItemFilterExtractorBlock;
 import com.github.sib_energy_craft.pipes.filters.item_filter_extractor.block.StoneItemFilterExtractorBlock;
 import com.github.sib_energy_craft.sec_utils.common.Identified;
 import com.github.sib_energy_craft.sec_utils.load.DefaultModInitializer;
-import com.github.sib_energy_craft.sec_utils.utils.BlockUtils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.sound.BlockSoundGroup;
+
+import static com.github.sib_energy_craft.sec_utils.utils.BlockUtils.register;
 
 
 /**
@@ -20,6 +22,7 @@ import net.minecraft.sound.BlockSoundGroup;
  */
 public final class Blocks implements DefaultModInitializer {
     public static final Identified<StoneItemFilterExtractorBlock> STONE_ITEM_FILTER_EXTRACTOR;
+    public static final Identified<BronzeItemFilterExtractorBlock> BRONZE_ITEM_FILTER_EXTRACTOR;
     public static final Identified<IronItemFilterExtractorBlock> IRON_ITEM_FILTER_EXTRACTOR;
     public static final Identified<DiamondItemFilterExtractorBlock> DIAMOND_ITEM_FILTER_EXTRACTOR;
 
@@ -30,7 +33,15 @@ public final class Blocks implements DefaultModInitializer {
                 .sounds(BlockSoundGroup.STONE);
 
         var stoneItemFilterExtractor = new StoneItemFilterExtractorBlock(stoneSettings, PipeConstants.STONE, PipeConstants.STONE);
-        STONE_ITEM_FILTER_EXTRACTOR = BlockUtils.register(Identifiers.of("stone_item_filter_extractor"), stoneItemFilterExtractor);
+        STONE_ITEM_FILTER_EXTRACTOR = register(Identifiers.of("stone_item_filter_extractor"), stoneItemFilterExtractor);
+
+        var bronzeSettings = AbstractBlock.Settings
+                .of(Material.METAL)
+                .strength(1.75F)
+                .sounds(BlockSoundGroup.METAL);
+
+        var bronzeItemFilterExtractor = new BronzeItemFilterExtractorBlock(bronzeSettings, PipeConstants.BRONZE, PipeConstants.BRONZE);
+        BRONZE_ITEM_FILTER_EXTRACTOR = register(Identifiers.of("bronze_item_filter_extractor"), bronzeItemFilterExtractor);
 
         var ironSettings = AbstractBlock.Settings
                 .of(Material.METAL)
@@ -38,18 +49,18 @@ public final class Blocks implements DefaultModInitializer {
                 .sounds(BlockSoundGroup.METAL);
 
         var ironItemFilterExtractor = new IronItemFilterExtractorBlock(ironSettings, PipeConstants.IRON, PipeConstants.IRON);
-        IRON_ITEM_FILTER_EXTRACTOR = BlockUtils.register(Identifiers.of("iron_item_filter_extractor"), ironItemFilterExtractor);
+        IRON_ITEM_FILTER_EXTRACTOR = register(Identifiers.of("iron_item_filter_extractor"), ironItemFilterExtractor);
 
         var diamondMaterial = new Material.Builder(MapColor.DIAMOND_BLUE)
                 .build();
 
         var diamondSettings = AbstractBlock.Settings
                 .of(diamondMaterial)
-                .strength(2F)
+                .strength(2.25F)
                 .sounds(BlockSoundGroup.METAL);
 
         var diamondItemFilterExtractor = new DiamondItemFilterExtractorBlock(diamondSettings, PipeConstants.DIAMOND, PipeConstants.DIAMOND);
-        DIAMOND_ITEM_FILTER_EXTRACTOR = BlockUtils.register(Identifiers.of("diamond_item_filter_extractor"), diamondItemFilterExtractor);
+        DIAMOND_ITEM_FILTER_EXTRACTOR = register(Identifiers.of("diamond_item_filter_extractor"), diamondItemFilterExtractor);
 
     }
 }

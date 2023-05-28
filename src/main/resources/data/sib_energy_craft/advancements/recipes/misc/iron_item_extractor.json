@@ -30,13 +30,13 @@
         ]
       }
     },
-    "has_stone_item_extractor": {
+    "has_bronze_item_extractor": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "sib_energy_craft:stone_item_extractor"
+              "sib_energy_craft:bronze_item_extractor"
             ]
           }
         ]
@@ -65,7 +65,7 @@
     [
       "has_lapis_lazuli",
       "has_iron_plate",
-      "has_stone_item_extractor",
+      "has_bronze_item_extractor",
       "has_iron_pipe",
       "has_the_recipe"
     ]

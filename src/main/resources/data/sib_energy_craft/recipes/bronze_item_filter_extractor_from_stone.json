@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "bronze_item_filter_extractor",
+  "pattern": [
+    "DPD",
+    "#E#"
+  ],
+  "key": {
+    "D": {
+      "item": "sib_energy_craft:silver_dust"
+    },
+    "#": {
+      "item": "sib_energy_craft:bronze_plate"
+    },
+    "E": {
+      "item": "sib_energy_craft:stone_item_filter_extractor"
+    },
+    "P": {
+      "item": "sib_energy_craft:bronze_pipe"
+    }
+  },
+  "result": {
+    "item": "sib_energy_craft:bronze_item_filter_extractor"
+  }
+}

@@ -18,13 +18,13 @@
         ]
       }
     },
-    "has_stone_pipe": {
+    "has_bronze_pipe": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "sib_energy_craft:stone_pipe"
+              "sib_energy_craft:bronze_pipe"
             ]
           }
         ]
@@ -40,7 +40,7 @@
   "requirements": [
     [
       "has_iron_plate",
-      "has_stone_pipe",
+      "has_bronze_pipe",
       "has_the_recipe"
     ]
   ]

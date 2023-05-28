@@ -1,0 +1,7 @@
+{
+  "parent": "sib_energy_craft:block/template_item_extractor_dot",
+  "textures": {
+    "side": "sib_energy_craft:block/bronze_item_extractor_side",
+    "pipe": "sib_energy_craft:block/bronze_pipe"
+  }
+}

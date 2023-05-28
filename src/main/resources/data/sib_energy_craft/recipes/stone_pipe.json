@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "SSS",
-    "GRG",
+    "DRG",
     "SSS"
   ],
   "key": {
@@ -12,11 +12,15 @@
     "S": {
       "item": "minecraft:stone_slab"
     },
+    "D": {
+      "item": "sib_energy_craft:silver_dust"
+    },
     "G": {
       "item": "minecraft:glass"
     }
   },
   "result": {
-    "item": "sib_energy_craft:stone_pipe"
+    "item": "sib_energy_craft:stone_pipe",
+    "count": 2
   }
 }

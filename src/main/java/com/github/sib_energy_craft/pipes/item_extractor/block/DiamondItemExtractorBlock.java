@@ -1,6 +1,7 @@
 package com.github.sib_energy_craft.pipes.item_extractor.block;
 
 import com.github.sib_energy_craft.pipes.item_extractor.block.entity.DiamondItemExtractorBlockEntity;
+import com.github.sib_energy_craft.pipes.item_extractor.block.entity.ItemExtractorBlockEntity;
 import com.github.sib_energy_craft.pipes.item_extractor.load.Entities;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -27,13 +28,12 @@ public class DiamondItemExtractorBlock extends ItemExtractorBlock {
         return new DiamondItemExtractorBlockEntity(this, pos, state);
     }
 
-
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull World world,
                                                                   @NotNull BlockState state,
                                                                   @NotNull BlockEntityType<T> type) {
         return world.isClient ? null : ItemExtractorBlock.checkType(type, Entities.DIAMOND_ITEM_EXTRACTOR,
-                DiamondItemExtractorBlockEntity::serverTick);
+                ItemExtractorBlockEntity::serverTick);
     }
 }

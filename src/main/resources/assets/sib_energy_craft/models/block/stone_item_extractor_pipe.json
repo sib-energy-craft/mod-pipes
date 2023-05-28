@@ -1,6 +1,6 @@
 {
   "parent": "sib_energy_craft:block/template_item_extractor",
   "textures": {
-    "side": "sib_energy_craft:block/stone_item_extractor_pipe"
+    "side": "sib_energy_craft:block/stone_pipe"
   }
 }

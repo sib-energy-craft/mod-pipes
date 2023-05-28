@@ -2,11 +2,13 @@
   "type": "minecraft:crafting_shaped",
   "group": "diamond_item_filter_extractor",
   "pattern": [
-    "P",
-    "E",
-    "D"
+    "GPG",
+    "DED"
   ],
   "key": {
+    "G": {
+      "item": "sib_energy_craft:gold_dust"
+    },
     "D": {
       "item": "sib_energy_craft:diamond_dust"
     },

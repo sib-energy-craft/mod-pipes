@@ -1,5 +1,6 @@
 package com.github.sib_energy_craft.pipes.filters.item_filter.block;
 
+import com.github.sib_energy_craft.pipes.filters.item_filter.block.entity.PipeItemFilterBlockEntity;
 import com.github.sib_energy_craft.pipes.filters.item_filter.block.entity.StonePipeItemFilterBlockEntity;
 import com.github.sib_energy_craft.pipes.filters.item_filter.load.Entities;
 import net.minecraft.block.BlockState;
@@ -32,7 +33,7 @@ public class StonePipeItemFilterBlock extends PipeItemFilterBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull World world,
                                                                   @NotNull BlockState state,
                                                                   @NotNull BlockEntityType<T> type) {
-        return world.isClient ? null : StonePipeItemFilterBlock.checkType(type, Entities.STONE_PIPE_ITEM_FILTER,
-                StonePipeItemFilterBlockEntity::serverTick);
+        return world.isClient ? null : PipeItemFilterBlock.checkType(type, Entities.STONE_PIPE_ITEM_FILTER,
+                PipeItemFilterBlockEntity::serverTick);
     }
 }

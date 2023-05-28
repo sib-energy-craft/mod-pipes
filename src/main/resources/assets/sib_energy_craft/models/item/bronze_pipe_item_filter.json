@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "sib_energy_craft:item/bronze_pipe_item_filter"
+  }
+}

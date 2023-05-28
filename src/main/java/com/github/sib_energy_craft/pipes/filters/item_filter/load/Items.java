@@ -16,12 +16,14 @@ import static com.github.sib_energy_craft.sec_utils.utils.ItemUtils.registerBloc
  */
 public final class Items implements DefaultModInitializer {
     public static final Item STONE_PIPE_ITEM_FILTER;
+    public static final Item BRONZE_PIPE_ITEM_FILTER;
     public static final Item IRON_PIPE_ITEM_FILTER;
     public static final Item DIAMOND_PIPE_ITEM_FILTER;
     public static final Item ITEM_FILTER;
 
     static {
         STONE_PIPE_ITEM_FILTER = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.STONE_PIPE_ITEM_FILTER);
+        BRONZE_PIPE_ITEM_FILTER = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.BRONZE_PIPE_ITEM_FILTER);
         IRON_PIPE_ITEM_FILTER = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.IRON_PIPE_ITEM_FILTER);
         DIAMOND_PIPE_ITEM_FILTER = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.DIAMOND_PIPE_ITEM_FILTER);
 

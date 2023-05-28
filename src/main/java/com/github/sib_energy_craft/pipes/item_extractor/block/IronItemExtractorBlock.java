@@ -28,7 +28,6 @@ public class IronItemExtractorBlock extends ItemExtractorBlock {
         return new IronItemExtractorBlockEntity(this, pos, state);
     }
 
-
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull World world,
