@@ -1,8 +1,59 @@
 {
   "multipart": [
     {
+      "when": {
+        "facing": "down"
+      },
       "apply": {
-        "model": "sib_energy_craft:block/bronze_pipe_item_filter_dot"
+        "x": 180,
+        "model": "sib_energy_craft:block/bronze_item_filter_extractor"
+      }
+    },
+    {
+      "when": {
+        "facing": "east"
+      },
+      "apply": {
+        "x": 90,
+        "y": 90,
+        "model": "sib_energy_craft:block/bronze_item_filter_extractor"
+      }
+    },
+    {
+      "when": {
+        "facing": "north"
+      },
+      "apply": {
+        "x": 90,
+        "model": "sib_energy_craft:block/bronze_item_filter_extractor"
+      }
+    },
+    {
+      "when": {
+        "facing": "south"
+      },
+      "apply": {
+        "x": 90,
+        "y": 180,
+        "model": "sib_energy_craft:block/bronze_item_filter_extractor"
+      }
+    },
+    {
+      "when": {
+        "facing": "up"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/bronze_item_filter_extractor"
+      }
+    },
+    {
+      "when": {
+        "facing": "west"
+      },
+      "apply": {
+        "x": 90,
+        "y": 270,
+        "model": "sib_energy_craft:block/bronze_item_filter_extractor"
       }
     },
     {
@@ -10,7 +61,7 @@
         "north": "true"
       },
       "apply": {
-        "model": "sib_energy_craft:block/bronze_pipe_item_filter"
+        "model": "sib_energy_craft:block/bronze_item_filter_extractor_pipe"
       }
     },
     {
@@ -18,7 +69,7 @@
         "east": "true"
       },
       "apply": {
-        "model": "sib_energy_craft:block/bronze_pipe_item_filter",
+        "model": "sib_energy_craft:block/bronze_item_filter_extractor_pipe",
         "y": 90
       }
     },
@@ -27,7 +78,7 @@
         "south": "true"
       },
       "apply": {
-        "model": "sib_energy_craft:block/bronze_pipe_item_filter_alt"
+        "model": "sib_energy_craft:block/bronze_item_filter_extractor_pipe_alt"
       }
     },
     {
@@ -35,7 +86,7 @@
         "west": "true"
       },
       "apply": {
-        "model": "sib_energy_craft:block/bronze_pipe_item_filter_alt",
+        "model": "sib_energy_craft:block/bronze_item_filter_extractor_pipe_alt",
         "y": 90
       }
     },
@@ -44,7 +95,7 @@
         "up": "true"
       },
       "apply": {
-        "model": "sib_energy_craft:block/bronze_pipe_item_filter_alt",
+        "model": "sib_energy_craft:block/bronze_item_filter_extractor_pipe_alt",
         "x": 90
       }
     },
@@ -53,7 +104,7 @@
         "down": "true"
       },
       "apply": {
-        "model": "sib_energy_craft:block/bronze_pipe_item_filter",
+        "model": "sib_energy_craft:block/bronze_item_filter_extractor_pipe",
         "x": 90
       }
     }
