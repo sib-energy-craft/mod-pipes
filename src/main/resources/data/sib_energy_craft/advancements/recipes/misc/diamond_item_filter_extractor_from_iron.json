@@ -6,6 +6,18 @@
     ]
   },
   "criteria": {
+    "has_gold_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sib_energy_craft:gold_dust"
+            ]
+          }
+        ]
+      }
+    },
     "has_diamond_dust": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -51,6 +63,7 @@
   },
   "requirements": [
     [
+      "has_gold_dust",
       "has_diamond_dust",
       "has_iron_item_filter_extractor",
       "has_diamond_pipe",

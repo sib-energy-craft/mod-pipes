@@ -1,17 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "#P"
+    "#P",
+    "P "
   ],
   "key": {
     "P": {
-      "item": "sib_energy_craft:stone_pipe"
+      "item": "sib_energy_craft:bronze_pipe"
     },
     "#": {
       "item": "sib_energy_craft:iron_plate"
     }
   },
   "result": {
-    "item": "sib_energy_craft:iron_pipe"
+    "item": "sib_energy_craft:iron_pipe",
+    "count": 2
   }
 }

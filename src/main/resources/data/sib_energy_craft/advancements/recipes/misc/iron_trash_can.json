@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_stone_trash_can": {
+    "has_bronze_trash_can": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "sib_energy_craft:stone_trash_can"
+              "sib_energy_craft:bronze_trash_can"
             ]
           }
         ]
@@ -51,7 +51,7 @@
   },
   "requirements": [
     [
-      "has_stone_trash_can",
+      "has_bronze_trash_can",
       "has_iron_plate",
       "has_iron_pipe",
       "has_the_recipe"

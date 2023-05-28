@@ -1,5 +1,6 @@
 package com.github.sib_energy_craft.pipes.filters.item_filter.load;
 
+import com.github.sib_energy_craft.pipes.filters.item_filter.block.entity.BronzePipeItemFilterBlockEntity;
 import com.github.sib_energy_craft.pipes.filters.item_filter.block.entity.DiamondPipeItemFilterBlockEntity;
 import com.github.sib_energy_craft.pipes.filters.item_filter.block.entity.IronPipeItemFilterBlockEntity;
 import com.github.sib_energy_craft.pipes.filters.item_filter.block.entity.StonePipeItemFilterBlockEntity;
@@ -14,12 +15,16 @@ import net.minecraft.block.entity.BlockEntityType;
  */
 public final class Entities implements DefaultModInitializer {
     public static final BlockEntityType<StonePipeItemFilterBlockEntity> STONE_PIPE_ITEM_FILTER;
+    public static final BlockEntityType<BronzePipeItemFilterBlockEntity> BRONZE_PIPE_ITEM_FILTER;
     public static final BlockEntityType<IronPipeItemFilterBlockEntity> IRON_PIPE_ITEM_FILTER;
     public static final BlockEntityType<DiamondPipeItemFilterBlockEntity> DIAMOND_PIPE_ITEM_FILTER;
 
     static {
         STONE_PIPE_ITEM_FILTER = EntityUtils.register(Blocks.STONE_PIPE_ITEM_FILTER,
                 (pos, state) -> new StonePipeItemFilterBlockEntity(Blocks.STONE_PIPE_ITEM_FILTER.entity(), pos, state));
+
+        BRONZE_PIPE_ITEM_FILTER = EntityUtils.register(Blocks.BRONZE_PIPE_ITEM_FILTER,
+                (pos, state) -> new BronzePipeItemFilterBlockEntity(Blocks.BRONZE_PIPE_ITEM_FILTER.entity(), pos, state));
 
         IRON_PIPE_ITEM_FILTER = EntityUtils.register(Blocks.IRON_PIPE_ITEM_FILTER,
                 (pos, state) -> new IronPipeItemFilterBlockEntity(Blocks.IRON_PIPE_ITEM_FILTER.entity(), pos, state));

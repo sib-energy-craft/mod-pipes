@@ -28,7 +28,6 @@ public class StoneItemFilterExtractorBlock extends ItemFilterExtractorBlock {
         return new StoneItemFilterExtractorBlockEntity(this, pos, state);
     }
 
-
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull World world,

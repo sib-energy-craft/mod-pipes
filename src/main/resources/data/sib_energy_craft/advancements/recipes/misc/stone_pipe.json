@@ -18,6 +18,18 @@
         ]
       }
     },
+    "has_silver_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sib_energy_craft:silver_dust"
+            ]
+          }
+        ]
+      }
+    },
     "has_redstone": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -52,6 +64,7 @@
   "requirements": [
     [
       "has_stone_slab",
+      "has_silver_dust",
       "has_redstone",
       "has_glass",
       "has_the_recipe"

@@ -13,11 +13,13 @@ import static com.github.sib_energy_craft.sec_utils.utils.ItemUtils.registerBloc
  */
 public final class Items implements DefaultModInitializer {
     public static final BlockItem STONE_ITEM_EXTRACTOR;
+    public static final BlockItem BRONZE_ITEM_EXTRACTOR;
     public static final BlockItem IRON_ITEM_EXTRACTOR;
     public static final BlockItem DIAMOND_ITEM_EXTRACTOR;
 
     static {
         STONE_ITEM_EXTRACTOR = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.STONE_ITEM_EXTRACTOR);
+        BRONZE_ITEM_EXTRACTOR = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.BRONZE_ITEM_EXTRACTOR);
         IRON_ITEM_EXTRACTOR = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.IRON_ITEM_EXTRACTOR);
         DIAMOND_ITEM_EXTRACTOR = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.DIAMOND_ITEM_EXTRACTOR);
     }

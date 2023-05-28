@@ -1,0 +1,73 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "sib_energy_craft:bronze_item_extractor"
+    ]
+  },
+  "criteria": {
+    "has_silver_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sib_energy_craft:silver_dust"
+            ]
+          }
+        ]
+      }
+    },
+    "has_bronze_plate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sib_energy_craft:bronze_plate"
+            ]
+          }
+        ]
+      }
+    },
+    "has_stone_item_extractor": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sib_energy_craft:stone_item_extractor"
+            ]
+          }
+        ]
+      }
+    },
+    "has_bronze_pipe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sib_energy_craft:bronze_pipe"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "sib_energy_craft:bronze_item_extractor"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_silver_dust",
+      "has_bronze_plate",
+      "has_stone_item_extractor",
+      "has_bronze_pipe",
+      "has_the_recipe"
+    ]
+  ]
+}

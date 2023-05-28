@@ -1,6 +1,7 @@
 package com.github.sib_energy_craft.pipes.filters.item_filter.block;
 
 import com.github.sib_energy_craft.pipes.filters.item_filter.block.entity.DiamondPipeItemFilterBlockEntity;
+import com.github.sib_energy_craft.pipes.filters.item_filter.block.entity.PipeItemFilterBlockEntity;
 import com.github.sib_energy_craft.pipes.filters.item_filter.load.Entities;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -32,7 +33,7 @@ public class DiamondPipeItemFilterBlock extends PipeItemFilterBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull World world,
                                                                   @NotNull BlockState state,
                                                                   @NotNull BlockEntityType<T> type) {
-        return world.isClient ? null : DiamondPipeItemFilterBlock.checkType(type, Entities.DIAMOND_PIPE_ITEM_FILTER,
-                DiamondPipeItemFilterBlockEntity::serverTick);
+        return world.isClient ? null : PipeItemFilterBlock.checkType(type, Entities.DIAMOND_PIPE_ITEM_FILTER,
+                PipeItemFilterBlockEntity::serverTick);
     }
 }

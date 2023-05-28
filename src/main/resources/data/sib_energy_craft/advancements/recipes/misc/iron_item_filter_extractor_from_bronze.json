@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "sib_energy_craft:iron_item_filter_extractor_from_stone"
+      "sib_energy_craft:iron_item_filter_extractor_from_bronze"
     ]
   },
   "criteria": {
@@ -30,13 +30,13 @@
         ]
       }
     },
-    "has_stone_item_filter_extractor": {
+    "has_bronze_item_filter_extractor": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "sib_energy_craft:stone_item_filter_extractor"
+              "sib_energy_craft:bronze_item_filter_extractor"
             ]
           }
         ]
@@ -57,7 +57,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "sib_energy_craft:iron_item_filter_extractor_from_stone"
+        "recipe": "sib_energy_craft:iron_item_filter_extractor_from_bronze"
       }
     }
   },
@@ -65,7 +65,7 @@
     [
       "has_lapis_lazuli",
       "has_iron_plate",
-      "has_stone_item_filter_extractor",
+      "has_bronze_item_filter_extractor",
       "has_iron_pipe",
       "has_the_recipe"
     ]

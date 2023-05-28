@@ -2,6 +2,9 @@
   "block.sib_energy_craft.stone_item_extractor": "Stone Item Extractor",
   "container.stone_item_extractor": "Stone Item Extractor",
 
+  "block.sib_energy_craft.bronze_item_extractor": "Bronze Item Extractor",
+  "container.bronze_item_extractor": "Bronze Item Extractor",
+
   "block.sib_energy_craft.iron_item_extractor": "Iron Item Extractor",
   "container.iron_item_extractor": "Iron Item Extractor",
 
@@ -13,6 +16,8 @@
   "stat.sib_energy_craft.interact_with_trash_can": "Interactions with Trash Can",
 
   "block.sib_energy_craft.stone_pipe": "Stone Pipe",
+
+  "block.sib_energy_craft.bronze_pipe": "Bronze Pipe",
 
   "block.sib_energy_craft.iron_pipe": "Iron Pipe",
 
@@ -26,6 +31,9 @@
   "block.sib_energy_craft.stone_pipe_item_filter": "Stone Pipe Item Filter",
   "container.stone_pipe_item_filter": "Stone Pipe Item Filter",
 
+  "block.sib_energy_craft.bronze_pipe_item_filter": "Bronze Pipe Item Filter",
+  "container.bronze_pipe_item_filter": "Bronze Pipe Item Filter",
+
   "block.sib_energy_craft.iron_pipe_item_filter": "Iron Pipe Item Filter",
   "container.iron_pipe_item_filter": "Iron Pipe Item Filter",
 
@@ -35,6 +43,9 @@
   "block.sib_energy_craft.stone_trash_can": "Stone Trash Can",
   "container.stone_trash_can": "Stone Trash Can",
 
+  "block.sib_energy_craft.bronze_trash_can": "Bronze Trash Can",
+  "container.bronze_trash_can": "Bronze Trash Can",
+
   "block.sib_energy_craft.iron_trash_can": "Iron Trash Can",
   "container.iron_trash_can": "Iron Trash Can",
 
@@ -43,6 +54,9 @@
 
   "block.sib_energy_craft.stone_item_filter_extractor": "Stone Item Filter Extractor",
   "container.stone_item_filter_extractor": "Stone Item Filter Extractor",
+
+  "block.sib_energy_craft.bronze_item_filter_extractor": "Bronze Item Filter Extractor",
+  "container.bronze_item_filter_extractor": "Bronze Item Filter Extractor",
 
   "block.sib_energy_craft.iron_item_filter_extractor": "Iron Item Filter Extractor",
   "container.iron_item_filter_extractor": "Iron Item Filter Extractor",

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#P"
+  ],
+  "key": {
+    "#": {
+      "item": "sib_energy_craft:item_filter"
+    },
+    "P": {
+      "item": "sib_energy_craft:bronze_pipe"
+    }
+  },
+  "result": {
+    "item": "sib_energy_craft:bronze_pipe_item_filter"
+  }
+}

@@ -1,6 +1,7 @@
 package com.github.sib_energy_craft.pipes.filters.item_filter_extractor.block;
 
 import com.github.sib_energy_craft.pipes.filters.item_filter_extractor.block.entity.DiamondItemFilterExtractorBlockEntity;
+import com.github.sib_energy_craft.pipes.filters.item_filter_extractor.block.entity.ItemFilterExtractorBlockEntity;
 import com.github.sib_energy_craft.pipes.filters.item_filter_extractor.load.Entities;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -34,6 +35,6 @@ public class DiamondItemFilterExtractorBlock extends ItemFilterExtractorBlock {
                                                                   @NotNull BlockState state,
                                                                   @NotNull BlockEntityType<T> type) {
         return world.isClient ? null : ItemFilterExtractorBlock.checkType(type, Entities.DIAMOND_ITEM_FILTER_EXTRACTOR,
-                DiamondItemFilterExtractorBlockEntity::serverTick);
+                ItemFilterExtractorBlockEntity::serverTick);
     }
 }

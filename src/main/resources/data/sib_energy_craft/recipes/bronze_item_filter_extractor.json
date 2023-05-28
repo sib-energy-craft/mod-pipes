@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "bronze_item_filter_extractor",
+  "pattern": [
+    "E",
+    "F"
+  ],
+  "key": {
+    "E": {
+      "item": "sib_energy_craft:bronze_item_extractor"
+    },
+    "F": {
+      "item": "sib_energy_craft:item_filter"
+    }
+  },
+  "result": {
+    "item": "sib_energy_craft:bronze_item_filter_extractor"
+  }
+}

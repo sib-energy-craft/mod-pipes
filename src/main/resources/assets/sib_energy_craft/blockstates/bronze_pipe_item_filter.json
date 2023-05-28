@@ -1,0 +1,61 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "sib_energy_craft:block/bronze_pipe_item_filter_dot"
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/bronze_pipe_item_filter"
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/bronze_pipe_item_filter",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/bronze_pipe_item_filter_alt"
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/bronze_pipe_item_filter_alt",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/bronze_pipe_item_filter_alt",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/bronze_pipe_item_filter",
+        "x": 90
+      }
+    }
+  ]
+}

@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "D#D",
-    " P "
+    "DVD",
+    " | "
   ],
   "key": {
     "D": {
       "item": "sib_energy_craft:diamond_dust"
     },
-    "P": {
+    "|": {
       "item": "sib_energy_craft:diamond_pipe"
     },
-    "#": {
+    "V": {
       "item": "sib_energy_craft:iron_trash_can"
     }
   },

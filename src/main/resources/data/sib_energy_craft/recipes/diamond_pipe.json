@@ -1,7 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "#P"
+    "#P",
+    "P "
   ],
   "key": {
     "P": {
@@ -12,6 +13,7 @@
     }
   },
   "result": {
-    "item": "sib_energy_craft:diamond_pipe"
+    "item": "sib_energy_craft:diamond_pipe",
+    "count": 2
   }
 }
