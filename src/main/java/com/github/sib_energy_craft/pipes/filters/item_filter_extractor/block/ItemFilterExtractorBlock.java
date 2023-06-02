@@ -16,10 +16,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -217,8 +214,8 @@ public abstract class ItemFilterExtractorBlock extends ConnectingBlock implement
             return;
         }
         var blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof ItemFilterExtractorBlockEntity<?>) {
-//            ItemScatterer.spawn(world, pos, itemFilterExtractorBlockEntity);
+        if (blockEntity instanceof ItemFilterExtractorBlockEntity<?> itemFilterExtractorBlockEntity) {
+            ItemScatterer.spawn(world, pos, itemFilterExtractorBlockEntity.getInventory());
             world.updateComparators(pos, this);
         }
         super.onStateReplaced(state, world, pos, newState, moved);

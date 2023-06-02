@@ -5,6 +5,7 @@ import com.github.sib_energy_craft.pipes.api.ItemSupplier;
 import com.github.sib_energy_craft.pipes.item_extractor.block.ItemExtractorBlock;
 import com.github.sib_energy_craft.pipes.load.ScreenHandlers;
 import com.github.sib_energy_craft.pipes.utils.PipeUtils;
+import lombok.Getter;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -42,6 +43,7 @@ public abstract class ItemExtractorBlockEntity<T extends ItemExtractorBlock> ext
         implements NamedScreenHandlerFactory, ExtendedScreenHandlerFactory, ItemSupplier {
 
     private final T block;
+    @Getter
     private final SimpleInventory inventory;
     private int lastTicksToInsert;
     private int lastTicksToExtract;

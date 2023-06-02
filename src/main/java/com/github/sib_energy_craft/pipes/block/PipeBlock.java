@@ -11,12 +11,10 @@ import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -115,7 +113,10 @@ public abstract class PipeBlock extends ConnectingBlock implements BlockEntityPr
             return;
         }
         var blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof PipeBlockEntity<?>) {
+        if (blockEntity instanceof PipeBlockEntity<?> pipeBlockEntity) {
+            if (world instanceof ServerWorld) {
+                ItemScatterer.spawn(world, pos, pipeBlockEntity);
+            }
             world.updateComparators(pos, this);
         }
         super.onStateReplaced(state, world, pos, newState, moved);
