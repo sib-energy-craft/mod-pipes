@@ -1,8 +1,8 @@
-package com.github.sib_energy_craft.pipes.block.entity;
+package com.github.sib_energy_craft.pipes.directed.block.entity;
 
 import com.github.sib_energy_craft.pipes.api.ItemConsumer;
 import com.github.sib_energy_craft.pipes.api.ItemSupplier;
-import com.github.sib_energy_craft.pipes.block.PipeBlock;
+import com.github.sib_energy_craft.pipes.directed.block.DirectedPipeBlock;
 import com.github.sib_energy_craft.pipes.utils.PipeUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -18,31 +18,31 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @since 0.0.1
  * @author sibmaks
+ * @since 0.0.13
  */
-public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity implements ItemConsumer, ItemSupplier {
+public abstract class DirectedPipeBlockEntity<T extends DirectedPipeBlock> extends BlockEntity
+        implements ItemConsumer, ItemSupplier {
     private ItemStack storage;
-    private Direction consumedDirection;
+    private Direction supplyingDirection;
 
     private final T block;
     private int lastTicksToInsert;
 
-    public PipeBlockEntity(@NotNull BlockEntityType<? extends PipeBlockEntity<T>> entityType,
-                           @NotNull T block,
-                           @NotNull BlockPos pos,
-                           @NotNull BlockState state) {
+    public DirectedPipeBlockEntity(@NotNull BlockEntityType<? extends DirectedPipeBlockEntity<T>> entityType,
+                                   @NotNull T block,
+                                   @NotNull BlockPos pos,
+                                   @NotNull BlockState state) {
         super(entityType, pos, state);
         this.block = block;
         this.storage = ItemStack.EMPTY;
-        this.consumedDirection = Direction.UP;
+        this.supplyingDirection = getSupplyingDirection(state);
     }
 
     @Override
     public void readNbt(@NotNull NbtCompound nbt) {
         super.readNbt(nbt);
         storage = ItemStack.fromNbt(nbt.getCompound("storage"));
-        consumedDirection = Direction.byName(nbt.getString("direction"));
     }
 
     @Override
@@ -52,21 +52,20 @@ public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity i
         var storageCompound = new NbtCompound();
         storage.writeNbt(storageCompound);
         nbt.put("storage", storageCompound);
-
-        nbt.putString("direction", consumedDirection.getName());
     }
 
     public static void serverTick(@NotNull World world,
                                   @NotNull BlockPos pos,
                                   @NotNull BlockState state,
-                                  @NotNull PipeBlockEntity<?> blockEntity) {
+                                  @NotNull DirectedPipeBlockEntity<?> blockEntity) {
+        blockEntity.supplyingDirection = getSupplyingDirection(state);
         insertAndExtract(world, pos, state, blockEntity);
     }
 
     private static void insertAndExtract(@NotNull World world,
                                          @NotNull BlockPos pos,
                                          @NotNull BlockState state,
-                                         @NotNull PipeBlockEntity<?> blockEntity) {
+                                         @NotNull DirectedPipeBlockEntity<?> blockEntity) {
         if (world.isClient) {
             return;
         }
@@ -75,7 +74,7 @@ public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity i
             blockEntity.lastTicksToInsert--;
         }
         if (!blockEntity.storage.isEmpty() && blockEntity.lastTicksToInsert <= 0) {
-            modified = PipeUtils.supplyToAllExcept(world, pos, blockEntity, blockEntity.consumedDirection);
+            modified = PipeUtils.supply(world, pos, blockEntity, blockEntity.supplyingDirection);
             blockEntity.lastTicksToInsert = blockEntity.block.getTicksToInsert();
         }
         if (modified) {
@@ -85,7 +84,7 @@ public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity i
 
     @Override
     public boolean canConsume(@NotNull ItemStack itemStack, @NotNull Direction direction) {
-        if(world == null) {
+        if(world == null || direction.getOpposite() == supplyingDirection) {
             return false;
         }
         return storage.isEmpty() || storage.isItemEqual(itemStack) && storage.getCount() < storage.getMaxCount();
@@ -96,7 +95,6 @@ public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity i
         if(!canConsume(itemStack, direction)) {
             return itemStack;
         }
-        this.consumedDirection = direction.getOpposite();
         return consume(itemStack);
     }
 
@@ -117,7 +115,7 @@ public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity i
 
     @Override
     public @NotNull List<ItemStack> canSupply(@NotNull Direction direction) {
-        if(direction == consumedDirection) {
+        if(direction != supplyingDirection) {
             return Collections.emptyList();
         }
         return Collections.singletonList(storage.copy());
@@ -125,10 +123,14 @@ public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity i
 
     @Override
     public boolean supply(@NotNull ItemStack requested, @NotNull Direction direction) {
-        if(direction == consumedDirection || !storage.isItemEqual(requested)) {
+        if(direction != supplyingDirection || !storage.isItemEqual(requested)) {
             return false;
         }
         return supply(requested);
+    }
+
+    private static Direction getSupplyingDirection(@NotNull BlockState blockState) {
+        return blockState.get(DirectedPipeBlock.FACING);
     }
 
     private boolean supply(@NotNull ItemStack requested) {

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#P"
+  ],
+  "key": {
+    "P": {
+      "item": "sib_energy_craft:stone_pipe"
+    },
+    "#": {
+      "item": "minecraft:lapis_lazuli"
+    }
+  },
+  "result": {
+    "item": "sib_energy_craft:stone_directed_pipe"
+  }
+}
