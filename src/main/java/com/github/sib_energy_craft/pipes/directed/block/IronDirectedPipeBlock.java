@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * @author sibmaks
- * @since 0.0.13
+ * @since 0.0.14
  */
 public class IronDirectedPipeBlock extends DirectedPipeBlock {
     public IronDirectedPipeBlock(@NotNull Settings settings,

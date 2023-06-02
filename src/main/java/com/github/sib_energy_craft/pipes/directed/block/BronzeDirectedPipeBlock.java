@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * @author sibmaks
- * @since 0.0.13
+ * @since 0.0.14
  */
 public class BronzeDirectedPipeBlock extends DirectedPipeBlock {
     public BronzeDirectedPipeBlock(@NotNull Settings settings,

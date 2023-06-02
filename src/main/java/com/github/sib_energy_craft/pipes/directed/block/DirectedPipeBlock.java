@@ -31,7 +31,7 @@ import java.util.function.Function;
 
 /**
  * @author sibmaks
- * @since 0.0.13
+ * @since 0.0.14
  */
 public abstract class DirectedPipeBlock extends ConnectingBlock implements BlockEntityProvider {
     public static final DirectionProperty FACING = Properties.FACING;

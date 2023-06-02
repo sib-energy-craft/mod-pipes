@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * @author sibmaks
- * @since 0.0.13
+ * @since 0.0.14
  */
 public class StoneDirectedPipeBlock extends DirectedPipeBlock {
     public StoneDirectedPipeBlock(@NotNull Settings settings,

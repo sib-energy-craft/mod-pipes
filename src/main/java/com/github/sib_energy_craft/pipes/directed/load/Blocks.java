@@ -17,7 +17,7 @@ import static com.github.sib_energy_craft.sec_utils.utils.BlockUtils.register;
 
 /**
  * @author sibmaks
- * @since 0.0.13
+ * @since 0.0.14
  */
 public final class Blocks implements DefaultModInitializer {
 

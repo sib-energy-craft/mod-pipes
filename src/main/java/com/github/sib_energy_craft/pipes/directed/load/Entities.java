@@ -12,7 +12,7 @@ import static com.github.sib_energy_craft.sec_utils.utils.EntityUtils.register;
 
 /**
  * @author sibmaks
- * @since 0.0.13
+ * @since 0.0.14
  */
 public final class Entities implements DefaultModInitializer {
     public static final BlockEntityType<StoneDirectedPipeBlockEntity> STONE_DIRECTED_PIPE;

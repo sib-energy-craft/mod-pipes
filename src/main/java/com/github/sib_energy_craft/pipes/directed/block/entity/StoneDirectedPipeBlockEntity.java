@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * @author sibmaks
- * @since 0.0.13
+ * @since 0.0.14
  */
 public class StoneDirectedPipeBlockEntity extends DirectedPipeBlockEntity<StoneDirectedPipeBlock> {
 
