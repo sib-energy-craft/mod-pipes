@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "bronze_directed_pipe",
+  "pattern": [
+    "#P"
+  ],
+  "key": {
+    "P": {
+      "item": "sib_energy_craft:stone_directed_pipe"
+    },
+    "#": {
+      "item": "sib_energy_craft:bronze_plate"
+    }
+  },
+  "result": {
+    "item": "sib_energy_craft:bronze_directed_pipe"
+  }
+}

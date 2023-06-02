@@ -13,8 +13,10 @@ import static com.github.sib_energy_craft.sec_utils.utils.ItemUtils.registerBloc
  */
 public final class Items implements DefaultModInitializer {
     public static final Item STONE_DIRECTED_PIPE;
+    public static final Item BRONZE_DIRECTED_PIPE;
 
     static {
         STONE_DIRECTED_PIPE = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.STONE_DIRECTED_PIPE);
+        BRONZE_DIRECTED_PIPE = registerBlockItem(ItemGroups.FUNCTIONAL, Blocks.BRONZE_DIRECTED_PIPE);
     }
 }
