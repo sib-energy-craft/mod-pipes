@@ -1,0 +1,6 @@
+{
+  "parent": "sib_energy_craft:block/template_directed_pipe_dot",
+  "textures": {
+    "side": "sib_energy_craft:block/iron_directed_pipe"
+  }
+}

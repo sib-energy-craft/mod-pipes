@@ -1,0 +1,112 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "facing": "down"
+      },
+      "apply": {
+        "x": 180,
+        "model": "sib_energy_craft:block/iron_directed_pipe_dot"
+      }
+    },
+    {
+      "when": {
+        "facing": "east"
+      },
+      "apply": {
+        "x": 90,
+        "y": 90,
+        "model": "sib_energy_craft:block/iron_directed_pipe_dot"
+      }
+    },
+    {
+      "when": {
+        "facing": "north"
+      },
+      "apply": {
+        "x": 90,
+        "model": "sib_energy_craft:block/iron_directed_pipe_dot"
+      }
+    },
+    {
+      "when": {
+        "facing": "south"
+      },
+      "apply": {
+        "x": 90,
+        "y": 180,
+        "model": "sib_energy_craft:block/iron_directed_pipe_dot"
+      }
+    },
+    {
+      "when": {
+        "facing": "up"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/iron_directed_pipe_dot"
+      }
+    },
+    {
+      "when": {
+        "facing": "west"
+      },
+      "apply": {
+        "x": 90,
+        "y": 270,
+        "model": "sib_energy_craft:block/iron_directed_pipe_dot"
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/iron_directed_pipe"
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/iron_directed_pipe",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/iron_directed_pipe_alt"
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/iron_directed_pipe_alt",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/iron_directed_pipe_alt",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "sib_energy_craft:block/iron_directed_pipe",
+        "x": 90
+      }
+    }
+  ]
+}
