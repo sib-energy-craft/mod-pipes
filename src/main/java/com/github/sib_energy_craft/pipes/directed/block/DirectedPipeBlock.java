@@ -9,14 +9,18 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.ai.pathing.NavigationType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
@@ -233,5 +237,22 @@ public abstract class DirectedPipeBlock extends ConnectingBlock implements Block
             @NotNull BlockEntityType<T> type) {
         return world.isClient ? null :
                 DirectedPipeBlock.checkType(type, getEntityType(), DirectedPipeBlockEntity::serverTick);
+    }
+
+    @Override
+    public ActionResult onUse(@NotNull BlockState state,
+                              @NotNull World world,
+                              @NotNull BlockPos pos,
+                              @NotNull PlayerEntity player,
+                              @NotNull Hand hand,
+                              @NotNull BlockHitResult hit) {
+        if (world.isClient) {
+            return ActionResult.SUCCESS;
+        }
+        var blockEntity = world.getBlockEntity(pos);
+        if (blockEntity instanceof DirectedPipeBlockEntity<?> directedPipeBlockEntity) {
+            player.openHandledScreen(directedPipeBlockEntity);
+        }
+        return ActionResult.CONSUME;
     }
 }

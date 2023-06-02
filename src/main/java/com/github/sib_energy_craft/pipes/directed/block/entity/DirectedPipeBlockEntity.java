@@ -3,16 +3,25 @@ package com.github.sib_energy_craft.pipes.directed.block.entity;
 import com.github.sib_energy_craft.pipes.api.ItemConsumer;
 import com.github.sib_energy_craft.pipes.api.ItemSupplier;
 import com.github.sib_energy_craft.pipes.directed.block.DirectedPipeBlock;
+import com.github.sib_energy_craft.pipes.screen.OneSlotScreenHandler;
 import com.github.sib_energy_craft.pipes.utils.PipeUtils;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +31,7 @@ import java.util.List;
  * @since 0.0.13
  */
 public abstract class DirectedPipeBlockEntity<T extends DirectedPipeBlock> extends BlockEntity
-        implements ItemConsumer, ItemSupplier {
+        implements ItemConsumer, ItemSupplier, ExtendedScreenHandlerFactory, Inventory {
     private ItemStack storage;
     private Direction supplyingDirection;
 
@@ -146,5 +155,70 @@ public abstract class DirectedPipeBlockEntity<T extends DirectedPipeBlock> exten
     @Override
     public void returnStack(@NotNull ItemStack requested, @NotNull Direction direction) {
         consume(requested);
+    }
+
+    @Nullable
+    @Override
+    public ScreenHandler createMenu(int syncId,
+                                    @NotNull PlayerInventory playerInventory,
+                                    @NotNull PlayerEntity player) {
+        return new OneSlotScreenHandler(syncId, playerInventory, this);
+    }
+
+    @Override
+    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
+
+    }
+
+    @Override
+    public int size() {
+        return 1;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return storage.isEmpty();
+    }
+
+    @Override
+    public ItemStack getStack(int slot) {
+        if (slot != 0) {
+            return ItemStack.EMPTY;
+        }
+        return storage;
+    }
+
+    @Override
+    public ItemStack removeStack(int slot, int amount) {
+        if(slot != 0) {
+            return ItemStack.EMPTY;
+        }
+        return storage.split(amount);
+    }
+
+    @Override
+    public ItemStack removeStack(int slot) {
+        if(slot != 0) {
+            return ItemStack.EMPTY;
+        }
+        return storage.split(1);
+    }
+
+    @Override
+    public void setStack(int slot, ItemStack stack) {
+        if(slot != 0) {
+            return;
+        }
+        this.storage = stack;
+    }
+
+    @Override
+    public boolean canPlayerUse(PlayerEntity player) {
+        return true;
+    }
+
+    @Override
+    public void clear() {
+        this.storage = ItemStack.EMPTY;
     }
 }

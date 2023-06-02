@@ -28,12 +28,16 @@
   "container.diamond_pipe": "Алмазная труба",
 
   "block.sib_energy_craft.stone_directed_pipe": "Каменная направленная труба",
+  "container.stone_directed_pipe": "Каменная направленная труба",
 
   "block.sib_energy_craft.bronze_directed_pipe": "Бронзовая направленная труба",
+  "container.bronze_directed_pipe": "Бронзовая направленная труба",
 
   "block.sib_energy_craft.iron_directed_pipe": "Железная направленная труба",
+  "container.iron_directed_pipe": "Железная направленная труба",
 
   "block.sib_energy_craft.diamond_directed_pipe": "Алмазная направленная труба",
+  "container.diamond_directed_pipe": "Алмазная направленная труба",
 
   "item.sib_energy_craft.item_filter": "Фильтр предметов",
   "screen.sib_energy_craft.item_filter.button.mode.off": "Выключен",
