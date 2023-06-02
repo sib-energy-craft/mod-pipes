@@ -1,0 +1,47 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "sib_energy_craft:diamond_directed_pipe"
+    ]
+  },
+  "criteria": {
+    "has_diamond_pipe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sib_energy_craft:diamond_pipe"
+            ]
+          }
+        ]
+      }
+    },
+    "has_lapis_lazuli": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:lapis_lazuli"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "sib_energy_craft:diamond_directed_pipe"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_diamond_pipe",
+      "has_lapis_lazuli",
+      "has_the_recipe"
+    ]
+  ]
+}

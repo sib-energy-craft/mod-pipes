@@ -29,6 +29,8 @@
 
   "block.sib_energy_craft.iron_directed_pipe": "Железная направленная труба",
 
+  "block.sib_energy_craft.diamond_directed_pipe": "Алмазная направленная труба",
+
   "item.sib_energy_craft.item_filter": "Фильтр предметов",
   "screen.sib_energy_craft.item_filter.button.mode.off": "Выключен",
   "screen.sib_energy_craft.item_filter.button.mode.blacklist": "Кроме",
