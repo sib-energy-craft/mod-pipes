@@ -3,6 +3,7 @@ package com.github.sib_energy_craft.pipes.directed.load;
 import com.github.sib_energy_craft.energy_api.utils.Identifiers;
 import com.github.sib_energy_craft.pipes.constants.PipeConstants;
 import com.github.sib_energy_craft.pipes.directed.block.BronzeDirectedPipeBlock;
+import com.github.sib_energy_craft.pipes.directed.block.IronDirectedPipeBlock;
 import com.github.sib_energy_craft.pipes.directed.block.StoneDirectedPipeBlock;
 import com.github.sib_energy_craft.sec_utils.common.Identified;
 import com.github.sib_energy_craft.sec_utils.load.DefaultModInitializer;
@@ -21,6 +22,7 @@ public final class Blocks implements DefaultModInitializer {
 
     public static final Identified<StoneDirectedPipeBlock> STONE_DIRECTED_PIPE;
     public static final Identified<BronzeDirectedPipeBlock> BRONZE_DIRECTED_PIPE;
+    public static final Identified<IronDirectedPipeBlock> IRON_DIRECTED_PIPE;
 
     static {
         var stoneSettings = AbstractBlock.Settings
@@ -38,5 +40,13 @@ public final class Blocks implements DefaultModInitializer {
 
         var bronzeDirectedPipe = new BronzeDirectedPipeBlock(bronzeSettings, PipeConstants.BRONZE);
         BRONZE_DIRECTED_PIPE = register(Identifiers.of("bronze_directed_pipe"), bronzeDirectedPipe);
+
+        var ironSettings = AbstractBlock.Settings
+                .of(Material.METAL)
+                .strength(2F)
+                .sounds(BlockSoundGroup.METAL);
+
+        var ironDirectedPipe = new IronDirectedPipeBlock(ironSettings, PipeConstants.IRON);
+        IRON_DIRECTED_PIPE = register(Identifiers.of("iron_directed_pipe"), ironDirectedPipe);
     }
 }
