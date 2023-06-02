@@ -3,11 +3,13 @@ package com.github.sib_energy_craft.pipes.directed.load;
 import com.github.sib_energy_craft.energy_api.utils.Identifiers;
 import com.github.sib_energy_craft.pipes.constants.PipeConstants;
 import com.github.sib_energy_craft.pipes.directed.block.BronzeDirectedPipeBlock;
+import com.github.sib_energy_craft.pipes.directed.block.DiamondDirectedPipeBlock;
 import com.github.sib_energy_craft.pipes.directed.block.IronDirectedPipeBlock;
 import com.github.sib_energy_craft.pipes.directed.block.StoneDirectedPipeBlock;
 import com.github.sib_energy_craft.sec_utils.common.Identified;
 import com.github.sib_energy_craft.sec_utils.load.DefaultModInitializer;
 import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.sound.BlockSoundGroup;
 
@@ -23,6 +25,7 @@ public final class Blocks implements DefaultModInitializer {
     public static final Identified<StoneDirectedPipeBlock> STONE_DIRECTED_PIPE;
     public static final Identified<BronzeDirectedPipeBlock> BRONZE_DIRECTED_PIPE;
     public static final Identified<IronDirectedPipeBlock> IRON_DIRECTED_PIPE;
+    public static final Identified<DiamondDirectedPipeBlock> DIAMOND_DIRECTED_PIPE;
 
     static {
         var stoneSettings = AbstractBlock.Settings
@@ -48,5 +51,16 @@ public final class Blocks implements DefaultModInitializer {
 
         var ironDirectedPipe = new IronDirectedPipeBlock(ironSettings, PipeConstants.IRON);
         IRON_DIRECTED_PIPE = register(Identifiers.of("iron_directed_pipe"), ironDirectedPipe);
+
+        var diamondMaterial = new Material.Builder(MapColor.DIAMOND_BLUE)
+                .build();
+
+        var diamondSettings = AbstractBlock.Settings
+                .of(diamondMaterial)
+                .strength(2.25F)
+                .sounds(BlockSoundGroup.METAL);
+
+        var diamondDirectedPipe = new DiamondDirectedPipeBlock(diamondSettings, PipeConstants.DIAMOND);
+        DIAMOND_DIRECTED_PIPE = register(Identifiers.of("diamond_directed_pipe"), diamondDirectedPipe);
     }
 }
