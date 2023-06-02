@@ -88,7 +88,7 @@ public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity i
         if(world == null) {
             return false;
         }
-        return storage.isEmpty() || storage.isItemEqual(itemStack) && storage.getCount() < storage.getMaxCount();
+        return storage.isEmpty() || ItemStack.areItemsEqual(storage, itemStack) && storage.getCount() < storage.getMaxCount();
     }
 
     @Override
@@ -125,7 +125,7 @@ public abstract class PipeBlockEntity<T extends PipeBlock> extends BlockEntity i
 
     @Override
     public boolean supply(@NotNull ItemStack requested, @NotNull Direction direction) {
-        if(direction == consumedDirection || !storage.isItemEqual(requested)) {
+        if(direction == consumedDirection || !ItemStack.areItemsEqual(storage, requested)) {
             return false;
         }
         return supply(requested);

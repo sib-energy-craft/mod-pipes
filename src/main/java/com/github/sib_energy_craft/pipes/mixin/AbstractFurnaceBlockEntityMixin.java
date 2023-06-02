@@ -76,7 +76,7 @@ public class AbstractFurnaceBlockEntityMixin implements ItemConsumer, ItemSuppli
     public boolean supply(@NotNull ItemStack requested, @NotNull Direction direction) {
         var furnaceBlock = getThis();
         var outputStack = furnaceBlock.getStack(OUTPUT_SLOT_INDEX);
-        if(outputStack.isEmpty() || !outputStack.isItemEqual(requested) || outputStack.getCount() < requested.getCount()) {
+        if(outputStack.isEmpty() || !ItemStack.areItemsEqual(outputStack, requested) || outputStack.getCount() < requested.getCount()) {
             return false;
         }
         outputStack.decrement(requested.getCount());

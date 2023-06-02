@@ -10,7 +10,6 @@ import com.github.sib_energy_craft.sec_utils.common.Identified;
 import com.github.sib_energy_craft.sec_utils.load.DefaultModInitializer;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.MapColor;
-import net.minecraft.block.Material;
 import net.minecraft.sound.BlockSoundGroup;
 
 import static com.github.sib_energy_craft.sec_utils.utils.BlockUtils.register;
@@ -28,35 +27,32 @@ public final class Blocks implements DefaultModInitializer {
     public static final Identified<DiamondPipeItemFilterBlock> DIAMOND_PIPE_ITEM_FILTER;
 
     static {
-        var stoneSettings = AbstractBlock.Settings
-                .of(Material.STONE)
+        var stoneSettings = AbstractBlock.Settings.create()
+                .mapColor(MapColor.STONE_GRAY)
                 .strength(1.5F)
                 .sounds(BlockSoundGroup.STONE);
 
         var stonePipeItemFilter = new StonePipeItemFilterBlock(stoneSettings, PipeConstants.STONE);
         STONE_PIPE_ITEM_FILTER = register(Identifiers.of("stone_pipe_item_filter"), stonePipeItemFilter);
 
-        var bronzeSettings = AbstractBlock.Settings
-                .of(Material.METAL)
+        var bronzeSettings = AbstractBlock.Settings.create()
+                .mapColor(MapColor.IRON_GRAY)
                 .strength(1.75F)
                 .sounds(BlockSoundGroup.METAL);
 
         var bronzePipeItemFilter = new BronzePipeItemFilterBlock(bronzeSettings, PipeConstants.BRONZE);
         BRONZE_PIPE_ITEM_FILTER = register(Identifiers.of("bronze_pipe_item_filter"), bronzePipeItemFilter);
 
-        var ironSettings = AbstractBlock.Settings
-                .of(Material.METAL)
+        var ironSettings = AbstractBlock.Settings.create()
+                .mapColor(MapColor.IRON_GRAY)
                 .strength(2F)
                 .sounds(BlockSoundGroup.METAL);
 
         var ironPipeItemFilterBlock = new IronPipeItemFilterBlock(ironSettings, PipeConstants.IRON);
         IRON_PIPE_ITEM_FILTER = register(Identifiers.of("iron_pipe_item_filter"), ironPipeItemFilterBlock);
 
-        var diamondMaterial = new Material.Builder(MapColor.DIAMOND_BLUE)
-                .build();
-
-        var diamondSettings = AbstractBlock.Settings
-                .of(diamondMaterial)
+        var diamondSettings = AbstractBlock.Settings.create()
+                .mapColor(MapColor.DIAMOND_BLUE)
                 .strength(2.25F)
                 .sounds(BlockSoundGroup.METAL);
 
