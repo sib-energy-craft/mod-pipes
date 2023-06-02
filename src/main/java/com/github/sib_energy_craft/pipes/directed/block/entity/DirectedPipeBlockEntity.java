@@ -96,7 +96,7 @@ public abstract class DirectedPipeBlockEntity<T extends DirectedPipeBlock> exten
         if(world == null || direction.getOpposite() == supplyingDirection) {
             return false;
         }
-        return storage.isEmpty() || storage.isItemEqual(itemStack) && storage.getCount() < storage.getMaxCount();
+        return storage.isEmpty() || ItemStack.areItemsEqual(storage, itemStack) && storage.getCount() < storage.getMaxCount();
     }
 
     @Override
@@ -132,7 +132,7 @@ public abstract class DirectedPipeBlockEntity<T extends DirectedPipeBlock> exten
 
     @Override
     public boolean supply(@NotNull ItemStack requested, @NotNull Direction direction) {
-        if(direction != supplyingDirection || !storage.isItemEqual(requested)) {
+        if(direction != supplyingDirection || !ItemStack.areItemsEqual(storage, requested)) {
             return false;
         }
         return supply(requested);
