@@ -8,6 +8,7 @@ import com.github.sib_energy_craft.pipes.filters.item_filter_extractor.block.Ite
 import com.github.sib_energy_craft.pipes.filters.item_filter_extractor.screen.ItemFilterExtractorScreenHandler;
 import com.github.sib_energy_craft.pipes.utils.PipeUtils;
 import com.github.sib_energy_craft.sec_utils.screen.PropertyMap;
+import lombok.Getter;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -44,6 +45,7 @@ public abstract class ItemFilterExtractorBlockEntity<T extends ItemFilterExtract
         implements ExtendedScreenHandlerFactory, NamedScreenHandlerFactory, ItemSupplier {
 
     private final SimpleInventory filterInventory;
+    @Getter
     private final SimpleInventory inventory;
     private final PropertyMap<ItemFilterExtractorBlockProperties> propertiesMap;
     private ItemFilterMode filterMode;
