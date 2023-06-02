@@ -1,6 +1,7 @@
 package com.github.sib_energy_craft.pipes.load;
 
 import com.github.sib_energy_craft.energy_api.utils.Identifiers;
+import com.github.sib_energy_craft.pipes.screen.OneSlotScreenHandler;
 import com.github.sib_energy_craft.sec_utils.load.DefaultModInitializer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SimpleInventory;
@@ -16,9 +17,11 @@ import static com.github.sib_energy_craft.sec_utils.utils.ScreenUtils.registerHa
  * @author sibmaks
  */
 public final class ScreenHandlers implements DefaultModInitializer {
+    public static final ScreenHandlerType<OneSlotScreenHandler> ONE_SLOT;
     public static final ScreenHandlerType<GenericContainerScreenHandler> GENERIC_9X1;
 
     static {
+        ONE_SLOT = registerHandler(Identifiers.of("one_slot"), OneSlotScreenHandler::new);
         GENERIC_9X1 = registerHandler(Identifiers.of("generic_9x1"), ScreenHandlers::createGeneric9x1);
     }
 
@@ -29,4 +32,5 @@ public final class ScreenHandlers implements DefaultModInitializer {
         var simpleInventory = new SimpleInventory(9 * rows);
         return new GenericContainerScreenHandler(GENERIC_9X1, syncId, inventory, simpleInventory, rows);
     }
+
 }

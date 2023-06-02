@@ -16,12 +16,16 @@
   "stat.sib_energy_craft.interact_with_trash_can": "Использований мусорки",
 
   "block.sib_energy_craft.stone_pipe": "Каменная труба",
+  "container.stone_pipe": "Каменная труба",
 
   "block.sib_energy_craft.bronze_pipe": "Бронзовая труба",
+  "container.bronze_pipe": "Бронзовая труба",
 
   "block.sib_energy_craft.iron_pipe": "Железная труба",
+  "container.iron_pipe": "Железная труба",
 
   "block.sib_energy_craft.diamond_pipe": "Алмазная труба",
+  "container.diamond_pipe": "Алмазная труба",
 
   "block.sib_energy_craft.stone_directed_pipe": "Каменная направленная труба",
 
