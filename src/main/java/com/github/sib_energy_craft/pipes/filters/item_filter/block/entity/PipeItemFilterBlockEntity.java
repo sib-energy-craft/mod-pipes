@@ -125,7 +125,7 @@ public abstract class PipeItemFilterBlockEntity<T extends PipeItemFilterBlock> e
             blockEntity.lastTicksToInsert--;
         }
         if (!blockEntity.isEmpty() && blockEntity.lastTicksToInsert <= 0) {
-            modified = PipeUtils.insert(world, pos, blockEntity, blockEntity.consumedDirection);
+            modified = PipeUtils.supplyToAllExcept(world, pos, blockEntity, blockEntity.consumedDirection);
             blockEntity.lastTicksToInsert = blockEntity.block.getTicksToInsert();
         }
         if (modified) {

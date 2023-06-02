@@ -23,6 +23,8 @@
 
   "block.sib_energy_craft.diamond_pipe": "Diamond Pipe",
 
+  "block.sib_energy_craft.stone_directed_pipe": "Stone Directed Pipe",
+
   "item.sib_energy_craft.item_filter": "Item Filter",
   "screen.sib_energy_craft.item_filter.button.mode.off": "Off",
   "screen.sib_energy_craft.item_filter.button.mode.blacklist": "Blacklist",

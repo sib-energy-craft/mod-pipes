@@ -38,6 +38,10 @@
       "com.github.sib_energy_craft.pipes.trash_can.load.Items",
       "com.github.sib_energy_craft.pipes.trash_can.load.Stats",
 
+      "com.github.sib_energy_craft.pipes.directed.load.Blocks",
+      "com.github.sib_energy_craft.pipes.directed.load.Entities",
+      "com.github.sib_energy_craft.pipes.directed.load.Items",
+
       "com.github.sib_energy_craft.pipes.load.Blocks",
       "com.github.sib_energy_craft.pipes.load.Entities",
       "com.github.sib_energy_craft.pipes.load.Items",
