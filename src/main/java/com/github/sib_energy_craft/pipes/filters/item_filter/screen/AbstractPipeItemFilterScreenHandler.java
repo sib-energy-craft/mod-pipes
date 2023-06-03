@@ -63,7 +63,7 @@ public abstract class AbstractPipeItemFilterScreenHandler extends SlotsScreenHan
             var slotQuickAccessGroupBuilder = SlotGroupMetaBuilder.builder(SlotTypes.QUICK_ACCESS);
             for (int i = 0; i < quickAccessSlots; ++i) {
                 slotQuickAccessGroupBuilder.addSlot(globalSlotIndex++, i);
-                this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 215));
+                this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 199));
             }
             var quickAccessSlotGroup = slotQuickAccessGroupBuilder.build();
             slotGroupsBuilder.add(quickAccessSlotGroup);
@@ -75,7 +75,7 @@ public abstract class AbstractPipeItemFilterScreenHandler extends SlotsScreenHan
                 for (int j = 0; j < 9; ++j) {
                     int index = j + i * 9 + quickAccessSlots;
                     slotPlayerGroupBuilder.addSlot(globalSlotIndex++, index);
-                    this.addSlot(new Slot(playerInventory, index, 8 + j * 18, 157 + i * 18));
+                    this.addSlot(new Slot(playerInventory, index, 8 + j * 18, 141 + i * 18));
                 }
             }
             var playerSlotGroup = slotPlayerGroupBuilder.build();

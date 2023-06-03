@@ -1,6 +1,7 @@
 package com.github.sib_energy_craft.pipes.filters.item_filter.screen;
 
 import com.github.sib_energy_craft.energy_api.utils.Identifiers;
+import com.github.sib_energy_craft.sec_utils.screen.ScreenSquareArea;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -10,14 +11,14 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
-
 /**
  * @since 0.0.1
  * @author sibmaks
  */
 public class PipeItemFilterScreen extends HandledScreen<PipeItemFilterScreenHandler> {
     private static final Identifier TEXTURE = Identifiers.of("textures/gui/container/pipe_item_filter.png");
+    private static final ScreenSquareArea MODE_BUTTON = new ScreenSquareArea(148, 14, 20, 20);
+    private static final ScreenSquareArea MODE_ICON = new ScreenSquareArea(150, 16, 16, 16);
 
     public PipeItemFilterScreen(@NotNull PipeItemFilterScreenHandler handler,
                                 @NotNull PlayerInventory inventory,
@@ -25,7 +26,7 @@ public class PipeItemFilterScreen extends HandledScreen<PipeItemFilterScreenHand
         super(handler, inventory, title);
         this.titleY = 6;
         this.backgroundWidth = 176;
-        this.backgroundHeight = 240;
+        this.backgroundHeight = 223;
     }
 
     @Override
@@ -37,20 +38,21 @@ public class PipeItemFilterScreen extends HandledScreen<PipeItemFilterScreenHand
         int y = this.y;
         drawContext.drawTexture(TEXTURE, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
 
-        drawContext.drawTexture(TEXTURE, x + 7, y  + 128, 176, 16, 64, 16);
-        if (isOnModeModeButton(mouseX, mouseY)) {
-            drawContext.drawTexture(TEXTURE, x + 7, y  + 128, 176, 32, 64, 16);
+        var mode = handler.getMode();
+        var modeCode = mode.name().toLowerCase();
+        drawContext.drawTexture(TEXTURE, x + MODE_BUTTON.x(), y  + MODE_BUTTON.y(), 176, MODE_BUTTON.height(),
+                MODE_BUTTON.width(), MODE_BUTTON.height());
+        drawContext.drawTexture(TEXTURE, x + MODE_ICON.x(), y  + MODE_ICON.y(), 196, 16 * mode.ordinal(),
+                MODE_ICON.width(), MODE_ICON.height());
+
+        if (MODE_BUTTON.in(x, y, mouseX, mouseY)) {
+            drawContext.drawTexture(TEXTURE, x + MODE_BUTTON.x(), y  + MODE_BUTTON.y(),
+                    176, MODE_BUTTON.height() * 2,
+                    MODE_BUTTON.width(), MODE_BUTTON.height());
+            var key = "screen.sib_energy_craft.item_filter.button.mode.%s".formatted(modeCode);
+            var modeText = Text.translatable(key);
+            drawContext.drawTooltip(textRenderer, modeText, mouseX, mouseY);
         }
-
-        var mode = handler.getMode().name().toLowerCase();
-        var key = "screen.sib_energy_craft.item_filter.button.mode.%s".formatted(mode);
-        var modeText = Text.translatable(key);
-        int modeTextLeftOffset = (64 - textRenderer.getWidth(modeText)) / 2;
-        drawContext.drawTextWithShadow(textRenderer, modeText, x + modeTextLeftOffset, y + 132, Color.WHITE.getRGB());
-    }
-
-    private boolean isOnModeModeButton(int mouseX, int mouseY) {
-        return mouseX >= x + 7 && mouseX <= x + 7 + 64 && mouseY >= y + 128 && mouseY <= y + 128 + 16;
     }
 
     @Override
@@ -64,7 +66,7 @@ public class PipeItemFilterScreen extends HandledScreen<PipeItemFilterScreenHand
             return false;
         }
 
-        if (isOnModeModeButton((int) mouseX, (int) mouseY)) {
+        if (MODE_BUTTON.in(x, y, mouseX, mouseY)) {
             if(client.player != null) {
                 this.handler.onButtonClick(Buttons.CHANGE_MODE);
             }
@@ -82,22 +84,11 @@ public class PipeItemFilterScreen extends HandledScreen<PipeItemFilterScreenHand
         drawMouseoverTooltip(drawContext, mouseX, mouseY);
     }
 
-    protected boolean isPointWithinBounds(int x,
-                                          int y,
-                                          int width,
-                                          int height,
-                                          double pointX,
-                                          double pointY) {
-        int i = this.x;
-        int j = this.y;
-        return (pointX -= i) >= (x - 1) && pointX < (x + width + 1) && (pointY -= j) >= (y - 1) && pointY < (y + height + 1);
-    }
-
     @Override
     protected void init() {
         super.init();
         this.titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
-        this.playerInventoryTitleY = 146;
+        this.playerInventoryTitleY = this.backgroundHeight - 94;
     }
 
 }

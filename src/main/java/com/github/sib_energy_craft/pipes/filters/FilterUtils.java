@@ -25,8 +25,11 @@ public final class FilterUtils {
                                   @NotNull SimpleInventory filterInventory,
                                   @NotNull ItemStack stack) {
         switch (filterMode) {
-            case OFF -> {
+            case ANY -> {
                 return true;
+            }
+            case OFF -> {
+                return false;
             }
             case WHITELIST -> {
                 var stackItem = stack.getItem();

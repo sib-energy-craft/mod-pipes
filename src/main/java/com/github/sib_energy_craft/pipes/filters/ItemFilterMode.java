@@ -7,5 +7,6 @@ package com.github.sib_energy_craft.pipes.filters;
 public enum ItemFilterMode {
     WHITELIST,
     BLACKLIST,
+    ANY,
     OFF
 }
