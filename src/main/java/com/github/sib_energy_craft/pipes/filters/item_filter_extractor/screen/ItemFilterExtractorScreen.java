@@ -1,6 +1,7 @@
 package com.github.sib_energy_craft.pipes.filters.item_filter_extractor.screen;
 
 import com.github.sib_energy_craft.energy_api.utils.Identifiers;
+import com.github.sib_energy_craft.sec_utils.screen.ScreenSquareArea;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
@@ -10,17 +11,13 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
-
 /**
  * @since 0.0.6
  * @author sibmaks
  */
 public class ItemFilterExtractorScreen extends HandledScreen<ItemFilterExtractorScreenHandler> {
-    private static final int MODE_BUTTON_X = 105;
-    private static final int MODE_BUTTON_Y = 145;
-    private static final int MODE_BUTTON_WIDTH = 64;
-    private static final int MODE_BUTTON_HEIGHT = 16;
+    private static final ScreenSquareArea MODE_BUTTON = new ScreenSquareArea(148, 14, 20, 20);
+    private static final ScreenSquareArea MODE_ICON = new ScreenSquareArea(150, 16, 16, 16);
 
     private static final Identifier TEXTURE = Identifiers.of("textures/gui/container/item_filter_extractor.png");
 
@@ -30,7 +27,7 @@ public class ItemFilterExtractorScreen extends HandledScreen<ItemFilterExtractor
         super(handler, inventory, title);
         this.titleY = 6;
         this.backgroundWidth = 176;
-        this.backgroundHeight = 246;
+        this.backgroundHeight = 242;
     }
 
     @Override
@@ -42,21 +39,20 @@ public class ItemFilterExtractorScreen extends HandledScreen<ItemFilterExtractor
         int y = this.y;
         drawTexture(matrices, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
 
-        drawTexture(matrices, x + MODE_BUTTON_X, y  + MODE_BUTTON_Y, 176, 16, MODE_BUTTON_WIDTH, MODE_BUTTON_HEIGHT);
-        if (isOnModeModeButton(mouseX, mouseY)) {
-            drawTexture(matrices, x + MODE_BUTTON_X, y  + MODE_BUTTON_Y, 176, 32, MODE_BUTTON_WIDTH, MODE_BUTTON_HEIGHT);
+        var mode = handler.getMode();
+        var modeCode = mode.name().toLowerCase();
+        drawTexture(matrices, x + MODE_BUTTON.x(), y  + MODE_BUTTON.y(), 176, MODE_BUTTON.height(),
+                MODE_BUTTON.width(), MODE_BUTTON.height());
+        drawTexture(matrices, x + MODE_ICON.x(), y  + MODE_ICON.y(), 196, 16 * mode.ordinal(),
+                MODE_ICON.width(), MODE_ICON.height());
+
+        if (MODE_BUTTON.in(x, y, mouseX, mouseY)) {
+            drawTexture(matrices, x + MODE_BUTTON.x(), y  + MODE_BUTTON.y(), 176, MODE_BUTTON.height() * 2,
+                    MODE_BUTTON.width(), MODE_BUTTON.height());
+            var key = "screen.sib_energy_craft.item_filter.button.mode.%s".formatted(modeCode);
+            var modeText = Text.translatable(key);
+            renderTooltip(matrices, modeText, mouseX, mouseY);
         }
-
-        var mode = handler.getMode().name().toLowerCase();
-        var key = "screen.sib_energy_craft.item_filter.button.mode.%s".formatted(mode);
-        var modeText = Text.translatable(key);
-        int modeTextLeftOffset = MODE_BUTTON_X + (MODE_BUTTON_WIDTH - textRenderer.getWidth(modeText)) / 2;
-        this.textRenderer.drawWithShadow(matrices, modeText, x + modeTextLeftOffset, y + 149, Color.WHITE.getRGB());
-    }
-
-    private boolean isOnModeModeButton(int mouseX, int mouseY) {
-        return mouseX >= x + MODE_BUTTON_X && mouseX <= x + MODE_BUTTON_X + MODE_BUTTON_WIDTH &&
-                mouseY >= y + MODE_BUTTON_Y && mouseY <= y + MODE_BUTTON_Y + MODE_BUTTON_HEIGHT;
     }
 
     @Override
@@ -70,7 +66,7 @@ public class ItemFilterExtractorScreen extends HandledScreen<ItemFilterExtractor
             return false;
         }
 
-        if (isOnModeModeButton((int) mouseX, (int) mouseY)) {
+        if (MODE_BUTTON.in(x, y, mouseX, mouseY)) {
             if(client.player != null) {
                 this.handler.onButtonClick(Buttons.CHANGE_MODE);
             }
@@ -88,22 +84,11 @@ public class ItemFilterExtractorScreen extends HandledScreen<ItemFilterExtractor
         drawMouseoverTooltip(matrices, mouseX, mouseY);
     }
 
-    protected boolean isPointWithinBounds(int x,
-                                          int y,
-                                          int width,
-                                          int height,
-                                          double pointX,
-                                          double pointY) {
-        int i = this.x;
-        int j = this.y;
-        return (pointX -= i) >= (x - 1) && pointX < (x + width + 1) && (pointY -= j) >= (y - 1) && pointY < (y + height + 1);
-    }
-
     @Override
     protected void init() {
         super.init();
         this.titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
-        this.playerInventoryTitleY = 149;
+        this.playerInventoryTitleY = this.backgroundHeight - 94;
     }
 
 }

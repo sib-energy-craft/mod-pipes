@@ -71,7 +71,7 @@ public abstract class AbstractItemFilterExtractorScreenHandler extends SlotsScre
             var slotQuickAccessGroupBuilder = SlotGroupMetaBuilder.builder(SlotTypes.QUICK_ACCESS);
             for (int i = 0; i < quickAccessSlots; ++i) {
                 slotQuickAccessGroupBuilder.addSlot(globalSlotIndex++, i);
-                this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 222));
+                this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 218));
             }
             var quickAccessSlotGroup = slotQuickAccessGroupBuilder.build();
             slotGroupsBuilder.add(quickAccessSlotGroup);
@@ -83,7 +83,7 @@ public abstract class AbstractItemFilterExtractorScreenHandler extends SlotsScre
                 for (int j = 0; j < 9; ++j) {
                     int index = j + i * 9 + quickAccessSlots;
                     slotPlayerGroupBuilder.addSlot(globalSlotIndex++, index);
-                    this.addSlot(new Slot(playerInventory, index, 8 + j * 18, 164 + i * 18));
+                    this.addSlot(new Slot(playerInventory, index, 8 + j * 18, 160 + i * 18));
                 }
             }
             var playerSlotGroup = slotPlayerGroupBuilder.build();
